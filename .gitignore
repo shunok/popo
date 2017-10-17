@@ -4,6 +4,5 @@ node_modules
 npm-debug.log
 libs
 .vscode
-dist/*.*
 test/images/type
 test/images/*.gif
