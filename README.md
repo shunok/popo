@@ -18,7 +18,7 @@ PoPo is a two dimensional grid layout library, The rows and columns of the grid 
 
 ## [Examples](https://github.com/shunok/popo-example/blob/master/README.md)
 
-## [Docs](https://github.com/shunok/popo/)
+## [Docs](https://shunok.github.io/popo)
 
 ## Install
 

@@ -18,7 +18,7 @@ PoPo 是一个行列二维式栅格布局工具，栅格系统的行、列数均
 
 ## [查看示例](https://github.com/shunok/popo-example/blob/master/README_CN.md)
 
-## [教程与API文档](https://github.com/shunok/popo/#/zh-cn/)
+## [教程与API文档](https://shunok.github.io/popo)
 
 ## 安装
 
