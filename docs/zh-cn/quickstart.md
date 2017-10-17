@@ -54,7 +54,7 @@
 
 这样我们就创建了一个共有12个均匀面板的布局：
 
-<iframe width="100%" height="400" src="../examples/layout_avg_5.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="https://shunok.github.io/popo-example/examples/layout_avg_5.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ## 创建一个自由布局
 
@@ -97,7 +97,7 @@
 
 这样我们就创建了一个共有5个不同宽高面板的栅格布局：
 
-<iframe width="100%" height="400" src="../examples/layout_free_4.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="https://shunok.github.io/popo-example/examples/layout_free_4.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ## 添加面板布局
 
@@ -151,4 +151,4 @@
 </html>
 ```
 
-<iframe width="100%" height="400" src="../examples/layout_free_4_panel.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="https://shunok.github.io/popo-example/examples/layout_free_4_panel.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>

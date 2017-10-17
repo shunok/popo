@@ -32,7 +32,7 @@ The layout structure of PoPo is very suitable for component development, and pro
 
 !> 3. The `data-popo` is loaded in the order of the panel, so the upper and lower order of the defined template does not affect the final rendering result.
 
-- [Template example Handlebars](../examples/bootstrap.html ":ignore")
+- [Template example Handlebars](https://shunok.github.io/popo-example/examples/bootstrap.html ":ignore")
 
 ```html
 <script id="entry-template" type="text/x-handlebars-template">

@@ -1,6 +1,6 @@
 ![logo](_media/popo.png)
 
-# PoPo <small>0.7.2</small>
+# PoPo <small>1.0.0</small>
 
 > JS layout library for large screen.
 
@@ -8,5 +8,5 @@
 - No need to write any HTML, CSS code.
 - Adaptive multi screen.
 
-[GitHub](https://github.com/shunok/PoPo/)
+[GitHub](https://github.com/shunok/popo/)
 [Get Started](/en/#quickstart)

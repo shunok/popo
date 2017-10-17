@@ -2,7 +2,7 @@
 
 ## 获取
 
-- 从 [PoPo GitHub](https://github.com/shunok/PoPo) 下载最新的 [release](https://github.com/shunok/PoPo/releases) 版本，解压出来的文件夹里的 dist 目录里可以找到最新版本的 popo.js
+- 从 [PoPo GitHub](https://github.com/shunok/popo) 下载最新的 [release](https://github.com/shunok/popo/releases) 版本，解压出来的文件夹里的 dist 目录里可以找到最新版本的 popo.js
 
 - 通过 npm 获取 PoPo
 

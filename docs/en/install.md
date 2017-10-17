@@ -4,7 +4,7 @@
 
 You can get PoPo through the following ways.
 
-- From [PoPo GitHub] (https://github.com/shunok/PoPo) to download the latest version of [release] (https://github.com/shunok/PoPo/releases), the extracted folder in the dist directory you can find the latest version of popo.js.
+- From [PoPo GitHub] (https://github.com/shunok/popo) to download the latest version of [release] (https://github.com/shunok/popo/releases), the extracted folder in the dist directory you can find the latest version of popo.js.
 
 - Getting PoPo from NPM
 
