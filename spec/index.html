@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>PoPo Spec Runner</title>
+    <link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
+    <style>
+        #mocha {
+            margin-top: 20px;
+        }
+
+        #mocha .test {
+            overflow: auto;
+        }
+
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>PoPo Test</h1>
+    <div id="mocha"></div>
+    <script src="../node_modules/expect.js/index.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/sinon/pkg/sinon.js"></script>
+
+
+
+    <script src="../dist/popo.js"></script>
+
+    <script>
+        mocha.setup({
+            ui: 'bdd',
+            ignoreLeaks: true
+        });
+    </script>
+
+    <!-- spec files -->
+
+    <script src="suites/util.js"></script>
+    <script src="suites/dom.js"></script>
+    <script src="suites/popo.js"></script>
+
+    <script>
+        
+        (window.mochaPhantomJS || window.mocha).run();
+    </script>
+</body>
+
+</html>

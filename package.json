@@ -1,0 +1,63 @@
+{
+  "name": "popojs",
+  "title": "PoPo",
+  "version": "1.0.0",
+  "description": "JS layout library for large screen",
+  "main": "dist/popo.js",
+  "scripts": {
+    "build": "npm run prod && npm run uglify",
+    "uglify": "rollup -c ./build/rollup.prod.config.js",
+    "prod": "rollup -c ./build/rollup.dev.config.js",
+    "test": "gulp test",
+    "release": "npm run build && npm run test",
+    "dev": "rollup -c ./build/rollup.dev.config.js -w"
+  },
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "eslint": "^3.5.0",
+    "expect.js": "^0.3.1",
+    "gulp": "^3.9.1",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-safari-launcher": "^1.0.0",
+    "mocha": "^3.5.0",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^1.0.2",
+    "rollup-watch": "^3.2.2",
+    "sinon": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shunok/PoPo.git"
+  },
+  "keywords": [
+    "popo",
+    "javascript",
+    "ui",
+    "layout",
+    "screen",
+    "large screen",
+    "big screen",
+    "grid",
+    "data visualization",
+    "grid",
+    "fixed",
+    "library"
+  ],
+  "author": {
+    "email": "dashunok@qq.com",
+    "name": "DaShun"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}
