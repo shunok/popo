@@ -94,5 +94,3 @@ PoPo.init({
 </script>
 
 ```
-
-<iframe width="100%" height="600" src="https://shunok.github.io/popo-example/examples/city.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
