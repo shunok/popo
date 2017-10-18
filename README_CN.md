@@ -2,6 +2,10 @@
 
 > 不只是页面布局工具
 
+<div align=center>
+<img src="https://shunok.github.io/popo/_media/popo.png" width=180 height=180>
+</div>
+
 ## PoPo是什么
 
 PoPo 是一个行列二维式栅格布局工具，栅格系统的行、列数均在运行时自定义，无CSS依赖，支持任意尺寸屏幕，尤其适用于大屏幕与超大屏幕。PoPo采用栅格 + 面板双重布局模式，封装了与内容无关的布局代码，无需编写任何HTML、CSS代码，即可快速构建任意复杂页面。
@@ -16,16 +20,77 @@ PoPo 是一个行列二维式栅格布局工具，栅格系统的行、列数均
 - 丰富的配置、调试选项与API
 - 兼容 IE9+
 
-## [查看示例](https://github.com/shunok/popo-example/blob/master/README_CN.md)
+## [文档与API](https://shunok.github.io/popo)
 
-## [教程与API文档](https://shunok.github.io/popo)
+## 示例
+
+- [24 rows * 24 cols](https://shunok.github.io/popo-example/examples/grid_24_24.html)
+- [24 rows * 48 cols](https://shunok.github.io/popo-example/examples/grid_24_48.html)
+- [Free layout](https://shunok.github.io/popo-example/examples/layout_complex_2.html)
+- [Uniform layout](https://shunok.github.io/popo-example/examples/layout_avg_1.html)
+- [Grids In Circle](https://shunok.github.io/popo-example/examples/circle.html)
+- [Scatter Diagram](https://shunok.github.io/popo-example/examples/scatter_diagram.html)
+- [City, Click the sun into night mode and click the moon into day mode](https://shunok.github.io/popo-example/examples/city.html)
+- [Progress Data Visualization For Big Screen And Mobile](https://shunok.github.io/popo-example/examples/dv_average.html)
+- [Data Visualization For Multi Screen](https://shunok.github.io/popo-example/examples/bigscreen.html)
+
+[查看更多示例...](https://github.com/shunok/popo-example/blob/master/README.md)
 
 ## 安装
 
 1. node.js
 
 ```js
+// npm
+npm install popojs  --save
 
-npm install popojs
+// yarn
+yarn add popojs
+```
+
+2. 浏览器环境
+
+```html
+<srcript src="./js/popo.min.js"></script>
+```
+
+## 使用
+
+1. node.js
+
+```js
+
+var PoPo = require('popojs');
+
+// es6
+// import PoPo from 'popojs';
+
+// 初始化实例
+var popoInstance = PoPo.init({
+    rows: 12,
+    cols: 24
+});
+
+...
+
+// 添加至已渲染完成的容器中
+popoInstance.addTo('container');
+
+```
+
+2. 浏览器端
+
+```html
+// body
+...
+<div id="container"></div>
+...
+<script>
+PoPo.init({
+    container: 'container',
+    rows: 12,
+    cols: 24
+});
+</script>
 
 ```
