@@ -323,13 +323,17 @@ export function updateVnodeSize(vc, sizes, options, container) {
 
     if ((!width || !height) && container) {
         const target = container.parentNode || container,
-            rect = getRect(target);
+            ch = target.clientHeight,
+            cw = target.clientWidth,
+            rect = getRect(target),
+            th = ch / rect.height > 1 ? ch : rect.height,
+            tw = cw / rect.width > 1 ? cw : rect.width;
 
         if (width === 0) {
-            container._origionWidth = width = rect.width;
+            container._origionWidth = width = tw;
         }
         if (height === 0) {
-            container._origionHeight = height = rect.height;
+            container._origionHeight = height = th;
         }
     }
 
