@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./libs/leaflet/leaflet.css">
+    <title>PoPo Data Visualization for multi screen</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #111111;
+            background-image: linear-gradient(to bottom, #030340, #111111);
+        }
+
+        #container {
+            font-family: arial, 'Microsoft Yahei';
+            /* padding: 5px 10px; */
+            box-sizing: border-box;
+        }
+
+        .leaflet-container {
+            background: transparent;
+        }
+
+        .popo-panel {
+            border: 1px solid #09488a;
+            box-shadow: 0 0 25px 2px #073069 inset;
+            border-top: 1px solid #49a9ee;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 66, .6), rgba(0, 0, 0, .8));
+        }
+
+        .badge {
+            background: url('./images/badge.svg') 0.5em center no-repeat;
+            background-size: auto 50%;
+            color: orange;
+            text-align: left;
+            text-indent: 2.2em;
+        }
+
+        @-webkit-keyframes masked-animation {
+            0% {
+                background-position: 0 0
+            }
+            to {
+                background-position: -100% 0
+            }
+        }
+
+        .se-title .popo-head {
+            font-size: 2em;
+            color: #49a9ee;
+            text-align: center;
+            text-indent: 0;
+            background-image: -webkit-linear-gradient(left, #cddc39, #ff9800 25%, #cddc39 50%, #ff9800 75%, #cddc39)!important;
+            -webkit-text-fill-color: transparent!important;
+            -webkit-background-clip: text!important;
+            -webkit-background-size: 200% 100%!important;
+            -webkit-animation: masked-animation 1s infinite linear!important;
+        }
+
+        .screen-1440 .badge {
+            font-size: 1.15em;
+        }
+
+        .screen-1440 .se-title .popo-head {
+            font-size: 1.6em;
+        }
+
+        .mobiletitle .popo-head {
+            font-size: 1.5em;
+            white-space: nowrap;
+        }
+
+        .mobiletitle .badge {
+            font-size: 1.2em;
+        }
+
+        .mobiletitle .summary {
+            color: #49A9EE;
+            padding: 0 15px;
+            line-height: 150%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .summary::first-letter {
+            margin: 5px 0 0 5px;
+            float: left;
+            font-size: 2em;
+            display: block;
+            text-transform: capitalize;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="container">
+        <div data-popo="caption" title="PoPo Data Visualization" class="se-title"></div>
+        <div data-popo="chart1" title="Chart A"></div>
+        <div data-popo="chart2" title="Chart B"></div>
+        <div data-popo="chart3" title="Chart C"></div>
+        <div data-popo="chart4" title="Chart D"></div>
+        <div data-popo="chart5" title="Chart E"></div>
+        <div data-popo="chart6" title="Chart F"></div>
+        <div data-popo="chart7" title="Chart G"></div>
+        <div data-popo="chart8" title="Chart H"></div>
+        <div data-popo="mobile_note">
+            <div class="summary" data-popo-target="center">
+                This is an example of big screen visual multi screen adaptation, which makes it very convenient to customize content, layout, and style for different screens.
+            </div>
+        </div>
+    </div>
+    <script src="../dist/popo.js"></script>
+    <script src="./libs/leaflet/leaflet.js"></script>
+    <script src="./libs/leaflet/leaflet-tilelayer-wmts.js"></script>
+    <script src="./libs/jquery.min.js"></script>
+    <script src="./libs/echarts.min.js"></script>
+    <script>
+
+        /**
+         *  PoPo Data Visualization for multi screen.
+         *  This example defines the mobile phone screen, ordinary notebook screen, PC screen, large screen screen data of four kinds of mode, you can try in different modes of viewing this example, if there is no suitable screen, in the following code prompt to view large screen effect in common screen
+         * 
+         *  多屏适配数据可视化示例
+         *  本示例定义了手机端、普通笔记本屏幕(分辨率宽度低于1440)、PC屏幕(1920*1080)、超大屏四种模式的大屏数据化，你可以尝试在不同模式下查看本示例，如果没有合适的大屏，在最下面的代码中有提示可在普通屏幕上查看大屏效果。
+         * 
+         */
+
+        // Define a bigscreen PoPo instance.
+        var bigscreen = null;
+
+        $(function () {
+
+            /**
+             * Fetch chart data.
+             * @param {String} name popo alias name
+             * @param {Function} success success callback
+             */
+            function fetchData(name, success) {
+                $.getJSON('./data/' + name + '.json', function (result) {
+                    if (result) {
+                        // This chart must be assigned.
+                        if (name === 'chart6') {
+                            result.series = (function () {
+                                var series = [];
+                                for (var i = 1; i <= 28; i++) {
+                                    series.push({
+                                        name: 'Browser',
+                                        type: 'radar',
+                                        symbol: 'none',
+                                        itemStyle: {
+                                            normal: {
+                                                lineStyle: {
+                                                    width: 1
+                                                }
+                                            },
+                                            emphasis: {
+                                                areaStyle: { color: 'rgba(0,250,0,0.3)' }
+                                            }
+                                        },
+                                        data: [
+                                            {
+                                                value: [
+                                                    (40 - i) * 10,
+                                                    (38 - i) * 4 + 60,
+                                                    i * 5 + 10,
+                                                    i * 9,
+                                                    i * i / 2
+                                                ],
+                                                name: i + 2000 + ''
+                                            }
+                                        ]
+                                    });
+                                }
+                                return series;
+                            })()
+                        }
+                        // This chart must be assigned.
+                        if (name === 'chart8') {
+                            result.tooltip.formatter = function (params) {
+                                if (params.value.length > 1) {
+                                    return params.seriesName + ' :<br/>' +
+                                        params.value[0] + 'cm ' +
+                                        params.value[1] + 'kg ';
+                                } else {
+                                    return params.seriesName + ' :<br/>' +
+                                        params.name + ' : ' +
+                                        params.value + 'kg ';
+                                }
+                            }
+                        }
+                    }
+                    if (typeof success === 'function') {
+                        success(result);
+                    }
+                });
+            }
+
+            /**
+             * PoPo instance update hook
+             * @param {Object} popo PoPo instance
+             */
+            function update(popo) {
+                popo.each(function (elements) {
+                    if (elements.center) {
+                        var chart = echarts.getInstanceByDom(elements.center);
+                        chart && chart.resize();
+                    }
+                });
+            }
+
+            /**
+             * PoPo instance onload hook
+             * @param {Object} popo PoPo instance
+             */
+            function onload(popo) {
+                popo.getAlias().forEach(function (alias) {
+                    // Initialize chart.
+                    if (alias.type === 'chart') {
+                        fetchData(alias.name, function (data) {
+                            var target = popo.center(alias.name);
+                            if (data && target) {
+                                echarts.init(target).setOption(data);
+                            }
+                        });
+                    }
+                    // Initialize map.
+                    if (alias.type === 'map') {
+                        initMap(popo.center(alias.name))
+                    }
+                    // Setting summary panel vertical middle.
+                    if (alias.type === 'summary') {
+                        var panel = popo.center(alias.name);
+                        if (panel) {
+                            var summaryEl = panel.querySelector('.summary');
+                            if (summaryEl) {
+                                var parentHeight = $(panel).height();
+                                var height = $(summaryEl).height();
+                                $(summaryEl).css({
+                                    paddingTop: (parentHeight - height) / 2 + 'px'
+                                })
+
+                            }
+                        }
+
+                    }
+                });
+
+            }
+
+            /**
+             * Initialize map by dom
+             * @param {HtmlElement} dom popo dom
+             */
+            function initMap(dom) {
+                if (!dom) return;
+                var map = L.map(dom, {
+                    center: [33.42041015, 105.62255],
+                    zoom: 5,
+                    crs: L.CRS.EPSG4326,
+                    attributionControl: false,
+                    zoomControl: false
+                });
+
+
+                map.addLayer(new L.TileLayer.WMTS('http://t0.tianditu.com/img_c/wmts', {
+                    tileSize: 256,
+                    layer: 'img',
+                    style: "default",
+                    tilematrixSet: "c",
+                    format: "tile",
+                    opacity: 1
+                }));
+
+                map.addLayer(new L.TileLayer.WMTS('http://t0.tianditu.com/eia_c/wmts', {
+                    tileSize: 256,
+                    layer: 'eia',
+                    style: "default",
+                    tilematrixSet: "c",
+                    format: "tile",
+                }));
+            }
+
+            $.getJSON('./data/popo.json', function (result) {
+                if (!result) return;
+                var width = P.Browser.width,
+                    height = P.Browser.height,
+                    option = null,
+                    base = result.base,
+                    mobile = result.mobile,
+                    screen_1920 = result.screen_1920,
+                    screen_1440 = result.screen_1440,
+                    screen_bigger = result.screen_bigger;
+
+                if (P.Browser.mobile) {
+                    option = mobile;
+                } else {
+                    option = width <= 1440 ? screen_1440 : (width >= 3840 && height >= 1000 ? screen_bigger : screen_1920);
+                }
+                /**
+                 * You can cancel the comment for the following code and see the effect of the big screen on the ordinary screen.
+                 * 可以取消下面的代码注释，在普通屏幕上查看大屏的效果
+                 */
+
+                // option = screen_bigger;
+                // option.width = 7160;
+                // option.height = 2160;
+                // option.fontScale = 3.5;
+                // option.zoom = {
+                //     enable: true,
+                //     scale: 0.4
+                // };
+                if (option) {
+                    option.onload = onload;
+                    option.update = update;
+                    bigscreen = P.init(P.Util.merge(option, base)).addTo("container");
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

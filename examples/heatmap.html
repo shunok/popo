@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Heatmap</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            font-family: Arial, Helvetica, 'Microsoft Yahei';
+            user-select: none;
+            -ms-user-select: none;
+        }
+
+        .popup {
+            background: rgba(0, 0, 0, 0.6);
+            color: #ddd;
+            display: none;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 14px;
+        }
+
+        .color {
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .color:hover {
+            box-shadow: 0 0 0 1px #333 inset;
+        }
+
+        .v1 {
+            background-color: #F3E2A0;
+        }
+
+        .v2 {
+            background-color: #EDCD96;
+        }
+
+        .v3 {
+            background-color: #E6B78C;
+        }
+
+        .v4 {
+            background-color: #E1A483;
+        }
+
+        .v5 {
+            background-color: #DE9A7E;
+        }
+
+        .v6 {
+            background-color: #C0474E;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        function getColor(v) {
+            var c = 'v1';
+            if (v >= 0.2) {
+                c = 'v2';
+            }
+            if (v >= 0.4) {
+                c = 'v3'
+            }
+            if (v >= 0.6) {
+                c = 'v4';
+            }
+            if (v >= 0.8) {
+                c = 'v5'
+            }
+            if (v >= 0.9) {
+                c = 'v6'
+            }
+            return c + ' color';
+        }
+
+        var po = P.init({
+            container: 'container',
+            rows: 16,
+            cols: 23,
+            layout: {},
+            gutter: 0,
+            overflowVisible: true,
+            onload: function (popo) {
+
+                var popup = popo.addPanel({
+                    zIndex: 200,
+                    position: {
+                        left: 0,
+                        top: 0,
+                    },
+                    size: {
+                        width: 100,
+                        height: 30,
+                        responsive: false,
+                    },
+                    layout: {
+                        gutter: 0
+                    },
+                    style: {
+                        panel: 'popup'
+                    }
+                });
+
+                popo.each(function (elements) {
+                    if (elements.id <= 365) {
+                        var val = Math.random() * 1,
+                            color = getColor(val),
+                            id = elements.id,
+                            target = elements.panel;
+                        P.DomUtil.addClass(target, color);
+                        target.innerHTML = elements.id;
+
+                        // Show Popup
+                        P.DomEvent.on(target, 'mouseover', function (e) {
+                            var _panel = popo.get(id),
+                                pl = _panel.position.left,
+                                pt = _panel.position.top,
+                                pw = _panel.size.width,
+                                ph = _panel.size.height;
+
+                            popo.update({
+                                panels: popup,
+                                left: pl + pw,
+                                top: pt + ph
+                            });
+                            popup.center.innerHTML = (val + '').substring(0, 8);
+                            popo.show(popup.id);
+                        });
+
+                        // Hide Popup
+                        P.DomEvent.on(target, 'mouseout', function (e) {
+                            popo.hide(popup);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout Nest</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .popo-theme-1 .popo-panel {
+            background: #d2d292;
+        }
+
+        .popo-theme-2 .popo-panel {
+            background: #e2e2e2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: {
+                cols: 2,
+                rows: 2
+            },
+            gutter: 0,
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    P.init({
+                        container: elements.panel,
+                        gutter: 5,
+                        dev: {
+                            enable: true,
+                        },
+                        layout: {
+                            rows: Math.ceil(Math.random() * 4 + 1),
+                            cols: Math.ceil(Math.random() * 5 + 2)
+                        },
+                        style: {
+                            container: "popo-theme-" + (elements.id === 1 || elements.id === 4 ? 1 : 2)
+                        }
+                    })
+                });
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Marquee</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: arial, 'Microsoft Yahei', '微软雅黑';
+            background-color: #333;
+            color: #ccc;
+        }
+
+        div[data-popo-role=panel] {
+            background-color: rgba(0, 0, 0, .15);
+            box-shadow: 0 0 15px 2px rgba(0, 0, 0, .3) inset;
+        }
+
+        ul,
+        h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .smartmarquee {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .smartmarquee ul {
+            position: absolute;
+        }
+
+        .smartmarquee li {
+            overflow: hidden;
+            line-height: 150%;
+        }
+
+        .smartmarquee h3 {
+            color: yellowgreen;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div data-popo="1" title="Weibo news marquee">
+            <div class="smartmarquee" data-popo-target="center">
+                <ul class="container">
+                    <li>
+                        <h3>Xi stresses prevention, control of major risks</h3>
+                        <p>President Xi Jinping on Tuesday stressed the importance of
+                            preventing and controlling major risks through the leadership
+                            of the Communist Party of China (CPC).</p>
+                    </li>
+                    <li>
+                        <h3>Chinese naval hospital ship Peace Ark to offer free medical
+                            services in Sierra Leone</h3>
+                        <p>The Chinese naval hospital ship Peace Ark on Tuesday arrived
+                            at the shores of Sierra Leone, with a mission to deliver
+                            free medical services to 2,000 people within eight days
+                            till September 26.</p>
+                    </li>
+                    <li>
+                        <h3>Hong Kong Polytechnic University sets up Belt and Road center</h3>
+                        <p>The Hong Kong Polytechnic University inaugurated here Wednesday
+                            the Faculty of Business - Belt and Road Center, which
+                            serves as a leading think tank on issues related to the
+                            Belt and Road Initiative.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="../dist/popo.js"></script>
+    <script src="./libs/jquery.min.js"></script>
+    <script src="./libs/jquery.smartmarquee.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: [[3, [8, 8, 8]], [3, [12, 12]], [3, [6, 6, 6, 6]], [3, [6, 12, 6]]],
+            gutter: 5,
+            panel: {
+                enable: true,
+                default: {
+                    gutter: 20
+                }
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'head'
+            },
+            onload: function (popo) {
+                var copyTarget = document.querySelector(".smartmarquee");
+                popo.each(function (elements) {
+                    /** Copy marquee content. Please ignore this part. */
+                    if (elements.id !== 1) {
+                        elements.center.appendChild(copyTarget.cloneNode(true));
+                    }
+                    /** Copy end */
+
+                    // var marqueeTarget = elements.center.querySelector(".smartmarquee");
+                    var marqueeTarget = elements.center.firstChild;
+
+                    $(marqueeTarget).find("li").css("height", elements.size.height);
+                    $(marqueeTarget).smartmarquee({
+                        duration: (Math.random() * 8 + 1) * 100,
+                        loop: true,
+                        interval: (Math.random() * 3 + 1) * 1000,
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

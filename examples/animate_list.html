@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/animate.css">
+    <title>Animate List</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+            font-family: arial, 'Microsoft Yahei', '微软雅黑';
+            background-color: #333;
+            color: #ccc;
+            box-sizing: border-box;
+        }
+
+        div[data-popo-role=panel] {
+            background-color: rgba(0, 0, 0, .15);
+            box-shadow: 0 0 15px 2px rgba(0, 0, 0, .3) inset;
+            text-align: center;
+        }
+
+        div[data-popo-role=left] {
+            font-size: 1.5em;
+            color: #666;
+        }
+
+        div[data-popo-role=center] {
+            font-size: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: {
+                cols: 2,
+                rows: 12
+            },
+            gutter: 2,
+            dev: {
+                enable: true,
+            },
+            panel: {
+                enable: true,
+                default: {
+                    leftWidth: 200,
+                    gutter: '10 20',
+                }
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'all'
+            },
+            onload: function (popo) {
+                var animates = 'shake,bounce,flash,hinge,rubberBand,swing,tada,wobble,jello,bounceIn,fadeIn,lightSpeedIn,flip,flipOutX,flipOutY,rotateIn,rotateInUpLeft,rotateOut,slideInUp,bounceOut,zoomIn,zoomOut,jackInTheBox,rollIn,rollOut'.split(',');
+
+                popo.each(function (elements) {
+                    var target = elements.center;
+                    target.innerText = elements.id + 'Xi stresses prevention, control of major risks';
+                    elements.left.innerText = animates[elements.id - 1];
+                    P.DomUtil.addClass(target, animates[elements.id - 1] + ' animated infinite');
+                });
+            }
+        })
+    </script>
+</body>
+
+</html>

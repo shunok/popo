@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <title>Drag Resize Interact</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -ms-user-select: none;
+        }
+
+        .popo-panel {
+            background: #D9D9D9;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, .2);
+        }
+
+        .popo-center {
+            background: #F0F0F0 url('./images/1.svg') center center no-repeat;
+            background-size: auto 50%;
+        }
+
+        .popo-foot {
+            padding: 5px;
+        }
+
+        .pobutton {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        #btn-container {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 200;
+        }
+
+        #restorebtn {
+            width: 150px;
+            height: 40px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <div id="btn-container">
+        <button id="restorebtn" onclick="restoreAll()">Restore All Panel</button>
+    </div>
+    <script src='../dist/popo.js'></script>
+    <script src='./libs/interact.min.js'></script>
+
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: [[4, [4, 6, 5, 9]], [8, [[4, [4, 4, 4]], [4, [6, 6]], [4, [4, 8]], 4, 8]]],
+            gutter: 20,
+            panel: {
+                enable: true,
+                default: {
+                    headHeight: 30,
+                    footHeight: 50,
+                }
+            },
+            lineHeight: {
+                type: 'head',
+                panels: 'all'
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    elements.head.innerHTML = '#' + elements.id + ' Try drag and resize me.';
+                    var panel = elements.panel;
+                    var button = P.DomUtil.create("button", "pobutton", null, elements.foot);
+                    button.innerHTML = "Restore Me";
+                    P.DomEvent.on(button, "click", function (e) {
+                        popo.restore({
+                            panels: panel
+                        });
+                        P.DomUtil.css(panel, {
+                            transform: ''
+                        });
+                        P.DomUtil.attr(panel, 'data-x', 0);
+                        P.DomUtil.attr(panel, 'data-y', 0);
+                    });
+                });
+
+
+            }
+        });
+
+        var zIndex = 1;
+
+        // http://interactjs.io/
+        interact('div[data-popo-role=panel]')
+            .draggable({
+                onmove: window.dragMoveListener
+            })
+            .resizable({
+                preserveAspectRatio: true,
+                edges: { left: true, right: true, bottom: true, top: true }
+            })
+            .on('dragstart', function (event) {
+                // event.target.style.zIndex = 100;
+                scr.update({
+                    panels: event.target,
+                    zIndex: zIndex++
+                })
+            })
+            .on('resizemove', function (event) {
+                var target = event.target,
+                    x = (parseFloat(target.getAttribute('data-x')) || 0),
+                    y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                scr.update({
+                    panels: target,
+                    width: event.rect.width,
+                    height: event.rect.height,
+                })
+
+                // translate when resizing from top or left edges
+                x += event.deltaRect.left;
+                y += event.deltaRect.top;
+
+                target.style.webkitTransform = target.style.transform =
+                    'translate(' + x + 'px,' + y + 'px)';
+
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            });
+
+        function dragMoveListener(event) {
+            var target = event.target,
+                // keep the dragged position in the data-x/data-y attributes
+                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            // translate the element
+            target.style.webkitTransform =
+                target.style.transform =
+                'translate(' + x + 'px, ' + y + 'px)';
+
+            // update the posiion attributes
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+        }
+
+        // this is used later in the resizing and gesture demos
+        window.dragMoveListener = dragMoveListener;
+
+        function restoreAll() {
+            scr.restore();
+            scr.each(function (elements) {
+                var panel = elements.panel;
+                P.DomUtil.css(panel, {
+                    transform: ''
+                });
+                P.DomUtil.attr(panel, 'data-x', 0);
+                P.DomUtil.attr(panel, 'data-y', 0);
+            });
+
+        }
+    </script>
+</body>
+
+</html>

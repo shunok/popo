@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Panel Size</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            background: #333;
+        }
+
+        div[data-popo-role=panel] {
+            background: #555;
+            border: 1px solid #888;
+            text-align: center;
+            font-size: 2em;
+            color: white;
+        }
+    </style>
+    <script src="../dist/popo.js"></script>
+</head>
+
+<body>
+
+    <div id="container"></div>
+    <script>
+
+        P.init({
+            container: "container",
+            layout: {
+                cols: 4,
+                rows: 3,
+            },
+            panel: {
+                enable: true,
+                default: {
+                    padding: 0,
+                    head: 0,
+                },
+            },
+            trackResize: true,
+            lineHeight: {
+                panels: 'all',
+                type: 'center'
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    elements.center.innerHTML = elements.id;
+                });
+
+                setInterval(function () {
+                    popo.each(function (elements) {
+                        popo.update({
+                            panels: elements.id,
+                            width: Math.random() * 150 + 50,
+                            height: Math.random() * 150 + 20
+                        })
+                    });
+                }, 1000);
+            },
+        });
+
+
+    </script>
+</body>
+
+</html>

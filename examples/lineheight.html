@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout AVG</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            background: #e2e2e2;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        div[data-popo-role=head] {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: {
+                cols: 3,
+                rows: 4
+            },
+            lineHeight: [{
+                panels: 'all',
+                type: 'center'
+            }, {
+                panels: [5],
+                type: 'head'
+            }],
+            dev: {
+                enable: true,
+            },
+            panel: {
+                enable: true,
+                custom: [{
+                    panels: [5, 8],
+                    headHeight: '50%'
+                }]
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    (elements.head || elements.center).innerText = "Hello PoPo!";
+                });
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Go Chess</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            width: 100%;
+            text-align: center;
+            margin:0;
+        }
+
+        #container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            top: calc(50% - 300px);
+            left: calc(50% - 300px);
+            border: 4px solid #000;
+            padding: 5px;
+            cursor: pointer;
+            background-color: #E7AA73;
+            box-sizing: border-box;
+        }
+
+        div[data-popo-role=container] {
+            border-top: 1px solid #000;
+            border-left: 1px solid #000;
+        }
+
+        div[data-popo-role=panel] {
+            /* background-color: #E7AA73; */
+
+            border-bottom: 1px solid #000;
+            border-right: 1px solid #000;
+        }
+
+        .chess-black {
+            border-radius: 50%;
+            background-color: #666;
+            box-shadow: 2px 0px 12px 3px #000 inset;
+        }
+
+        .chess-white {
+            border-radius: 50%;
+            background-color: #eee;
+            box-shadow: 2px 0px 10px 3px #aaa inset;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Click and drop chess.</h1>
+    <div id='container'></div>
+
+    <script type="text/javascript">
+        var po = P.init({
+            container: 'container',
+            rows: 18,
+            cols: 18,
+            layout: {},
+            gutter: 0,
+            overflowVisible: true,
+            onload: function (popo) {
+                var container = popo.getContainer(),
+                    rect = container.getBoundingClientRect(),
+                    cx = rect.left,
+                    cy = rect.top,
+                    chessRadius = 15,
+                    chessFlag = true,
+                    blackChess = [],
+                    whiteChess = [],
+                    contain = P.Util.contain;
+
+                function isOk(px, py, x, y) {
+                    return x >= (cx + px - chessRadius) && x <= (cx + px + chessRadius) && y >= (cy + py - chessRadius) && y <= (cy + py + chessRadius);
+                }
+
+
+                var clickEvent = P.Util.throttle(function (e) {
+                    var x = e.clientX,
+                        y = e.clientY;
+                    popo.each(function (elements) {
+                        var px = elements.position.left,
+                            py = elements.position.top,
+                            id = elements.id,
+                            isChess = elements.isExtend;
+                        if (contain(blackChess, id) >= 0 || contain(whiteChess, id) >= 0) {
+                            return false;
+                        }
+                        if (!isChess && isOk(px, py, x, y)) {
+                            popo.addPanel({
+                                zIndex: 100,
+                                position: {
+                                    left: px - chessRadius,
+                                    top: py - chessRadius
+                                },
+                                size: {
+                                    width: chessRadius * 2,
+                                    height: chessRadius * 2
+                                },
+                                style: {
+                                    panel: chessFlag ? 'chess-black' : 'chess-white'
+                                },
+                            });
+                            if (chessFlag) {
+                                blackChess.push(elements.id);
+                            } else {
+                                whiteChess.push(elements.id);
+                            }
+                            chessFlag = !chessFlag;
+                            return false;
+                        }
+                    });
+                }, 200);
+
+                P.DomEvent.on(container, 'click', clickEvent);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

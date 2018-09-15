@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Pencil</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+            background: #d7e7e7;
+        }
+
+        #container {
+            width: 900px;
+            height: 600px;
+            position: absolute;
+            top: calc(50% - 300px);
+            left: calc(50% - 450px);
+        }
+
+        .pencil:nth-child(even) {
+            transform: rotate(180deg)
+        }
+        
+        .pencil .public {
+            writing-mode: vertical-lr;
+            -ms-writing-mode: tb-lr;
+            text-align: center;
+            color:#B89809;
+            font-family: Arial, Helvetica, 'Microsoft Yahei';
+            text-shadow: 0px 0px 1px #000;
+            font-size: 10px;
+            user-select: none;
+            -ms-user-select: none;
+        }
+
+
+        .pencil .public:nth-child(1) {
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 60px solid #E0867F;
+        }
+
+        .pencil .public:nth-child(1)::before {
+            width: 12px;
+            height: 20px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 30px solid #111;
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 9px;
+        }
+
+        .pencil .public:nth-child(2) {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: -2px 2px 5px 1px rgba(0,0,0,.3), -3px -3px 12px 2px #15917E inset;
+            background-color: #09443B;
+        }
+
+        .pencil:nth-child(even) .public:nth-child(2) {
+            box-shadow: 3px 0px 5px 1px rgba(0,0,0,.3), 3px -3px 12px 2px #15917E inset;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        var po = P.init({
+            container: 'container',
+            layout: {
+                rows: 1,
+                cols: 24
+            },
+            overflowVisible: true,
+            trackResize: false,
+            dev: {
+                enable: true,
+                panel: {
+                    show: false,
+                },
+                guideline: {
+                    show: true,
+                    identifier: false,
+                }
+            },
+            style: {
+                default: {
+                    panel: 'pencil-grid'
+                }
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    P.init({
+                        container: elements.panel,
+                        rows: 15,
+                        layout: [2, 13],
+                        gutter: 0,
+                        overflowVisible: true,
+                        trackResize: false,
+                        style: {
+                            container: 'pencil',
+                            default: {
+                                panel: 'public'
+                            }
+                        },
+                        onload: function(_popo) {
+                            _popo.each(function(_elements) {
+                                if(_elements.id == 2) {
+                                    _elements.panel.innerHTML = 'PoPo Pencil &nbsp;&nbsp;&nbsp;&nbsp;(HB)'
+                                    P.DomUtil.css(_elements.panel, {
+                                        lineHeight: _elements.size.width + 'px'
+                                    })
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chess</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #container {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            top: calc(50% - 300px);
+            left: calc(50% - 300px);
+            background-color: white;
+            border: 4px solid black;
+            z-index: 2;
+        }
+
+        #containerbg {
+            width: 680px;
+            height: 680px;
+            position: absolute;
+            top: calc(50% - 340px);
+            left: calc(50% - 340px);
+            z-index: 1;
+            border: 5px solid black;
+        }
+
+        .grid-black {
+            background-color: black;
+            background-size: 100% 100%;
+        }
+
+        .chessbar {
+            position: absolute;
+            z-index: 100;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <div id='containerbg'></div>
+
+    <script type="text/javascript">
+        var po = P.init({
+            container: 'container',
+            rows: 8,
+            cols: 8,
+            layout: {},
+            gutter: 0,
+            style: {
+                custom: [{
+                    panels: [1, 3, 5, 7, 10, 12, 14, 16, 17, 19, 21, 23, 26, 28, 30, 32, 33, 35, 37, 39, 42, 44, 46, 48, 49, 51, 53, 55, 58, 60, 62, 64],
+                    panel: 'grid-black'
+                }]
+            },
+            onload: function (popo) {
+
+                function createBar(arr, xRange, yRange, barFlag) {
+                    arr.forEach(function (id, index) {
+                        var el = popo.get(id),
+                            x = el.position.left,
+                            y = el.position.top,
+                            width = el.size.width,
+                            height = el.size.height;
+                        var span = P.DomUtil.create('span', 'chessbar', {
+                            top: (y + yRange) + 'px',
+                            left: (x + xRange) + 'px',
+                            width: width + 'px',
+                            lineHeight: height + 'px',
+                        }, popo.container);
+                        span.innerHTML = barFlag ? ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'][index] : index + 1;
+                    })
+                }
+
+                createBar([1, 2, 3, 4, 5, 6, 7, 8], 0, -60);
+                createBar([57, 58, 59, 60, 61, 62, 63, 64], 0, 60);
+                createBar([1, 9, 17, 25, 33, 41, 49, 57], -60, 0, true);
+                createBar([8, 16, 24, 32, 40, 48, 56, 64], 60, 0, true);
+
+            }
+        });
+    </script>
+</body>
+
+</html>

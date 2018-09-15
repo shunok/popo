@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout Free 1</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            background: #e2e2e2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container" style="width:100%;height:100%;"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: [2, [7, [6, 8, 10]], 3],
+        })
+
+    </script>
+</body>
+
+</html>

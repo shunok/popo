@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Panel Position</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #333;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+
+        div[data-popo-role=panel] {
+            box-shadow: 0 0 0px 1px rgba(0, 0, 0, .15) inset;
+            background: #555;
+            text-align: center;
+            font-size: 3em;
+            color:white;
+        }
+    </style>
+    <script src="../dist/popo.js"></script>
+</head>
+
+<body>
+
+    <div id="container"></div>
+    <script>
+        P.init({
+            container: "container",
+            layout: {
+                cols: 6,
+                rows: 4,
+            },
+            gutter: 5,
+            panel: {
+                enable: true,
+                default: {
+                    padding: 0,
+                    head: 0,
+                },
+            },
+            style: {
+                custom: [{
+                    panels: 1,
+                    center: {
+                        backgroundColor: '#99c'
+                    }
+                }]
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'center'
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    elements.center.innerHTML = elements.id;
+                });
+                var id = 2;
+                var count = popo.getIds().length;
+                setInterval(function () {
+                    if (id > count) { id = 2; }
+                    popo.update({
+                        panels: 1,
+                        left: popo.$left(id),
+                        top: popo.$top(id),
+                        zIndex: 2
+                    })
+                    id++;
+                }, 500);
+            },
+        });
+
+    </script>
+</body>
+
+</html>

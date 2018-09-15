@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout_1152_panels</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            background: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        // 1152 panels, 1156 divs;
+        var scr = P.init({
+            container: 'container',
+            rows: 24,
+            cols: 48,
+            gutter: 2,
+            panel:{
+                enable: false, // enabel will create panel content. total 6916 divs;
+            },
+            layout: {
+                cols: 48,
+                rows: 24
+            }
+        })
+    </script>
+</body>
+
+</html>

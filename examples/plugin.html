@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Clock Plugin</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #000;
+        }
+
+
+        #container {
+            width: 800px;
+            height: 600px;
+            position: absolute;
+            top: calc(50% - 300px);
+            left: calc(50% - 400px);
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        // Define a clock component. it can set color and fontsize.
+        function PoPoClock(container, color, fontSize, zh) {
+            color = color || '#1DE724';
+            fontSize = fontSize || 16;
+            this.zh = zh;
+            if (container) {
+                var that = this;
+                var po = this.po = P.init({
+                    container: container,
+                    layoutStartType: 'col',
+                    layout: [[12], [12, [6, 6]]],
+                    gutter: 0,
+                    dev: {
+                        enable: true,
+                        panel: {
+                            show: false,
+                        },
+                        guideline: {
+                            show: true,
+                            identifier: false,
+                            color: 'rgba(155,155,155,.25)'
+                        }
+                    },
+                    lineHeight: {
+                        panels: 'all',
+                        type: 'panel'
+                    },
+                    style: {
+                        container: {
+                            border: '5px solid ' + color,
+                            boxShadow: '0 0 55px 8px ' + color + ' inset , 0 0 32px 5px ' + color,
+                            backgroundColor: '#000',
+                            borderRadius: '10px',
+                            fontFamily: 'Helvetica, Microsoft Yahei, Arial',
+                            userSelect: 'none',
+                            msUserSelect: 'none',
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            color: color,
+                            userSelect: 'none',
+                        },
+                        custom: [{
+                            panels: 1,
+                            panel: {
+                                fontSize: 2 * fontSize + 'px',
+                            }
+                        }, {
+                            panels: 2,
+                            panel: {
+                                fontSize: 1.2 * fontSize + 'px',
+                            }
+                        }, {
+                            panels: 3,
+                            panel: {
+                                fontSize: 1.2 * fontSize + 'px',
+                            }
+                        },]
+                    },
+
+                    onload: function (popo) {
+                        // Define click event to start or stop clock.
+                        P.DomEvent.on(popo.container, 'click', function (e) {
+                            if (that.timeId === 0) {
+                                that.start();
+                                popo.updateStyle({
+                                    container: {
+                                        border: '5px solid ' + color,
+                                        boxShadow: '0 0 55px 8px ' + color + ' inset , 0 0 32px 5px ' + color,
+                                        color: color
+                                    }
+                                })
+                            } else {
+                                that.stop();
+                                popo.updateStyle({
+                                    container: {
+                                        border: '5px solid #ddd',
+                                        boxShadow: '0 0 55px 8px #ddd inset , 0 0 32px 5px #ddd',
+                                        color: '#ddd'
+                                    }
+                                })
+                            }
+                        }, that);
+
+                        that.timePane = popo.panel(1);
+                        that.datePane = popo.panel(2);
+                        that.weekPane = popo.panel(3);
+                        that.update();
+                        that.timeId = setInterval(P.Util.bind(that.update, that), 1000);
+                    }
+                });
+            }
+        }
+
+        /**
+         * Get time number by time
+         */
+        PoPoClock.prototype.getTimes = function (now) {
+            function getTimeNumber(time) {
+                var _time = (time + '').split('').map(function (i) { return Number(i) });
+                return (_time.length == 1 ? [0, _time[0]] : _time).join('');
+            }
+            return {
+                hour: getTimeNumber(now.getHours()),
+                minute: getTimeNumber(now.getMinutes()),
+                second: getTimeNumber(now.getSeconds()),
+                day: getTimeNumber(now.getDate()),
+                week: (this.zh ? ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'] : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])[now.getDay()],
+                month: getTimeNumber(now.getMonth() + 1),
+                year: getTimeNumber(now.getFullYear()),
+            }
+        }
+
+        // update
+        PoPoClock.prototype.update = function () {
+            this.now = new Date();
+            var time = this.getTimes(this.now);
+            this.timePane.innerHTML = this.clock = time.hour + ':' + time.minute + ':' + time.second;
+            var day = this.zh ? time.year + '-' + time.month + '-' + time.day : time.month + '/' + time.day + '/' + time.year;
+            if (day != this.date) {
+                this.datePane.innerHTML = this.date = day;
+            }
+            var week = time.week;
+            if (week != this.week) {
+                this.weekPane.innerHTML = this.week = week;
+            }
+        }
+
+        // start clock
+        PoPoClock.prototype.start = function () {
+            this.timeId = setInterval(P.Util.bind(this.update, this), 1000);
+        }
+
+        // stop clock
+        PoPoClock.prototype.stop = function () {
+            clearInterval(this.timeId);
+            this.timeId = 0;
+        }
+
+
+        // Create two clock
+        P.init({
+            container: 'container',
+            gutter: 50,
+            layout: {
+                rows: 2,
+                cols: 1
+            },
+            onload: function (popo) {
+
+                // Create a green clock.
+                new PoPoClock(popo.panel(1), '#0f0', 38);
+
+                // Create a chinese blue clock
+                new PoPoClock(popo.panel(2), '#08f', 38, true);
+            }
+        })
+    </script>
+</body>
+
+</html>

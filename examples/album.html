@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PoPo Album</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #eee;
+        }
+
+        .popo-panel {
+            background: #fff;
+            padding: 2px;
+            box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, .3);
+            user-select: none;
+            -ms-user-select: none;
+        }
+
+        .popo-center {
+            background: url('./images/jonsnow.jpg') center center repeat-x;
+            background-size: auto 100%;
+        }
+
+        .popo-head {
+            background-color: #383435;
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+        }
+    </style>
+    <script src="../dist/popo.js"></script>
+    <script src='./libs/interact.min.js'></script>
+</head>
+
+<body>
+
+    <div id="container"></div>
+    <script>
+        var scr = P.init({
+            container: "container",
+            layout: [
+                [6, [3, 5, [4, [6, 6]], [4, [4, 8]], 8]],
+                [3, [4, 3, 6, 3, 4, 4]],
+                [3, [8, 4, 4, 4, 4]],
+            ],
+            panel: {
+                enable: true,
+                default: {
+                    headHeight: 40,
+                    // gutter: 5
+                },
+            },
+            gutter: 30,
+            trackResize: false,
+            lineHeight: {
+                panels: 'all',
+                type: 'head'
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    elements.head.innerText = 'Jon Snow';
+                    var left = Math.random() * (popo.width / 2 + 100);
+                    var top = Math.random() * (popo.height / 2 + 100);
+                    popo.update({
+                        panels: elements.id,
+                        left: left,
+                        top: top,
+                    })
+                });
+            }
+        });
+
+        var zIndex = 1;
+
+        // http://interactjs.io/
+        interact('div[data-popo-role=panel]')
+            .draggable({
+                onmove: window.dragMoveListener
+            })
+            .resizable({
+                preserveAspectRatio: true,
+                edges: { left: true, right: true, bottom: true, top: true }
+            })
+            .on('dragstart', function (event) {
+                // event.target.style.zIndex = zIndex;
+                scr.update({
+                    panels: event.target,
+                    zIndex: zIndex++
+                })
+            })
+            .on('resizemove', function (event) {
+                var target = event.target,
+                    x = (parseFloat(target.getAttribute('data-x')) || 0),
+                    y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                // scr.setPanelSize(target, event.rect.width, event.rect.height);
+                scr.update({
+                    panels: target,
+                    width: event.rect.width,
+                    height: event.rect.height
+                })
+
+                // translate when resizing from top or left edges
+                x += event.deltaRect.left;
+                y += event.deltaRect.top;
+
+                target.style.webkitTransform = target.style.transform =
+                    'translate(' + x + 'px,' + y + 'px)';
+
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            });
+
+        function dragMoveListener(event) {
+            var target = event.target,
+                // keep the dragged position in the data-x/data-y attributes
+                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            // translate the element
+            target.style.webkitTransform =
+                target.style.transform =
+                'translate(' + x + 'px, ' + y + 'px)';
+
+            // update the posiion attributes
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+        }
+
+        // this is used later in the resizing and gesture demos
+        window.dragMoveListener = dragMoveListener;
+    </script>
+</body>
+
+</html>

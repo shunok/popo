@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Render Delay</title>
+    <style>
+        html,
+        body,
+        #container,
+        #welcome {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            background: #d8d8d8;
+            text-align: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        #welcome {
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            font-size: 2.2em;
+            padding-top: 10%;
+            background: #27282B url('./images/loading-spinning-bubbles.svg') center center no-repeat;
+            background-size: auto 30%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="welcome">
+        PoPo is loading :)
+    </div>
+    <script src="../dist/popo.js"></script>
+    <script src="./libs/jquery.min.js"></script>
+    <script>
+        P.init({
+            container: 'container',
+            layout: [
+                [1, [4, 15, 5]],
+                [11, [
+                    [4, [1, 3, 4, 4]],
+                    [15, [9, 3]],
+                    [5, [2, 2, 4, 4]],
+                ]]
+            ],
+            renderDelay: 3500, //ms
+            lineHeight: {
+                panels: [8],
+                type: 'panel'
+            },
+            onload: function (popo) {
+                $("#welcome").fadeOut();
+                $(popo.panel(8)).html("Click to reload page.").click(function() {
+                    location.reload();
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

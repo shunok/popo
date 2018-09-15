@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Visual example of average distribution data</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            font-family: 'Lucida Console', Monaco, monospace;
+            font-weight: 600;
+            background-image: linear-gradient(to bottom, #333 0%, #111 100%);
+            color: #ddd;
+        }
+
+        .progress {
+            position: absolute;
+            height: 60%;
+            top: 20%;
+        }
+    </style>
+    <script src="../dist/popo.js"></script>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        /**
+         * In this case, a simple but very useful data visualization scene is constructed using the uniform grid layout and the DOM width ratio, and the large screen and mobile phone side screen are adapted
+         */
+        var mobileOptions = {
+            rows: 96,
+            layout: {
+                cols: 1,
+                height: 60
+            },
+            scroll: {
+                enable: true,
+                y: true,
+                x: false
+            }
+        };
+
+        var pcOptions = {
+            rows: 12,
+            layout: {
+                cols: 8,
+                rows: 12
+            },
+            gutter: 15,
+        };
+
+        var options = P.Util.merge({
+            enable: true,
+            panel: {
+                enable: true,
+                default: {
+                    headHeight: 30,
+                }
+            },
+            onload: onload,
+        }, P.Browser.mobile ? mobileOptions : pcOptions);
+
+        var s1 = P.init(options).addTo("container");
+
+        function getColor(val) {
+            if (val >= 50 && val < 85) {
+                return '#666666';
+            } else if (val < 50) {
+                return '#ee3300';
+            } else {
+                return '#03aa30'
+            }
+        }
+
+        function onload(popo) {
+            // The elements object includes pannel, wrap, center, head, right, left, foot and id
+            popo.each(function (elements) {
+
+                // Generate progress data
+                var val = Math.round(Math.random() * 70 + 30);
+
+                // Set Title
+                elements.head.innerText = elements.id + "#  " + val + "%";
+
+                // Create Progress dom
+                P.DomUtil.create('div', 'progress', {
+                    width: val + "%",
+                    backgroundColor: getColor(val),
+                }, elements.center);
+
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Extend Panel</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Console', Monaco, monospace;
+            background: #e2e2e2;
+        }
+
+        .popo-panel {
+            text-align: center;
+            border: 2px solid #666;            
+        }
+
+        .popo-panel:first-child {
+            background-color: #88BFF5;
+        }
+
+        .popo-panel:nth-child(2) {
+            background-color: #A7F8A5;
+        }
+    </style>
+    <script src="../dist/popo.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div data-popo="1" title="Fixed"></div>
+        <div data-popo="2" title="Responsive"></div>
+    </div>
+    <script>
+        var scr = P.init({
+            container: "container",
+            dev: {
+                enable: true,
+                splitline: {
+                    show: true,
+                    lineSize: .5,
+                    zIndex: 3,
+                    color: 'rgba(0,0,0,.5)',
+                    fontColor: '#666'
+                }
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'head'
+            },
+            extends: [
+                {
+                    size: {
+                        width: .15,
+                        height: .2,
+                        responsive: false,
+                    },
+                    position: {
+                        left: .2,
+                        top: .1,
+                        responsive: false,
+                    },
+                    layout: {
+                        headHeight: '100%',
+                    },
+                },
+                {
+                    size: {
+                        width: 300,
+                        height: 200,
+                    },
+                    position: {
+                        left: 300,
+                        top: 100,
+                    },
+                    layout: {
+                        headHeight: '100%',
+                    },
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

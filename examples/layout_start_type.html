@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout start type</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container1,
+        #container2 {
+            box-sizing: border-box;
+            width: 50%;
+            height: 100%;
+            padding: 10px;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container1" style="background-color:#369;"></div>
+    <div id="container2" style="background-color:#396;"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+
+        var commonOptions = {
+            layout: [[1, [4, 6, 14]], [11, [[4, [4, 4, 4]], [5, [2, [2, [12, 6, 6]], 4, 4]], [15, [9, [3, [8, 8, 8]]]],]]],
+            dev: {
+                enable: true,
+                panel: {
+                    id: false,
+                    background: "rgba(0,0,66,.3)",
+                    fontColor: 'yellow'
+                },
+            },
+            gutter: 5 
+        };
+
+        P.init(P.merge(commonOptions, {
+            container: 'container1',
+            rows: 12,
+            cols: 24,
+            layoutStartType: 'row',
+        }));
+
+        P.init(P.merge(commonOptions, {
+            container: 'container2',
+            rows: 24,
+            cols: 12,
+            layoutStartType: 'col',
+        }));
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Grid_12_24</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        P.init({
+            container: 'container',
+            rows: 12,
+            cols: 24,
+            dev: {
+                enable: true,
+                guideline: {
+                    show: true,
+                    fontSize: 12
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

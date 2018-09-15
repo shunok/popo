@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .popo-panel {
+            text-align: center;
+            background-color: #ddd;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        var s = P.init({
+            container: 'container',
+            layout: [[1], [11, [[4, [4, 4, 4]], [4,[2,2,2,2,4]], 4, 4, 8]]],
+            dev: {
+                enable: true,
+                panel: {
+                    // show: false
+                },
+                guideline: {
+                    show: true,
+                    identifier: false,
+                },
+                splitline: {
+                    // show: true,
+                }
+            },
+            panel: {
+                enable: true,
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'panel'
+            },
+            // onload: function (popo) {
+            //     popo.each(function (elements) {
+            //         elements.panel.innerHTML = elements.id;
+            //     });
+            // }
+        });
+    </script>
+</body>
+
+</html>

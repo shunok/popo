@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./libs/leaflet/leaflet.css">
+    <title>Map</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: arial, 'Microsoft Yahei';
+        }
+
+        #container {
+            background-image: linear-gradient(to bottom, #030340, #111111)
+        }
+
+        .leaflet-container {
+            background: transparent;
+        }
+
+        div[data-popo-role=panel] {
+            border-radius: 3px;
+            border: 1px solid #09488a;
+            box-shadow: 0 0 25px 2px #073069 inset;
+            border-top: 1px solid #49a9ee;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 66, .6), rgba(0, 0, 0, .8));
+        }
+
+        div[data-popo-role=head] {
+            color: white;
+            text-align: left;
+            text-indent: 1em;
+            font-size: 1.5em;
+        }
+
+
+        @-webkit-keyframes masked-animation {
+            0% {
+                background-position: 0 0
+            }
+            to {
+                background-position: -100% 0
+            }
+        }
+
+        .se-title div[data-popo-role=head] {
+            font-size: 3em;
+            color: #49a9ee;
+            text-align: center;
+            text-indent: 0;
+            background-image: -webkit-linear-gradient(left, #cddc39, #ff9800 25%, #cddc39 50%, #ff9800 75%, #cddc39)!important;
+            -webkit-text-fill-color: transparent!important;
+            -webkit-background-clip: text!important;
+            -webkit-background-size: 200% 100%!important;
+            -webkit-animation: masked-animation 2s infinite linear!important;
+        }
+
+        .mobiletitle div[data-popo-role=head] {
+            font-size: 2em;
+            white-space: nowrap;
+            border-bottom: 1px solid #49a9ee;
+        }
+
+        .select-ly {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 80px;
+            overflow: auto;
+            z-index: 100;
+            cursor: pointer;
+        }
+    </style>
+    <script src="../dist/popo.js"></script>
+</head>
+
+<body>
+    <div class="select-ly">
+        <button class="btn btn-default" onclick="switchMap(1)">Map A</button>
+        <button class="btn btn-default" onclick="switchMap(2)">Map B</button>
+    </div>
+    <div id="container">
+        <div data-popo="caption" title="PoPo Data Visualization" class="se-title"></div>
+        <div data-popo="chart1" title="Chart 1"></div>
+        <div data-popo="chart2" title="Chart 2"></div>
+        <div data-popo="chart3" title="Chart 3"></div>
+        <div data-popo="chart4" title="Chart 4"></div>
+        <div data-popo="chart5" title="Chart 5"></div>
+        <div data-popo="chart6" title="Chart 6"></div>
+        <div data-popo="chart7" title="Chart 7"></div>
+        <div data-popo="chart8" title="Chart 8"></div>
+    </div>
+    <script src="./libs/leaflet/leaflet.js"></script>
+    <script src="./libs/leaflet/leaflet-tilelayer-wmts.js"></script>
+    <script src="./libs/leaflet/leaflet-provider.js"></script>
+    <script src="./libs/echarts.min.js"></script>
+    <script src="./echarts/1.js"></script>
+    <script src="./echarts/2.js"></script>
+    <script src="./echarts/3.js"></script>
+    <script src="./echarts/4.js"></script>
+    <script src="./echarts/5.js"></script>
+    <script src="./echarts/6.js"></script>
+    <script src="./echarts/7.js"></script>
+    <script src="./echarts/8.js"></script>
+    <script>
+        var datas = [
+            { name: 'chart1', data: echartsOptions1 },
+            { name: 'chart2', data: echartsOptions2 },
+            { name: 'chart3', data: echartsOptions3 },
+            { name: 'chart4', data: echartsOptions4 },
+            { name: 'chart5', data: echartsOptions5 },
+            { name: 'chart6', data: echartsOptions6 },
+            { name: 'chart7', data: echartsOptions7 },
+            { name: 'chart8', data: echartsOptions8 },
+        ];
+
+        var alias1 = [
+            { name: "caption", id: 4 },
+            { name: "chart1", id: 1 },
+            { name: "chart2", id: 2 },
+            { name: "chart3", id: 3 },
+            { name: "chart4", id: 6 },
+            { name: "chart5", id: 7 },
+            { name: "chart6", id: 8 },
+            { name: "chart7", id: 9 },
+            { name: "chinamap", id: 5 }
+        ];
+
+        var alias2 = [
+            { name: "caption", id: 4 },
+            { name: "chart1", id: 7 },
+            { name: "chart2", id: 6 },
+            { name: "chart3", id: 8 },
+            { name: "chart4", id: 5 },
+            { name: "chart4", id: 9 },
+            { name: "chart5", id: 1 },
+            { name: "chart6", id: 2 },
+            { name: "chart7", id: 3 },
+            { name: "chinamap", id: 9 }
+        ];
+
+        var baseOption = {
+            container: 'container',
+            layoutStartType: 'col',
+            gutter: 15,
+            drag: false,
+            layout: [
+                [4, [4, 4, 4]],
+                [16, [1, 7, 4]],
+                [4, [3, 3, 6]],
+            ],
+            panel: {
+                enable: true,
+                default: {
+                    gutter: 10,
+                    headHeight: 40,
+                },
+                custom: [{
+                    panels: 4,
+                    headHeight: '100%'
+                }, {
+                    panels: [5, 6],
+                    gutter: 0
+                }]
+            },
+            dev: {
+                enable: true,
+                panel: {
+                    show: true,
+                    fontColor: 'yellowgreen'
+                }
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'head'
+            },
+            onload: onload,
+            update: update,
+        };
+
+        var options1 = P.Util.merge(baseOption, {
+            alias: alias1,
+        });
+
+        var options2 = P.Util.merge(baseOption, {
+            alias: alias2,
+        });
+
+        var s1 = P.init(options1);
+
+        var currentType = 1;
+
+
+        function update(popo) {
+            popo.updateEcharts();
+        }
+
+        function onload(popo) {
+            popo.getAliasName().forEach(function (name) {
+                var chartData = P.Util.getObjectFromArray(datas, 'name', name);
+                var target = popo.center(name);
+                if (chartData && target) {
+                    echarts.init(target).setOption(chartData.data);
+                }
+            });
+
+            // The map will be displayed on mobile.
+            initMap(popo.center('chinamap'))
+        }
+
+        function initMap(dom) {
+            if (!dom) return;
+            var map = L.map(dom, {
+                center: [33.42041015, 105.62255],
+                zoom: 5,
+                crs: L.CRS.EPSG4326,
+                attributionControl: false,
+                zoomControl: false
+            });
+
+
+            map.addLayer(new L.TileLayer.WMTS('http://t0.tianditu.com/img_c/wmts', {
+                tileSize: 256,
+                layer: 'img',
+                style: "default",
+                tilematrixSet: "c",
+                format: "tile",
+                opacity: 1
+            }));
+
+            map.addLayer(new L.TileLayer.WMTS('http://t0.tianditu.com/eia_c/wmts', {
+                tileSize: 256,
+                layer: 'eia',
+                style: "default",
+                tilematrixSet: "c",
+                format: "tile",
+            }));
+        }
+
+        function switchMap(type) {
+            if (currentType === type) return;
+            if (s1) {
+                s1.remove();
+                s1 = P.init(P.Util.merge(baseOption, {
+                    alias: type === 1 ? alias1 : alias2,
+                }));
+                currentType = type;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dev Splitline 1</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: arial, 'Microsoft Yahei';
+        }
+
+        #container {
+            background-image: linear-gradient(to bottom, #030340, #111111);
+        }
+
+        .popo-panel {
+            border-radius: 3px;
+            border: 1px solid #09488a;
+            box-shadow: 0 0 25px 2px #073069 inset;
+            border-top: 1px solid #49a9ee;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 66, .6), rgba(0, 0, 0, .8));
+        }
+
+
+    </style>
+    <script src="../dist/popo.js"></script>
+
+</head>
+
+<body>
+
+    <div id="container"></div>
+    <script>
+        P.init({
+            container: 'container',
+            layout: [
+                [4, [4, 4, 4]],
+                [16, [1, 7, 4]],
+                [4, [3, 3, 6]],
+            ],
+            layoutStartType: 'col',
+            dev: {
+                enable: true,
+                panel: {
+                    show: false,
+                },
+                splitline: {
+                    show: true,
+                    lineSize: 1,
+                    width: 100,
+                    height: 100,
+                    color: 'rgba(255,255,0,.8)',
+                    zIndex: 100,
+                    identifier: true,
+                    fontColor: 'rgba(255,255,0,.8)'
+                }
+            },
+            panel: {
+                enable: true,
+            },
+        });
+
+
+
+    </script>
+</body>
+
+</html>

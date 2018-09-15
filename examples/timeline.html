@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoPo Timeline</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 100%;
+            font-family: arial, 'Microsoft Yahei';
+            background-color: #E9F0F5;
+            box-sizing: border-box;
+            min-width: 700px;
+        }
+
+        .popo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: calc(50% - 2px);
+            height: 100%;
+            width: 4px;
+            background: #d7e4ed;
+        }
+
+        .popo-center {
+            text-align: center;
+        }
+
+        .popo-center img {
+            width: 50%;
+            min-width: 60px;
+            max-width: 100px;
+            height: auto;
+            border: 5px solid white;
+            display: inline-block;
+            border-radius: 50%;
+            box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, .2);
+        }
+
+        .content-sign {
+            height: 100%;
+            width: calc(100% - 20px);
+            box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, .15);
+            position: relative;
+            border-radius: 5px;
+            background: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            text-overflow: ellipsis;
+        }
+
+        .content-sign::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            height: 0;
+            width: 0;
+            border: 7px solid transparent;
+            border-right: 7px solid white;
+        }
+
+        .content-sign-left::before {
+            left: 100%;
+            border-color: transparent;
+            border-left-color: white;
+        }
+
+        .content-sign-right::before {
+            right: 100%;
+        }
+
+        .content-sign div {
+            height: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .content-sign h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .time-sign {
+            font-size: 2em;
+            font-weight: 500;
+            padding-top: 1%;
+            font-style: italic;
+            color: #A5B2B9;
+        }
+
+        .right-time {
+            text-align: left;
+        }
+
+        .left-time {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        var timelines = [];
+        for (var i = 0; i < 8; i++) {
+            timelines.push({
+                date: 2011 + i,
+                title: 'Mussum ipsum cacilds',
+                img: './images/jonsnow2.jpg',
+                content: 'Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.'
+            })
+        }
+
+        P.init({
+            container: 'container',
+            rows: timelines.length,
+            layout: {
+                cols: 1,
+                rows: timelines.length,
+                height: 240,
+            },
+            panel: {
+                enable: true,
+                default: {
+                    rightWidth: "42%",
+                    leftWidth: "42%"
+                }
+            },
+            gutter: 80,
+            onload: function (popo) {
+                var flag = true;
+                popo.each(function (elements) {
+                    var id = elements.id,
+                        left = elements.left,
+                        right = elements.right,
+                        center = elements.center,
+                        data = timelines[id - 1];
+                    content = flag ? left : right,
+                        time = !flag ? left : right;
+
+                    // Html
+                    center.innerHTML = "<img src='" + data.img + "' />";
+
+                    P.DomUtil.addClass(content, 'content-sign ' + (flag ? 'content-sign-left' : 'content-sign-right'));
+                    content.innerHTML = "<div><h2>" + data.title + "</h2><p>" + data.content + "</p></div>";
+
+                    P.DomUtil.addClass(time, 'time-sign ' + (!flag ? 'left-time' : 'right-time'));
+                    time.innerHTML = data.date;
+
+                    // Reverse left and right.
+                    flag = !flag;
+                });
+
+            }
+        });
+    </script>
+</body>
+
+</html>

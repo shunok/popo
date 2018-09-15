@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FullId</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            background: rgba(0, 0, 0, .3);
+            border: 1px solid #ddd;
+        }
+
+        div[data-popo-role=center] {
+            font-size: 6em;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+    </div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: [[3, [4, 6, 14]], [9, [[10, [6, 6]], 14]]],
+            fullId: 6,
+            panel: {
+                enable: true,
+            },
+            style: {
+                custom: [{
+                    panels: 6,
+                    panel: {
+                        background: "yellowgreen",
+                    }
+                }]
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'center'
+            },
+            onload: function (popo) {
+                popo.each(function (elements) {
+                    var content = elements.center;
+                    content.innerText = elements.id;
+                    if (elements.id === popo.fullId) {
+                        content.style.fontSize = '20em'
+                        content.innerText = 'Full ' + elements.id;
+                    }
+                });
+            }
+        })
+    </script>
+</body>
+
+</html>

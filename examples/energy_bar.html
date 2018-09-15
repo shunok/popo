@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Energy Bar</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #000;
+        }
+
+        #container {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            font-family: Arial, Helvetica, 'Microsoft Yahei';
+            user-select: none;
+            -ms-user-select: none;
+        }
+
+        .colgrid .popo-panel {
+            border: 1px solid #03C421;
+            /* background-color: #06350C;*/
+        }
+
+        .bar {
+            color: #ddd;
+            text-align: center;
+        }
+
+        .bar .popo-panel {
+            border: none;
+            /* background-color: transparent; */
+        }
+
+        .normal {
+            background: #03C421;
+        }
+
+        .alarm {
+            background: #F74F25;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        var colGrids = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            rowGrids = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        var po = P.init({
+            container: 'container',
+            layoutStartType: 'col',
+            cols: colGrids.length,
+            layout: colGrids,
+            style: {
+                container: 'colgrid'
+            },
+            onload: function (popo) {
+                var bars = [];
+                popo.each(function (elements) {
+                    bars.push(P.init({
+                        container: elements.panel,
+                        rows: rowGrids.length,
+                        layout: rowGrids,
+                        gutter: 5,
+                        padding: 0,
+                        onload: function (_popo) {
+                            var head = _popo.panel(1);
+                            head.innerHTML = '# ' + elements.id;
+                            P.DomUtil.css(head, {
+                                lineHeight: _popo.$height(1) + 'px'
+                            })
+                        }
+                    }));
+                });
+
+                function getIds(n) {
+                    return rowGrids.map(function (item, index) {
+                        return index + 1;
+                    }).filter(function (item) {
+                        return item >= n;
+                    });
+                }
+
+                var now = new Date();
+
+                function animate() {
+                    if (now.getSeconds() != new Date().getSeconds()) {
+                        now = new Date();
+                        bars.forEach(function (bar) {
+                            var n = Math.round(Math.random() * rowGrids.length + 1);
+                            var panels = getIds(n);
+                            bar.setStyle({
+                                container: 'bar',
+                                custom: [{
+                                    panels: panels,
+                                    panel: panels.length > 10 ? 'normal' : 'alarm'
+                                }]
+                            }, true);
+                        });
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Focus</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .popo-panel {
+            background: #e2e2e2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            width: 1920 * 2,
+            height: 1080 * 2,
+            cols: 24,
+            rows: 24,
+            focus: {
+                id: 156,
+                offsetX: -10,
+                offsetY: -10
+            },
+            layout: {
+                cols: 48,
+                rows: 24
+            },
+            dev: {
+                enable: true,
+            },
+            scroll: {
+                x: true,
+                y: true
+            },
+            style: {
+                custom: [{
+                    panels: [156],
+                    panel: {
+                        border: '2px solid red'
+                    }
+                }]
+            },
+        })
+    
+    </script>
+</body>
+
+</html>

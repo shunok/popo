@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout Structure</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            text-align: center;
+            font-family: arial, 'Microsoft Yahei';
+            font-size: 2em;       
+        }
+        div[data-popo-role=head], div[data-popo-role=left], div[data-popo-role=right], div[data-popo-role=center], div[data-popo-role=foot] {
+            background: #e2e2e2;
+            
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div data-popo="1">
+            <div data-popo-target="head">
+                Head
+            </div>
+            <div data-popo-target="left">
+                Left
+            </div>
+            <div data-popo-target="right">
+                Right
+            </div>
+            <div data-popo-target="center">
+                Center
+            </div>
+            <div data-popo-target="foot">
+                Foot
+            </div>
+        </div>
+    </div>
+    <script src="../dist/popo.js "></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: 'whole',
+            panel: {
+                enable: true,
+                default: {
+                    headHeight: 60,
+                    footHeight: "20%",
+                    leftWidth: "20%",
+                    rightWidth: "20%",
+                    gutter: 10
+                }
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'all'
+            }
+        })
+    </script>
+</body>
+
+</html>

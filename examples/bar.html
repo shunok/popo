@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PoPo Bar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            font-family: Arial, Helvetica, 'Microsoft Yahei';
+            user-select: none;
+            -ms-user-select: none;
+        }
+
+        div[data-popo-role=foot] {
+            background: #3638B4;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <script type="text/javascript">
+        function getMax(arr) {
+            var max = 0;
+            arr.forEach(function (d) { max = Math.max(max, d); });
+            return Math.ceil(max / 100) * 100;
+        }
+
+        function getColGrids(arr) {
+            return arr.map(function (item) {
+                return 1;
+            })
+        }
+
+        function generatePanel(arr) {
+            var max = getMax(arr);
+            return arr.map(function (a, index) {
+                return {
+                    panels: index + 1,
+                    footHeight: a * 100 / max + '%'
+                }
+            });
+        }
+
+        var data = [123, 333, 56, 88, 236, 212, 92, 48, 168, 36, 58, 112, 193, 56],
+            layout = getColGrids(data),
+            customPanel = generatePanel(data);
+
+        var po = P.init({
+            container: 'container',
+            layoutStartType: 'col',
+            cols: layout.length,
+            layout: layout,
+            gutter: 50,
+            panel: {
+                enable: true,
+                custom: customPanel
+            },
+            dev: {
+                enable: true,
+                panel: {
+                    show: false,
+                },
+                guideline: {
+                    show: true,
+                    identifier: false,
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

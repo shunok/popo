@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Update Interval</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        div[data-popo-role=panel] {
+            background: #e2e2e2;
+            text-align: center;
+            font-size: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div data-popo="1">
+            <div data-popo-target="center">Try resize window. update interval 1000 ms</div>
+        </div>
+    </div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: 'whole',
+            updateInterval: 1000,
+            lineHeight: {
+                panels: 'all',
+                type: 'center'
+            },
+            panel: {
+                enable: true,
+            }
+        })
+    
+    </script>
+</body>
+
+</html>

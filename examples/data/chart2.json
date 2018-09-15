@@ -1,0 +1,207 @@
+{
+    "color": [
+        "#108ee9",
+        "#7ec2f3",
+        "#3dbd7d",
+        "#ffce3d",
+        "#76cdd3"
+    ],
+    "textStyle": {
+        "color": "#fff"
+    },
+    "tooltip": {
+        "trigger": "axis",
+        "axisPointer": {
+            "type": "shadow"
+        }
+    },
+    "legend": {
+        "data": [
+            "A",
+            "B",
+            "C"
+        ],
+        "textStyle": {
+            "color": "#fff"
+        }
+    },
+    "grid": {
+        "left": "3%",
+        "right": "4%",
+        "bottom": "3%",
+        "containLabel": true
+    },
+    "xAxis": [
+        {
+            "type": "category",
+            "data": [
+                "W1",
+                "W2",
+                "W3",
+                "W4",
+                "W5",
+                "W6",
+                "W7"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "type": "value",
+            "splitLine": {
+                "lineStyle": {
+                    "opacity": 0.1
+                }
+            },
+            "axisLabel": {
+                "textStyle": {
+                    "color": "white"
+                }
+            }
+        }
+    ],
+    "series": [
+        {
+            "name": "A",
+            "type": "bar",
+            "data": [
+                320,
+                332,
+                301,
+                334,
+                390,
+                330,
+                320
+            ]
+        },
+        {
+            "name": "B",
+            "type": "bar",
+            "stack": "ads",
+            "data": [
+                120,
+                132,
+                101,
+                134,
+                90,
+                230,
+                210
+            ]
+        },
+        {
+            "name": "C",
+            "type": "bar",
+            "stack": "ads",
+            "data": [
+                220,
+                182,
+                191,
+                234,
+                290,
+                330,
+                310
+            ]
+        },
+        {
+            "name": "D",
+            "type": "bar",
+            "stack": "ads",
+            "data": [
+                150,
+                232,
+                201,
+                154,
+                190,
+                330,
+                410
+            ]
+        },
+        {
+            "name": "E",
+            "type": "bar",
+            "data": [
+                862,
+                1018,
+                964,
+                1026,
+                1679,
+                1600,
+                1570
+            ],
+            "markLine": {
+                "lineStyle": {
+                    "normal": {
+                        "type": "dashed"
+                    }
+                },
+                "data": [
+                    [
+                        {
+                            "type": "min"
+                        },
+                        {
+                            "type": "max"
+                        }
+                    ]
+                ]
+            }
+        },
+        {
+            "name": "Baidu",
+            "type": "bar",
+            "barWidth": 5,
+            "stack": "E",
+            "data": [
+                620,
+                732,
+                701,
+                734,
+                1090,
+                1130,
+                1120
+            ]
+        },
+        {
+            "name": "Google",
+            "type": "bar",
+            "stack": "E",
+            "data": [
+                120,
+                132,
+                101,
+                134,
+                290,
+                230,
+                220
+            ]
+        },
+        {
+            "name": "Bing",
+            "type": "bar",
+            "stack": "E",
+            "data": [
+                60,
+                72,
+                71,
+                74,
+                190,
+                130,
+                110
+            ]
+        },
+        {
+            "name": "Other",
+            "type": "bar",
+            "stack": "E",
+            "data": [
+                62,
+                82,
+                91,
+                84,
+                109,
+                110,
+                120
+            ]
+        }
+    ]
+}

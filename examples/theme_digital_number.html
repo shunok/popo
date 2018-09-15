@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Number Animate</title>
+    <script src="../dist/popo.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #container {
+            width: 90%;
+            height: 400px;
+            position: absolute;
+            top: calc(50% - 200px);
+            left: 5%;
+        }
+
+        .digital-theme-1 {
+            background: url('./images/jonsnow2.jpg') center center repeat-x;
+            background-size: auto 100%;
+            border-radius: 15%;
+        }
+
+        .digital-theme-1:nth-child(1) {
+            background: url('./images/dm.jpg') center center repeat-x;
+            background-size: auto 100%;
+        }
+
+        .digital-theme-2 {
+            background: url('./images/1.svg') center center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .digital-theme-3 {
+            background-color: #5A5C5C;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav>
+        <button onclick="switchThemeStyle(1)">Jonsnow && Dragon MM</button>
+        <button onclick="switchThemeStyle(2)">Emoji</button>
+        <button onclick="switchThemeStyle(3)">Color</button>
+    </nav>
+    <div id='container'></div>
+    <script type="text/javascript">
+        // Define 0-9 number matrix width 7 rows and 4 cols.
+        var numbers = [
+            [1, 2, 3, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21, 24, 25, 26, 27, 28],
+            [2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27],
+            [1, 2, 3, 4, 8, 12, 13, 14, 15, 16, 17, 21, 25, 26, 27, 28],
+            [1, 2, 3, 4, 8, 12, 13, 14, 15, 16, 20, 24, 25, 26, 27, 28],
+            [1, 3, 5, 7, 9, 11, 13, 14, 15, 16, 19, 23, 27],
+            [1, 2, 3, 4, 5, 9, 13, 14, 15, 16, 20, 24, 25, 26, 27, 28],
+            [1, 2, 3, 4, 5, 9, 13, 14, 15, 16, 17, 20, 21, 24, 25, 26, 27, 28],
+            [1, 2, 3, 4, 8, 12, 16, 20, 24, 28],
+            [1, 2, 3, 4, 5, 8, 9, 12, 13, 14, 15, 16, 17, 20, 21, 24, 25, 26, 27, 28],
+            [1, 2, 3, 4, 5, 8, 9, 12, 13, 14, 15, 16, 20, 24, 25, 26, 27, 28]
+        ];
+
+        var themeClass = 'digital-theme-3';
+
+        function switchThemeStyle(no) {
+            themeClass = 'digital-theme-' + no;
+        }
+
+        // Initialize a grid.
+        var parentPoPo = P.init({
+            container: 'container',
+            rows: 12,
+            cols: 49,
+            layout: [[12, [7, 1, 7, 2, 7, 1, 7, 2, 7, 1, 7]]],
+            gutter: 0,
+            dev: {
+                enable: true,
+                panel: {
+                    show: false,
+                },
+                guideline: {
+                    show: true,
+                    identifier: false,
+                }
+            },
+            onload: function (popo) {
+                // Initialize time number panel.
+                var numbersGrid = [1, 3, 5, 7, 9, 11].map(function (id) {
+                    return P.init({ rows: 7, cols: 4, gutter: 1, layout: {}, }).addTo(popo.panel(id));
+                });
+
+                // Initialize dot panel
+                var dotsGrid = [4, 8].map(function (id) {
+                    return P.init({
+                        rows: 10,
+                        cols: 1,
+                        layout: {},
+                        panel: {
+                            enable: true,
+                            default: {
+                                leftWidth: "25%",
+                                rightWidth: "25%"
+                            }
+                        }
+                    }).addTo(popo.panel(id));
+                });
+
+                // Get time number
+                function getTimeNumber(time) {
+                    var _time = (time + '').split('').map(function (i) { return Number(i) });
+                    return _time.length == 1 ? [0, _time[0]] : _time;
+                }
+
+                // Update time number
+                function updateClockNumber(index, num) {
+                    var ids = numbers[num];
+                    numbersGrid[index].setStyle({ custom: [{ panels: ids, panel: themeClass }] }, true);
+                }
+
+                // Get now time.
+                var now = new Date();
+
+                // show ro hide dot.
+                var dotFlag = true;
+                function updateDot() {
+                    dotsGrid.forEach(function (grid) {
+                        if (dotFlag) {
+                            grid.setStyle({ custom: [{ panels: [3, 8], center: themeClass}] }, true)
+                        } else {
+                            grid.removeStyle();
+                        }
+                    });
+                    dotFlag = !dotFlag;
+                }
+
+                // Update once per second.
+                function updateClock() {
+                    if (now.getSeconds() != new Date().getSeconds()) {
+                        now = new Date();
+                        var hour = getTimeNumber(now.getHours()),
+                            minute = getTimeNumber(now.getMinutes()),
+                            second = getTimeNumber(now.getSeconds());
+                        updateClockNumber(0, hour[0]);
+                        updateClockNumber(1, hour[1]);
+                        updateClockNumber(2, minute[0]);
+                        updateClockNumber(3, minute[1]);
+                        updateClockNumber(4, second[0]);
+                        updateClockNumber(5, second[1]);
+                        updateDot();
+                    }
+                    requestAnimationFrame(updateClock)
+                }
+
+                updateClock();
+
+            }
+        });
+    </script>
+</body>
+
+</html>

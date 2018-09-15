@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bootstrap</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: arial, 'Microsoft Yahei';
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+    </div>
+    <script src="../dist/popo.js"></script>
+    <script src="./libs/jquery.min.js"></script>
+    <script src="./libs/handlebars.min.js"></script>
+    <script id="entry-template" type="text/x-handlebars-template">
+        {{#each data}}
+        <div data-popo="{{id}}">
+            <div data-popo-target="center">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{title}}-Bootstrap Panel {{id}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default">Left</button>
+                            <button type="button" class="btn btn-default">Middle</button>
+                            <button type="button" class="btn btn-default">Right</button>
+                        </div>
+                        <br><br>
+                        <p>{{body}}</p>
+                        <p><a class="btn btn-primary btn-mg" href="#" role="button">Primary Button</a>                            <a class="btn btn-success btn-mg" href="#" role="button">Success Button</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script>
+        // Handlebars template
+        var popos = [];
+        for (var i = 0; i < 16; i++) {
+            popos.push({ id: (i + 1), title: "PoPo", body: "This is bootstrap integration example" });
+        }
+        var template = Handlebars.compile($("#entry-template").html());
+        $("#container").append(template({ data: popos }))
+
+
+        // PoPo init
+        var scr = P.init({
+            container: 'container',
+            rows: 4,
+            layout: {
+                cols: 4,
+                height: 250
+            },
+            scroll: {
+                y: true,
+            },
+            panel: {
+                enable: true,
+                default: {
+                    gutter: 5,
+                }
+            },
+            lineHeight: [{
+                panels: 'all',
+                type: 'head',
+            }]
+        });
+    </script>
+</body>
+
+</html>

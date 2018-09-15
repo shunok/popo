@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout start type</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container1,
+        #container2 {
+            width: 50%;
+            height: 100%;
+            float: left;
+            color: white;
+        }
+
+        div[data-popo-role=head] {
+            background: rgba(0, 0, 0, .3);
+            text-align: center;
+        }
+
+        .popo-panel {
+            overflow: hidden;
+        }
+
+        .popo-text {
+            font-size: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container1" style="background-color:#369;"></div>
+    <div id="container2" style="background-color:#396;"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var commonOptions = {
+            panel: {
+                enable: true,
+                default: {
+                    headHeight: 40,
+                    gutter: 15,
+                }
+            },
+            layout: {
+                cols: 1,
+                rows: 2
+            },
+            style: {
+                custom: [{
+                    panels: 2,
+                    center: 'popo-text'
+                }]
+            },
+            dev: {
+                enable: true,
+                panel: {
+                    id: false,
+                    background: "rgba(0,0,66,.3)",
+                    fontColor: 'yellow'
+                },
+                splitline: {
+                    show: true,
+                    lineSize: 0.5,
+                    color: 'rgba(255,255,255,.4)',
+                    fontColor: 'rgba(255,255,255,.4)'
+                }
+            },
+            lineHeight: {
+                panels: 'all',
+                type: 'head'
+            },
+            onload: function (popo) {
+                var scale = popo.options.fontScale;
+                popo.each(function (elements) {
+                    elements.head.innerHTML = 'FontScale : ' + scale;
+                    elements.center.innerHTML = "China, officially the People's Republic of China (PRC), is a unitary sovereign state in East Asia and the world's most populous country, with a population of around 1.404 billion.[10] Covering approximately 9.6 million square kilometres (3.7 million square miles), it is the world's second-largest state by land area[16] and third- or fourth-largest by total area.[j] Governed by the Communist Party of China, it exercises jurisdiction over 22 provinces, five autonomous regions, four direct-controlled municipalities (Beijing, Tianjin, Shanghai, and Chongqing) and the Special Administrative Regions Hong Kong and Macau, also claiming sovereignty over Taiwan. China is a great power and a major regional power within Asia, and has been characterized as a potential superpower.[17][18]";
+                });
+            }
+        };
+
+        P.init(P.Util.merge(commonOptions, { fontScale: 1 })).addTo('container1');
+        P.init(P.Util.merge(commonOptions, { fontScale: 1.5 })).addTo('container2');
+        
+    </script>
+</body>
+
+</html>

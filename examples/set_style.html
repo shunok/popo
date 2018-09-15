@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">    
+    <title>Theme Set</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .popo-info {
+            font-size: 2em!important;
+        }
+
+        div[data-popo-role=panel] {
+            background: #e2e2e2;
+        }
+
+        .popo-theme div[data-popo-role=panel]:nth-child(1) {
+            background: #F16565;
+        }
+
+        .popo-custom-1 {
+            background: #587DF3;
+        }
+
+        .popo-custom-2 {
+            background: #43D609;
+        }
+
+        .select-ly {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 80px;
+            overflow: auto;
+            z-index: 999;
+            cursor: pointer;
+        }
+        .select-ly button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="select-ly">
+        <button class="btn btn-success" onclick="switchTheme(true)">Theme A</button>
+        <button class="btn btn-success" onclick="switchTheme(false)">Theme B</button>
+    </div>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: {
+                cols: 6,
+                rows: 4
+            },
+            dev: {
+                enable: true,
+            },
+        });
+
+        var theme1 = {
+            container: 'popo-theme',
+            custom: [{
+                panels: [4, 6, 3, 10, 13],
+                panel: 'popo-custom-1'
+            }, {
+                panels: [11, 12, 24, 21],
+                panel: {
+                    background: "orange",
+                }
+            }]
+        };
+
+        var theme2 = {
+            custom: [{
+                panels: [1, 2, 3, 9, 15],
+                panel: 'popo-custom-2'
+            }, {
+                panels: [16, 8, 7],
+                panel: {
+                    background: "blue",
+                }
+            }]
+        };
+
+
+        function switchTheme(flag) {
+            if (scr) {
+                scr.setStyle(flag ? theme1 : theme2, true);
+            }
+        }
+    </script>
+</body>
+
+</html>

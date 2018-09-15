@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Two PoPo Screen</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #container1,
+        #container2 {
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container1" style="background-color:#369;"></div>
+    <div id="container2" style="background-color:#396;"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        P.init({
+            container: 'container2',
+            layout: [
+                [6, [1, 2, 6, 3]],
+                [12, [3, 3, 6]],
+                [6, [2, 2, 2, 2, 2, 2]],
+            ],
+            layoutStartType: 'col',
+            dev: {
+                enable: true,
+                panel: {
+                    id: true,
+                    size: true,
+                    background: "rgba(0,0,66,.3)",
+                    fontColor: 'yellow'
+                },
+                guideline: {
+                    show: true,
+                    width: 1,
+                    identifier: true,
+                    color: "#3a6",
+                    fontColor: 'yellow',
+                    zIndex: 0
+                },
+            },
+            gutter: 5,
+        });
+
+
+        P.init({
+            container: 'container1',
+            rows: 16,
+            cols: 24,
+            layout: {
+                cols: 3,
+                rows: 4
+            },
+            panel: {
+                enable: false,
+            },
+            gutter: 5,
+            dev: {
+                enable: true,
+                panel: {
+                    show: true,
+                    id: true,
+                    size: true,
+                    background: "rgba(0,0,66,.3)",
+                    fontColor: 'yellow'
+                },
+                guideline: {
+                    show: true,
+                    identifier: true,
+                    zIndex: 0,
+                    fontColor: 'yellow'
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>

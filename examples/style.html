@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Theme</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .popo-info {
+            font-size: 2em!important;
+        }
+
+        div[data-popo-role=panel] {
+            background: #e2e2e2;
+        }
+
+        .popo-theme div[data-popo-role=panel]:nth-child(1) {
+            background: #F16565;
+        }
+
+        .popo-custom-1 {
+            background: #587DF3;
+        }
+
+        .popo-custom-2 {
+            background: #43D609;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="../dist/popo.js"></script>
+    <script>
+        var scr = P.init({
+            container: 'container',
+            layout: {
+                cols: 6,
+                rows: 4
+            },
+            dev: {
+                enable: true,
+            },
+            style: {
+                container: 'popo-theme',
+                custom: [{
+                    panels: [4, 6],
+                    panel: 'popo-custom-1'
+                }, {
+                    panels: [3, 10, 13],
+                    panel: 'popo-custom-2'
+                }, {
+                    panels: [11, 12, 24, 21],
+                    panel: {
+                        background: "orange",
+                    }
+                }]
+            },
+        })
+    </script>
+</body>
+
+</html>
