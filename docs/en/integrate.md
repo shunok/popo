@@ -63,4 +63,4 @@ The layout structure of PoPo is very suitable for component development, and pro
 </script>
 ```
 
-![Handlebars](_images/integrate.png)
+![Handlebars](../_images/integrate.png)

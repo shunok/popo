@@ -67,4 +67,4 @@ PoPo的布局结构非常适合组件化开发，并为[面板布局](/zh-cn/pan
 
 渲染效果部分截图：
 
-![Handlebars](_images/integrate.png)
+![Handlebars](../_images/integrate.png)

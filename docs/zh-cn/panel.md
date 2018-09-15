@@ -6,7 +6,7 @@
 
 > 启用调试配置即可看到每个面板的`id`，也可以通过实例的`get`方法获取面板的详细信息(含`id`)
 
-![panel_id](_images/id.png)
+![panel_id](../_images/id.png)
 
 ## 面板布局
 
@@ -18,6 +18,6 @@
 
 一个典型的面板布局示意图：
 
-![Panel layout](_images/panel_layout.png)
+![Panel layout](../_images/panel_layout.png)
 
 PoPo在面板布局中引入了`gutter`参数，用于定义相邻面板的间隔，它实际是定义中间区域的`margin`值，默认值为`0`，无间隔。

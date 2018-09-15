@@ -20,8 +20,8 @@ A pure PoPo instance has 9 layers, the panel is on the sixth level, and the crea
 
 - Schematic diagram of hierarchy relations
 
-![layers1](_images/layers2.png)
+![layers1](../_images/layers2.png)
 
 - Hierarchical topological graph
 
-![layers2](_images/layers.png)
+![layers2](../_images/layers.png)

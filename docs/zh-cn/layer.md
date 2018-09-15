@@ -21,8 +21,8 @@
 
 - 层级关系示意图
 
-![layers1](_images/layers2.png)
+![layers1](../_images/layers2.png)
 
 - 层级关系拓朴图
 
-![layers2](_images/layers.png)
+![layers2](../_images/layers.png)

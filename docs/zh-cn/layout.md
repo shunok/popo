@@ -48,7 +48,7 @@
 
 以上栅格布局结构有一个很简单的规律，即先定义行，再定义对应行的列分布，列分布中再定义行，行中再定义列分布……不断嵌套，可以一个用树图表示，如下图所示，这也是**PoPo栅格系统布局的理论模型图**。
 
-![layout tree](_images/layout_tree.png)
+![layout tree](../_images/layout_tree.png)
 
 多维数组可很好地表达上述结构，我们以下面的布局为例：
 ```html
@@ -58,7 +58,7 @@
 </div>
 ```
 假设我们使用 `rows 8, cols 12` 8行12列的栅格系统，我们使用一个二维数组表达它们之间的结构与关系：
-![grid_02](_images/grid_02.png)
+![grid_02](../_images/grid_02.png)
 
 如果再嵌套一层，怎么表示呢？
 ```html
@@ -72,7 +72,7 @@
   <div class="col-md-6"></div>
 </div>
 ```
-![grid_03](_images/grid_03.png)
+![grid_03](../_images/grid_03.png)
 
 可以看到，再嵌套一层同样可以用数组表示，我们可以类似地嵌套多层，每嵌套一层，数组将增加两个维度。
 
@@ -80,7 +80,7 @@
 
 > 最终我们将整个栅格布局的基础构成单元定义为一个二维数组，根据起始类型不同，分两种：
 
-![grid_04](_images/grid_04.png)
+![grid_04](../_images/grid_04.png)
 
 PoPo布局表达式有如下特征：
 
@@ -140,7 +140,7 @@ P.init({
 ```
 
 生成的自由布局效果图：
-![free layout](_images/layout_arr.png)
+![free layout](../_images/layout_arr.png)
 
 ## 均匀布局
 
@@ -161,4 +161,4 @@ P.init({
 ```
 
 生成的均匀布局效果图：
-![free layout](_images/quickstart_01.png)
+![free layout](../_images/quickstart_01.png)

@@ -48,7 +48,7 @@ The actual need to nest more layers to meet the needs of the style and content, 
 
 The above raster layout structure has a very simple law, that is, the first definition of the line, and then define the corresponding row of the column distribution, column distribution and then define the line, the line to define the column distribution ... ... Nesting, you can use a tree , As shown below, This is also the theoretical model of the PoPo grid system layout.
 
-![layout tree](_images/layout_tree.png)
+![layout tree](../_images/layout_tree.png)
 
 Multidimensional array can be a good expression of the above structure, we take the following layout as an example:
 ```html
@@ -58,7 +58,7 @@ Multidimensional array can be a good expression of the above structure, we take 
 </div>
 ```
 Suppose we use `rows 8, cols 12` 8 rows and 12 columns of raster systems, we use a two-dimensional array to express the structure and relationship between them:
-![grid_02](_images/grid_02.png)
+![grid_02](../_images/grid_02.png)
 
 If we continue to nest a layer, how to express it?
 ```html
@@ -72,7 +72,7 @@ If we continue to nest a layer, how to express it?
   <div class="col-md-6"></div>
 </div>
 ```
-![grid_03](_images/grid_03.png)
+![grid_03](../_images/grid_03.png)
 
 You can see that nesting a layer can also be represented by an array, and we can similarly nest multiple layers, each with an array of two dimensions.
 
@@ -80,7 +80,7 @@ You can see that nesting a layer can also be represented by an array, and we can
 
 > Finally, we will be the entire raster layout of the basic structure of the unit is defined as a two-dimensional array, according to the different types of starting, divided into two kinds:
 
-![grid_04](_images/grid_04.png)
+![grid_04](../_images/grid_04.png)
 
 PoPo layout expressions have the following characteristics:
 
@@ -140,7 +140,7 @@ P.init({
 ```
 
 Generate free layout effect:
-![free layout](_images/layout_arr.png)
+![free layout](../_images/layout_arr.png)
 
 ## Uniform layout
 
@@ -161,4 +161,4 @@ P.init({
 ```
 
 Generate uniform layout effect：
-![free layout](_images/quickstart_01.png)
+![free layout](../_images/quickstart_01.png)

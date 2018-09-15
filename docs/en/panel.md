@@ -6,7 +6,7 @@ Free layout and uniform layout of the generated grid layout are called panels.Po
 
 > Enable the debug configuration to see the `id` of each panel, or get the details of the panel via the instance's` get` method (with `id`)
 
-![panel_id](_images/id.png)
+![panel_id](../_images/id.png)
 
 ## Panel Layout
 
@@ -18,6 +18,6 @@ If the panel layout is configured in the PoPo instance initialization option, th
 
 A typical panel layout diagram:
 
-![Panel layout](_images/panel_layout.png)
+![Panel layout](../_images/panel_layout.png)
 
 PoPo introduces the `gutter` parameter in the panel layout to define the spacing of adjacent panels. It actually defines the` margin` value of the middle area, and the default is `0`, without interval.
