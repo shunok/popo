@@ -34,6 +34,9 @@ export default {
     // font scale, only setting for panel size.
     fontScale: 1,
 
+    // html root font-size
+    rem: 1,
+
     // Full screen display of panel
     fullId: 0,
 
@@ -131,7 +134,8 @@ export default {
     zoom: {
         enable: false,
         control: true,
-        scale: 1,
+        auto: true, 
+        scale: 0,
         ratio: 0.1,
         min: 0.1,
         max: 1,
@@ -226,4 +230,6 @@ export default {
      * @default
      */
     alias: null,
+
+    env: 'js', // js, vue
 };

@@ -1,7 +1,8 @@
 import { isDOM, isObject } from '../../utils/util';
 import * as DomEvent from '../../dom/dom_event';
-import { css, getPureStyle } from '../../dom/dom';
+import { css, getPureStyle, addClass, removeClass } from '../../dom/dom';
 import { getScrollPane } from '../core/popo';
+import CT from '../../constant/constant';
 
 export default {
 
@@ -26,7 +27,8 @@ export default {
                 left: scrollLeft,
                 top: scrollTop,
             };
-            css(pane, { cursor: 'move' });            
+            // css(pane, { cursor: 'move' });   
+            addClass(pane, `${CT.NAME}-grabbing`);       
             DomEvent.on(pane, 'mousemove', this._onDragging, this);
             DomEvent.on(pane, 'mouseup', this._onDragend, this);
         }
@@ -58,6 +60,7 @@ export default {
     _onDragend(e) {
         // DomEvent.stop(e);
         DomEvent.off(this._scrollPane, 'mousemove', this._onDragging, this);
+        removeClass(this._scrollPane, `${CT.NAME}-grabbing`); 
     },
     /*eslint-enable */
 
@@ -72,6 +75,7 @@ export default {
             DomEvent.off(pane, 'mousemove', this._onDragging, this);
             DomEvent.off(pane, 'mouseup', this._onDragend, this);
             this._startDrag = null;
+            removeClass(pane, `${CT.NAME}-grab`); 
         }
     },
 
@@ -87,6 +91,7 @@ export default {
             if (isDOM(dragPane)) {
                 this._scrollPane = dragPane;
                 // this.disableDrag();
+                addClass(dragPane, `${CT.NAME}-grab`);  
                 DomEvent.on(dragPane, 'mousedown', this._onDragStart, this);
             }
         }

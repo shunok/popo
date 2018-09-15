@@ -21,8 +21,10 @@ export default {
         responsive: true,
     },
     id: '',
+    className: '',
     zIndex: CT.PANEL_DEFAULT_ZINDEX,
     layout: null,
+    isWidget: false,
 };
 
 //    layout: {

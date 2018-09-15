@@ -1,6 +1,6 @@
 import {
     isNumber, isArray, isDOM, isObject, contain, legalNumber, get, merge, formatMargin,
-    mixins, formatNum, isPercentage, translatePercentage, isEmptyObject, isString,
+    mixins, formatNum, isPercentage, translatePercentage, isEmptyObject, formatNumber, translateNumberToPercentage
 } from '../utils/util';
 import {
     css, getStyle, isHidden, query,
@@ -25,7 +25,6 @@ import {
     _unFull,
     _setStyle,
     _initStyle,
-    updateStyle,
     removeStyle,
     vcToDom,
     updateVCC,
@@ -83,6 +82,10 @@ export default class PoPoInstance {
 
         this._vc = createVc();
 
+        if (options.uuid) {
+            this.uuid = options.uuid;
+        }
+
         if (initLayoutSet(o)) {
             initLayout(o, this._vc);
             if (isDOM(c)) {
@@ -113,6 +116,25 @@ export default class PoPoInstance {
                 gutter: 0,
                 zIndex: CT.PANEL_DEFAULT_ZINDEX,
             }, panel));
+        }
+
+        if (isObject(o.widgets)) {
+            o.widgets.isWidget = true;
+        }
+        if (isArray(o.widgets)) {
+            o.widgets.forEach((w) => {
+                w.isWidget = true;
+            });
+        }
+
+        const el = document.documentElement;
+
+        if (css(el, 'fontSize') === '16px' && o.rem > 1) {
+            const rem = formatNumber(o.rem);
+
+            css(el, {
+                fontSize: isNumber(rem) ? translateNumberToPercentage(rem) : o.rem,
+            });
         }
     }
 
@@ -196,7 +218,10 @@ export default class PoPoInstance {
             }
 
             // Add extends panel
-            loadExtends(vc, o, true);
+            loadExtends(vc, o.extends, o, true);
+
+            // Add widget pannel
+            loadExtends(vc, o.widgets, o, true);
 
             // Set Panel Overflow style.
             setOverflows(vc, o);
@@ -209,7 +234,7 @@ export default class PoPoInstance {
             css(c, { display: 'none' });
 
             // Update style
-            _initStyle(c, vc, zoomContainer, zoomContainer.parentNode, o, this.style);
+            _initStyle(c, vc, zoomContainer, zoomContainer.parentNode, o, p, this.style);
 
             this._render();
         }
@@ -274,7 +299,7 @@ export default class PoPoInstance {
             this._updateSize();
 
             if (o.zoom.enable) {
-                const scale = legalNumber(o.zoom.scale, CT.MIN_ZOOM, CT.MAX_ZOOM);
+                const scale = legalNumber(o.zoom.auto ? Math.min(c.clientHeight / this.height, c.clientWidth / this.width) : o.zoom.scale, CT.MIN_ZOOM, CT.MAX_ZOOM);
 
                 this._initZoomEvent();
                 this.zoom(scale);
@@ -1207,7 +1232,7 @@ export default class PoPoInstance {
             }
             this.style = isUpdate ? merge(this.style, style) : style;
             _initStyle(container, _vc, _zoomContainer,
-                _zoomContainer.parentNode, options, this.style, true);
+                _zoomContainer.parentNode, options, this._pane, this.style, true);
         }
 
         return this;

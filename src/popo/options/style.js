@@ -14,6 +14,7 @@ export default {
     inner: prefix + CT.CONTAINER,
     zoomContainer: prefix + CT.ZOOMCONTAINER,
     zoomPane: prefix + CT.ZOOMPANE,
+    pane: prefix + CT.PANE,
     default: {
         panel: prefix + CT.PANEL,
         panelContainer: prefix + CT.PANEL_CONTAINER,

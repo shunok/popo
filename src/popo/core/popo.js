@@ -23,7 +23,6 @@ export function createPane(o) {
         .setHeight('auto')
         .setStyle({
             padding: str,
-            fontSize: `${o.fontScale}em`,
         })
         .createElement();
 }
@@ -64,13 +63,13 @@ export function addExtend(vc, padding, options, scale, createPanel) {
 
     if (isObject(options)) {
         const panelOption = merge(defaultPanel, options),
-            { position, size, id, zIndex, layout, style } = panelOption,
+            { position, size, id, zIndex, layout, style, isWidget, className } = panelOption,
             node = new Vnode()
                 .setRole(CT.PANEL)
                 .setHeight(multiplyBy(size.height || 0, height))
                 .setWidth(multiplyBy(size.width || 0, width))
-                .setTop(multiplyBy(position.top || 0, height))
-                .setLeft(multiplyBy(position.left || 0, width))
+                .setTop(multiplyBy(position.top || 0, height) - top)
+                .setLeft(multiplyBy(position.left || 0, width) - left)
                 .setStyle({
                     position: 'absolute',
                     zIndex,
@@ -80,6 +79,10 @@ export function addExtend(vc, padding, options, scale, createPanel) {
 
         node[CT.COMPONENT_ID_KEY] = vc.getNewId();
         node.isExtend = true;
+        node.isWidget = isWidget;
+        if (isWidget && className) {
+            node.addClassName(className);
+        }
         node.extendInfo = {
             position: {
                 left: node.left / (position.responsive ? width : 1),
@@ -95,7 +98,7 @@ export function addExtend(vc, padding, options, scale, createPanel) {
         if (layout && isObject(layout) && createPanel) {
             addLayoutToPanel(node, layout, scale);
         }
-        if (style) {
+        if (style && !isWidget) {
             const _style = merge(defaultStyle.default, style);
 
             _setStyle(node, _style.panel, false, true);
@@ -115,9 +118,9 @@ export function addExtend(vc, padding, options, scale, createPanel) {
     return null;
 }
 
-export function loadExtends(vc, o, createPanel) {
-    if (!vc || !o || !o.extends) return;
-    let ext = o.extends;
+export function loadExtends(vc, exts, o, createPanel) {
+    if (!vc || !o) return;
+    let ext = exts;
 
     if (ext && isObject(ext)) {
         ext = [ext];
@@ -660,10 +663,10 @@ export function _setStyle(node, option, isUpdate, overwrite) {
     }
 }
 
-export function _initStyle(c, vc, zoom, zoomParent, o, styleOption, update) {
+export function _initStyle(c, vc, zoom, zoomParent, o, p, styleOption, update) {
     if (!vc || !o) return;
     const style = styleOption || {},
-        { custom, inner, zoomContainer, zoomPane, container } = style,
+        { custom, inner, zoomContainer, zoomPane, pane, container } = style,
         df = style.default;
 
     if (container && update) {
@@ -674,15 +677,20 @@ export function _initStyle(c, vc, zoom, zoomParent, o, styleOption, update) {
         _setStyle(vc, inner);
     }
     if (zoomContainer) {
-        _setStyle(zoom, zoomContainer);
+        _setStyle(zoom, zoomContainer, true);
     }
     if (zoomPane) {
-        _setStyle(zoomParent, zoomPane);
+        _setStyle(zoomParent, zoomPane, true);
+    }
+    if (pane) {
+        _setStyle(p, pane, true);
     }
     if (isObject(df)) {
         vc.children.forEach((panel) => {
-            for (const key in df) {
-                _setStyle(getNodesByPanel(panel)[key], df[key], true);
+            if (!panel.isWidget) {
+                for (const key in df) {
+                    _setStyle(getNodesByPanel(panel)[key], df[key], true);
+                }
             }
         });
     }
@@ -931,6 +939,7 @@ function insertTplDomToVc(target, vnode, type) {
 
 export function loadTemplate(c, vc, o) {
     if (!isDOM(c) || !vc || !isDOM(vc.realDom) || !o) return;
+    const { env } = o;
     eachChild(c, (node) => {
         if (isDOM(node) && node.hasAttribute(CT.POPO)) {
             const id = getRealIds(vc, node.getAttribute(CT.POPO), o.alias),
@@ -942,13 +951,15 @@ export function loadTemplate(c, vc, o) {
                 const els = getNodesByPanel(panel);
 
                 addClass(panel.realDom, cls);
-                eachChild(node, (target) => {
-                    for (const key in els) {
-                        if (key !== 'panel' && els[key]) {
-                            insertTplDomToVc(target, els[key], key);
-                        }
+
+                const children = node.childNodes;
+                for (let i = 0, len = children.length; i < len; i++) {
+                    const target = children[env === 'vue' ? 0 : i];
+                    const __t = attr(target, CT.TARGET);
+                    if (__t && els[__t]) {
+                        insertTplDomToVc(target, els[__t], __t);
                     }
-                });
+                }
 
                 if (!query(node, `[${CT.TARGET}=head]`) && title && els.head
                     && els.head.realDom && !els.head.realDom.hasChildNodes()) {

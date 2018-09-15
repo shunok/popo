@@ -1,7 +1,7 @@
 import {
     isNumber, isArray, legalNumber, trim, isObject, isString, formatNum,
 } from '../../utils/util';
-import { getRect } from '../../dom/dom';
+import { getRect, setStyle } from '../../dom/dom';
 import CT from '../../constant/constant';
 import ERROR_MSG from '../../constant/error';
 import Vnode from '../../dom/vdom/vnode';
@@ -335,7 +335,13 @@ export function updateVnodeSize(vc, sizes, options, container) {
         if (height === 0) {
             container._origionHeight = height = th;
         }
-    }
+    }   
+
+    setStyle(container, {
+        width: `${width}px`,
+        // height: `${height}px`,
+    });
+    // container.setWidth(width).setHeight(height);
 
     width -= paddingLeft;
     height -= paddingTop;

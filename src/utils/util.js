@@ -112,13 +112,20 @@ export function mixins(obj, sourcesArr) {
     return obj;
 }
 
-export function getObjectFromArray(arr, key, value) {
-    return arr.filter((i) => i[key] === value)[0];
+export function getObjectFromArray(arr, key, value, index) {
+    // return arr.filter((i) => i[key] === value)[0];
+    if (!arr || !arr.length || !key) return;
+    for (let i = 0, len = arr.length; i < len; i++) {
+        if (arr[i][key] && arr[i][key] === value) {
+            return index ? i : arr[i];
+        }
+    }
+    return undefined;
 }
 
 export function removeObjectFromArray(arr, key, value) {
     for (let i = 0, len = arr.length; i < len; i++) {
-        if (arr[i][key] === value) {
+        if ((value !== undefined && arr[i][key] === value) || (value === undefined && arr[i] === key)) {
             return arr.splice(i, 1);
         }
     }
@@ -304,8 +311,8 @@ export function getCssSize(size, scale) {
 export function multiplyBy(n, m) {
     n = formatNumber(n);
     m = m || 1;
-    if (n === 0) return n;
-    if (n <= 1) {
+    if (n === 0 || n < 0) return n;
+    if (n <= 1 && n > 0) {
         return m * n;
     }
     if (n > 1) {
@@ -414,4 +421,66 @@ export function formatMargin2(margin, scale) {
         bottom: _getScaleMargin(p[2], scale),
         left: _getScaleMargin(p[3], scale),
     } : null;
+}
+
+export function distinct(arr) {
+    if (isArray(arr)) {
+        const len = arr.length;
+        function loop(index) {
+            if (index >= 1) {
+                if (arr[index] === arr[index - 1]) {
+                    arr.splice(index, 1);
+                }
+                loop(index - 1);
+            }
+        }
+        loop(len - 1);
+    }
+
+    return arr;
+}
+
+export function NullFn() {
+
+}
+
+/*eslint-disable*/
+export function guid() {
+    const s = 'xxxyxxxxxxxxyxxxxxxxxxxyxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+    return s.toLowerCase();
+}
+/*eslint-enabel*/
+
+export function stampUUID(obj) {
+    obj.uuid = obj.uuid || guid();
+
+    return obj.uuid;
+}
+
+// 交换数组顺序
+export const swapArrItems = function (arr, index1, index2) {
+    arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+    return arr;
+};
+
+// 移动数组项到最前面
+export const moveToFirst = function (arr, index) {
+    if (arr.length < 2) return;
+    arr.unshift(arr.splice(index, 1)[0]);
+}
+
+// 移动数组项到最后面
+export const moveToLast = function (arr, index) {
+    if (arr.length < 2) return;
+    arr.push(arr.splice(index, 1)[0]);
+}
+
+export function insertToArr(arr, index, target) {
+    if (isArray(arr)) {
+        arr.splice(index, 0, target);
+    }
 }

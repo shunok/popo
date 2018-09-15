@@ -270,6 +270,7 @@ export function createPublicStyle() {
     const css
         = `\/* PoPo Public Style *\/
     div[${CT.POPO}] {display:none}
+    div[${CT.TARGET}] {width:100%;height:100%;}
     div[${CT.ROLE}], div[${CT.ROLE}]:after,div[${CT.ROLE}]:before{box-sizing: border-box;}
     div[data-popo-role=${CT.PANE}]{transform-origin: 0 0;-ms-transform-origin: 0 0;-webkit-transform-origin: 0 0;}
     div[data-popo-role=${CT.GRID_L_C_R}]{zoom:1;position:relative;}
@@ -282,6 +283,8 @@ export function createPublicStyle() {
     .${CT.EXT_PANE} a, .${CT.EXT_PANE} span{font: bold 18px 'Lucida Console', Monaco, monospace;width:30px;height:30px;text-align:center;display:block;border-bottom:1px solid #bbb;line-height:30px;color:#333;background-color:#ffffff;text-decoration:none;outline:none;}
     .${CT.EXT_PANE} a:hover{background-color:#f2f2f2;}
     .${CT.EXT_PANE} span{font-size:11px;}
+    .${CT.NAME}-grab {cursor:-webkit-grab;cursor:-moz-grab;cursor:grab;}
+    .${CT.NAME}-grabbing {cursor:-webkit-grabbing;cursor:-moz-grabbing;cursor:grabbing;}
     `;
 
     addHStyle(css);

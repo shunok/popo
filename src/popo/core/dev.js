@@ -176,6 +176,7 @@ function createDebugInfo(vc, dev) {
             if (vc.children[i].realDom && background && isString(background)) {
                 css(vc.children[i].realDom, { background });
             }
+            if (vc.children[i].isWidget) continue;
             const span = createPanelInfo(vc.children[i], size, id, position, fontColor, fontSize);
 
             if (span) {

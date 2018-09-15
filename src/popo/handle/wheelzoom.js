@@ -7,10 +7,10 @@ export default {
      * wheel zoom handle
      * @ignore
      */
-    _performZoom() {
+    _performZoom(center) {
         const ratio = this.options.zoom.ratio;
 
-        this.zoom(this.scale + (this._wheelScroll.delta > 0 ? ratio : -ratio));
+        this.zoom(this.scale + (this._wheelScroll.delta > 0 ? ratio : -ratio), center);
     },
 
     /**
@@ -34,7 +34,7 @@ export default {
         clearTimeout(this._wheelScroll.timer);
 
         this._wheelScroll.timer = setTimeout(() => {
-            this._performZoom();
+            this._performZoom({x: e.offsetX, y: e.offsetY});
         }, left);
     },
 
