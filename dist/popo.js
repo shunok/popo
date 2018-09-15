@@ -1,5 +1,5 @@
 /*
- * PoPo 1.0.0, a JS UI library for large screen.
+ * PoPo 1.0.1, a JS UI library for large screen.
  * https://github.com/shunok/PoPo (c) 2017-2018 DaShun
  */
 (function (global, factory) {
@@ -8,7 +8,7 @@
 	(global.PoPo = factory());
 }(this, (function () { 'use strict';
 
-var version = "1.0.0";
+var version = "1.0.1";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -220,15 +220,20 @@ function mixins(obj, sourcesArr) {
     return obj;
 }
 
-function getObjectFromArray(arr, key, value) {
-    return arr.filter(function (i) {
-        return i[key] === value;
-    })[0];
+function getObjectFromArray(arr, key, value, index) {
+    // return arr.filter((i) => i[key] === value)[0];
+    if (!arr || !arr.length || !key) return;
+    for (var i = 0, len = arr.length; i < len; i++) {
+        if (arr[i][key] && arr[i][key] === value) {
+            return index ? i : arr[i];
+        }
+    }
+    return undefined;
 }
 
 function removeObjectFromArray(arr, key, value) {
     for (var i = 0, len = arr.length; i < len; i++) {
-        if (arr[i][key] === value) {
+        if (value !== undefined && arr[i][key] === value || value === undefined && arr[i] === key) {
             return arr.splice(i, 1);
         }
     }
@@ -421,8 +426,8 @@ function getCssSize(size, scale) {
 function multiplyBy(n, m) {
     n = formatNumber(n);
     m = m || 1;
-    if (n === 0) return n;
-    if (n <= 1) {
+    if (n === 0 || n < 0) return n;
+    if (n <= 1 && n > 0) {
         return m * n;
     }
     if (n > 1) {
@@ -535,6 +540,68 @@ function formatMargin2(margin, scale) {
     } : null;
 }
 
+function distinct(arr) {
+    if (isArray(arr)) {
+        var loop = function loop(index) {
+            if (index >= 1) {
+                if (arr[index] === arr[index - 1]) {
+                    arr.splice(index, 1);
+                }
+                loop(index - 1);
+            }
+        };
+
+        var len = arr.length;
+
+        loop(len - 1);
+    }
+
+    return arr;
+}
+
+function NullFn() {}
+
+/*eslint-disable*/
+function guid() {
+    var s = 'xxxyxxxxxxxxyxxxxxxxxxxyxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0;
+        var v = c === 'x' ? r : r & 0x3 | 0x8;
+        return v.toString(16);
+    });
+    return s.toLowerCase();
+}
+/*eslint-enabel*/
+
+function stampUUID(obj) {
+    obj.uuid = obj.uuid || guid();
+
+    return obj.uuid;
+}
+
+// 交换数组顺序
+var swapArrItems = function swapArrItems(arr, index1, index2) {
+    arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+    return arr;
+};
+
+// 移动数组项到最前面
+var moveToFirst = function moveToFirst(arr, index) {
+    if (arr.length < 2) return;
+    arr.unshift(arr.splice(index, 1)[0]);
+};
+
+// 移动数组项到最后面
+var moveToLast = function moveToLast(arr, index) {
+    if (arr.length < 2) return;
+    arr.push(arr.splice(index, 1)[0]);
+};
+
+function insertToArr(arr, index, target) {
+    if (isArray(arr)) {
+        arr.splice(index, 0, target);
+    }
+}
+
 
 
 var Util = Object.freeze({
@@ -576,7 +643,15 @@ var Util = Object.freeze({
 	multiplyBy: multiplyBy,
 	getPureValue: getPureValue,
 	formatMargin: formatMargin,
-	formatMargin2: formatMargin2
+	formatMargin2: formatMargin2,
+	distinct: distinct,
+	NullFn: NullFn,
+	guid: guid,
+	stampUUID: stampUUID,
+	swapArrItems: swapArrItems,
+	moveToFirst: moveToFirst,
+	moveToLast: moveToLast,
+	insertToArr: insertToArr
 });
 
 var NM = 'popo';
@@ -588,118 +663,118 @@ var NM = 'popo';
  */
 var CT = {
 
-    /**
-     * @const
-     * @type {Number}
-     * @default
-     */
-    MIN_LY_COUNT: 1,
+  /**
+   * @const
+   * @type {Number}
+   * @default
+   */
+  MIN_LY_COUNT: 1,
 
-    /**
-     * Grids system column count
-     * @const
-     * @type {Number}
-     * @default
-     */
-    COLS: 24,
+  /**
+   * Grids system column count
+   * @const
+   * @type {Number}
+   * @default
+   */
+  COLS: 24,
 
-    /**
-     * Grids system row count
-     * @const
-     * @type {Number}
-     * @default
-     */
-    ROWS: 12,
+  /**
+   * Grids system row count
+   * @const
+   * @type {Number}
+   * @default
+   */
+  ROWS: 12,
 
-    /**
-     * Panel default zIndex
-     * @const
-     * @type {Number}
-     * @default
-     */
-    PANEL_DEFAULT_ZINDEX: 1,
+  /**
+   * Panel default zIndex
+   * @const
+   * @type {Number}
+   * @default
+   */
+  PANEL_DEFAULT_ZINDEX: 1,
 
-    NAME: NM,
+  NAME: NM,
 
-    POPO: 'data-' + NM,
+  POPO: 'data-' + NM,
 
-    ROLE: 'data-' + NM + '-role',
+  ROLE: 'data-' + NM + '-role',
 
-    TARGET: 'data-' + NM + '-target',
+  TARGET: 'data-' + NM + '-target',
 
-    COMPONENT_ID_KEY: 'data-' + NM + '-id',
+  COMPONENT_ID_KEY: 'data-' + NM + '-id',
 
-    EXT_PANE: NM + '-ext-pane',
+  EXT_PANE: NM + '-ext-pane',
 
-    PANE: 'pane',
+  PANE: 'pane',
 
-    CONTAINER: 'container',
+  CONTAINER: 'container',
 
-    PANEL: 'panel',
+  PANEL: 'panel',
 
-    PANEL_CONTAINER: 'panel-container',
+  PANEL_CONTAINER: 'panel-container',
 
-    WRAP: 'wrap',
+  WRAP: 'wrap',
 
-    GRID_L_C_R: 'lcr',
+  GRID_L_C_R: 'lcr',
 
-    GRID_HEAD: 'head',
+  GRID_HEAD: 'head',
 
-    GRID_CENTER: 'center',
+  GRID_CENTER: 'center',
 
-    GRID_LEFT: 'left',
+  GRID_LEFT: 'left',
 
-    GRID_RIGHT: 'right',
+  GRID_RIGHT: 'right',
 
-    GRID_FOOT: 'foot',
+  GRID_FOOT: 'foot',
 
-    SINGLE_ROW: NM + '-s-row',
+  SINGLE_ROW: NM + '-s-row',
 
-    ROW: NM + '-row',
+  ROW: NM + '-row',
 
-    COL: NM + '-col',
+  COL: NM + '-col',
 
-    INFO: NM + '-dev-info',
+  INFO: NM + '-dev-info',
 
-    GUIDELINES: NM + '-guideline',
+  GUIDELINES: NM + '-guideline',
 
-    PANEL_GUIDELINES: NM + '-panel-guideline',
+  PANEL_GUIDELINES: NM + '-panel-guideline',
 
-    SPLITLINES: NM + '-splitline',
+  SPLITLINES: NM + '-splitline',
 
-    ZOOMPANE: 'zoom-pane',
+  ZOOMPANE: 'zoom-pane',
 
-    ZOOMCONTAINER: 'zoom-container',
+  ZOOMCONTAINER: 'zoom-container',
 
-    ATTRIBUTTION: NM + '-attribution',
+  ATTRIBUTTION: NM + '-attribution',
 
-    ZOOMIN: NM + '-ct-zoom-in',
+  ZOOMIN: NM + '-ct-zoom-in',
 
-    ZOOMOUT: NM + '-ct-zoom-out',
+  ZOOMOUT: NM + '-ct-zoom-out',
 
-    ZOOMINFO: NM + '-ct-zoom-info',
+  ZOOMINFO: NM + '-ct-zoom-info',
 
-    TPL: 'data-' + NM + '-tpl',
+  TPL: 'data-' + NM + '-tpl',
 
-    DRAW_ID_KEY: NM + '-ts',
+  DRAW_ID_KEY: NM + '-ts',
 
-    LINE: 'l',
+  LINE: 'l',
 
-    PATH: 'p',
+  PATH: 'p',
 
-    CIRCLE: 'c',
+  CIRCLE: 'c',
 
-    FILTER: 'f',
+  FILTER: 'f',
 
-    MARKER: 'm',
+  MARKER: 'm',
 
-    LINER_GRADIENT: 'lg',
+  LINER_GRADIENT: 'lg',
 
-    RADIAL_GRADIENT: 'rg',
+  RADIAL_GRADIENT: 'rg',
 
-    BORDER: 'b',
+  BORDER: 'b',
 
-    EVENT: '_' + NM + '_event'
+  EVENT: '_' + NM + '_event'
 
 };
 
@@ -965,7 +1040,7 @@ function getTargetDataId(el) {
 
 /*eslint-disable */
 function createPublicStyle() {
-    var css = '/* PoPo Public Style */\n    div[' + CT.POPO + '] {display:none}\n    div[' + CT.ROLE + '], div[' + CT.ROLE + ']:after,div[' + CT.ROLE + ']:before{box-sizing: border-box;}\n    div[data-popo-role=' + CT.PANE + ']{transform-origin: 0 0;-ms-transform-origin: 0 0;-webkit-transform-origin: 0 0;}\n    div[data-popo-role=' + CT.GRID_L_C_R + ']{zoom:1;position:relative;}\n    div[data-popo-role=' + CT.GRID_L_C_R + ']:after{content:\'\';display:block;clear:both;height:0;}\n    div[data-popo-role=' + CT.GRID_LEFT + '],div[data-popo-role=' + CT.GRID_CENTER + '],div[data-popo-role=' + CT.GRID_RIGHT + ']{float:left;position:relative;}\n    div[data-popo-role=' + CT.GRID_FOOT + '],div[data-popo-role=' + CT.GRID_HEAD + '] {position:relative;}\n    .' + CT.INFO + ', .' + CT.EXT_PANE + '{position:absolute;z-index:100;box-sizing:border-box;}\n    .' + CT.EXT_PANE + ' *{box-sizing:border-box;}\n    .' + CT.EXT_PANE + '{border:2px solid rgba(0,0,0,0.2);border-radius: 2px;overflow:hidden;}\n    .' + CT.EXT_PANE + ' a, .' + CT.EXT_PANE + ' span{font: bold 18px \'Lucida Console\', Monaco, monospace;width:30px;height:30px;text-align:center;display:block;border-bottom:1px solid #bbb;line-height:30px;color:#333;background-color:#ffffff;text-decoration:none;outline:none;}\n    .' + CT.EXT_PANE + ' a:hover{background-color:#f2f2f2;}\n    .' + CT.EXT_PANE + ' span{font-size:11px;}\n    ';
+    var css = '/* PoPo Public Style */\n    div[' + CT.POPO + '] {display:none}\n    div[' + CT.TARGET + '] {width:100%;height:100%;}\n    div[' + CT.ROLE + '], div[' + CT.ROLE + ']:after,div[' + CT.ROLE + ']:before{box-sizing: border-box;}\n    div[data-popo-role=' + CT.PANE + ']{transform-origin: 0 0;-ms-transform-origin: 0 0;-webkit-transform-origin: 0 0;}\n    div[data-popo-role=' + CT.GRID_L_C_R + ']{zoom:1;position:relative;}\n    div[data-popo-role=' + CT.GRID_L_C_R + ']:after{content:\'\';display:block;clear:both;height:0;}\n    div[data-popo-role=' + CT.GRID_LEFT + '],div[data-popo-role=' + CT.GRID_CENTER + '],div[data-popo-role=' + CT.GRID_RIGHT + ']{float:left;position:relative;}\n    div[data-popo-role=' + CT.GRID_FOOT + '],div[data-popo-role=' + CT.GRID_HEAD + '] {position:relative;}\n    .' + CT.INFO + ', .' + CT.EXT_PANE + '{position:absolute;z-index:100;box-sizing:border-box;}\n    .' + CT.EXT_PANE + ' *{box-sizing:border-box;}\n    .' + CT.EXT_PANE + '{border:2px solid rgba(0,0,0,0.2);border-radius: 2px;overflow:hidden;}\n    .' + CT.EXT_PANE + ' a, .' + CT.EXT_PANE + ' span{font: bold 18px \'Lucida Console\', Monaco, monospace;width:30px;height:30px;text-align:center;display:block;border-bottom:1px solid #bbb;line-height:30px;color:#333;background-color:#ffffff;text-decoration:none;outline:none;}\n    .' + CT.EXT_PANE + ' a:hover{background-color:#f2f2f2;}\n    .' + CT.EXT_PANE + ' span{font-size:11px;}\n    .' + CT.NAME + '-grab {cursor:-webkit-grab;cursor:-moz-grab;cursor:grab;}\n    .' + CT.NAME + '-grabbing {cursor:-webkit-grabbing;cursor:-moz-grabbing;cursor:grabbing;}\n    ';
 
     addHStyle(css);
 }
@@ -2091,15 +2166,25 @@ function updateVnodeSize(vc, sizes, options, container) {
 
     if ((!width || !height) && container) {
         var target = container.parentNode || container,
-            rect = getRect(target);
+            ch = target.clientHeight,
+            cw = target.clientWidth,
+            rect = getRect(target),
+            th = ch / rect.height > 1 ? ch : rect.height,
+            tw = cw / rect.width > 1 ? cw : rect.width;
 
         if (width === 0) {
-            container._origionWidth = width = rect.width;
+            container._origionWidth = width = tw;
         }
         if (height === 0) {
-            container._origionHeight = height = rect.height;
+            container._origionHeight = height = th;
         }
     }
+
+    setStyle(container, {
+        width: width + 'px'
+        // height: `${height}px`,
+    });
+    // container.setWidth(width).setHeight(height);
 
     width -= paddingLeft;
     height -= paddingTop;
@@ -2488,230 +2573,236 @@ function addPanels(vc, o) {
 
 var defaultOptions = {
 
-    // Layout container
-    // It can be either DOM or ID and classname
-    container: '',
+  // Layout container
+  // It can be either DOM or ID and classname
+  container: '',
 
-    // Define grid rows number. Sets the number of rows in the layout. default value is 12.
-    rows: CT.ROWS,
+  // Define grid rows number. Sets the number of rows in the layout. default value is 12.
+  rows: CT.ROWS,
 
-    // Sets the number of columns in the layout. default value is 24.
-    cols: CT.COLS,
+  // Sets the number of columns in the layout. default value is 24.
+  cols: CT.COLS,
 
-    // Define grid cols number. The default will be stretched over the width of the entire container.
-    // px
-    width: 0,
+  // Define grid cols number. The default will be stretched over the width of the entire container.
+  // px
+  width: 0,
 
-    // The default will be full of the entire container height.
-    // px
-    height: 0,
+  // The default will be full of the entire container height.
+  // px
+  height: 0,
 
-    // Gutter
-    gutter: 10,
+  // Gutter
+  gutter: 10,
 
-    // The default is the panel that is spread across the container.
-    // []
-    // {row:4, col:6, height:0, width:0}
-    layout: null,
+  // The default is the panel that is spread across the container.
+  // []
+  // {row:4, col:6, height:0, width:0}
+  layout: null,
 
-    // Layout start type
-    layoutStartType: 'row',
+  // Layout start type
+  layoutStartType: 'row',
 
-    // font scale, only setting for panel size.
-    fontScale: 1,
+  // font scale, only setting for panel size.
+  fontScale: 1,
 
-    // Full screen display of panel
-    fullId: 0,
+  // html root font-size
+  rem: 1,
 
-    // Full screen panel zIndex
-    fullZIndex: 0,
+  // Full screen display of panel
+  fullId: 0,
 
-    // scroll, when zoom is enable, scroll will be disabled.
-    scroll: {
-        x: false,
-        y: false
+  // Full screen panel zIndex
+  fullZIndex: 0,
+
+  // scroll, when zoom is enable, scroll will be disabled.
+  scroll: {
+    x: false,
+    y: false
+  },
+
+  // drag enable or disable.
+  drag: false,
+
+  // Panel setting
+  panel: {
+    enable: false,
+    default: {
+      headHeight: 0,
+      footHeight: 0,
+      leftWidth: 0,
+      rightWidth: 0,
+      gutter: 0,
+      zIndex: CT.PANEL_DEFAULT_ZINDEX
     },
+    custom: []
+  },
 
-    // drag enable or disable.
-    drag: false,
+  overflowVisible: false,
 
-    // Panel setting
+  // Setting Panel overflow
+  panelOverflow: {
+    visible: '',
+    overflowX: '',
+    overflowY: ''
+  },
+
+  /**
+   * dev options
+   * @type {Object}
+   * @define
+   */
+  dev: {
+    /**
+     * @param {Boolean} enable enbale or disable dev. @default false
+     */
+    enable: false,
+    // Panel info setting
     panel: {
-        enable: false,
-        default: {
-            headHeight: 0,
-            footHeight: 0,
-            leftWidth: 0,
-            rightWidth: 0,
-            gutter: 0,
-            zIndex: CT.PANEL_DEFAULT_ZINDEX
-        },
-        custom: []
+      show: true,
+      id: true,
+      size: false,
+      position: false,
+      background: '',
+      fontSize: 14,
+      fontColor: '#333'
     },
-
-    overflowVisible: false,
-
-    // Setting Panel overflow
-    panelOverflow: {
-        visible: '',
-        overflowX: '',
-        overflowY: ''
+    // layout guideline setting
+    guideline: {
+      show: false,
+      identifier: true,
+      lineSize: 1,
+      color: 'rgba(0,0,0,.25)',
+      zIndex: 0,
+      fontSize: 14,
+      fontColor: '#333'
     },
-
-    /**
-     * dev options
-     * @type {Object}
-     * @define
-     */
-    dev: {
-        /**
-         * @param {Boolean} enable enbale or disable dev. @default false
-         */
-        enable: false,
-        // Panel info setting
-        panel: {
-            show: true,
-            id: true,
-            size: false,
-            position: false,
-            background: '',
-            fontSize: 14,
-            fontColor: '#333'
-        },
-        // layout guideline setting
-        guideline: {
-            show: false,
-            identifier: true,
-            lineSize: 1,
-            color: 'rgba(0,0,0,.25)',
-            zIndex: 0,
-            fontSize: 14,
-            fontColor: '#333'
-        },
-        // panel guidlines setting
-        panelGuideline: {
-            show: false,
-            ids: 'all',
-            lineSize: 0.5,
-            size: 15,
-            zIndex: 0,
-            color: '#888'
-        },
-        // Screen splitline setting
-        splitline: {
-            show: false,
-            lineSize: 1,
-            width: 100,
-            height: 100,
-            color: '#000',
-            zIndex: 0,
-            identifier: true,
-            fontColor: '#333333',
-            fontSize: 12
-        },
-        // only show one or some pannels.
-        showIds: 0
+    // panel guidlines setting
+    panelGuideline: {
+      show: false,
+      ids: 'all',
+      lineSize: 0.5,
+      size: 15,
+      zIndex: 0,
+      color: '#888'
     },
-
-    // Zoom setting
-    zoom: {
-        enable: false,
-        control: true,
-        scale: 1,
-        ratio: 0.1,
-        min: 0.1,
-        max: 1,
-        position: 'rightTop', // leftTop, leftBottom, rightBottom, rightTop
-        wheelZoom: true
+    // Screen splitline setting
+    splitline: {
+      show: false,
+      lineSize: 1,
+      width: 100,
+      height: 100,
+      color: '#000',
+      zIndex: 0,
+      identifier: true,
+      fontColor: '#333333',
+      fontSize: 12
     },
+    // only show one or some pannels.
+    showIds: 0
+  },
 
-    /**
-     * Focus option
-     * @type {Object}
-     * @define fouces
-     * @param {Number|String} id focus id @default 0
-     * @param {Number} offsetX offsetX @default 0
-     * @param {Number} offsetY offsetY @default 0
-     */
-    focus: {
-        id: 0,
-        offsetX: 0,
-        offsetY: 0
-    },
+  // Zoom setting
+  zoom: {
+    enable: false,
+    control: true,
+    auto: true,
+    scale: 0,
+    ratio: 0.1,
+    min: 0.1,
+    max: 1,
+    position: 'rightTop', // leftTop, leftBottom, rightBottom, rightTop
+    wheelZoom: true
+  },
 
-    // set auto line-height. lineheight will to be eqaul element height
-    // [{ids: 1, type: 'center, head'}, {ids:[2,3], type:'head'}]
-    lineHeight: null,
+  /**
+   * Focus option
+   * @type {Object}
+   * @define fouces
+   * @param {Number|String} id focus id @default 0
+   * @param {Number} offsetX offsetX @default 0
+   * @param {Number} offsetY offsetY @default 0
+   */
+  focus: {
+    id: 0,
+    offsetX: 0,
+    offsetY: 0
+  },
 
-    /**
-     * Hide ids
-     * @type {Array|Number|String}
-     * @default
-     */
-    hideIds: null,
+  // set auto line-height. lineheight will to be eqaul element height
+  // [{ids: 1, type: 'center, head'}, {ids:[2,3], type:'head'}]
+  lineHeight: null,
 
-    /**
-     * hide type. include panel, wrap, center, head, foot, left, right
-     * @type {String}
-     * @default
-     */
-    hideType: 'panel',
+  /**
+   * Hide ids
+   * @type {Array|Number|String}
+   * @default
+   */
+  hideIds: null,
 
-    /**
-     * trace window resize
-     * @type {Boolean}
-     * @default
-     */
-    trackResize: true,
+  /**
+   * hide type. include panel, wrap, center, head, foot, left, right
+   * @type {String}
+   * @default
+   */
+  hideType: 'panel',
 
-    /**
-     * update interval time.ms
-     * @type {Number}
-     * @default
-     */
-    updateInterval: 200,
+  /**
+   * trace window resize
+   * @type {Boolean}
+   * @default
+   */
+  trackResize: true,
 
-    /**
-     * render delay time. ms
-     * @type {Number}
-     * @default
-     */
-    renderDelay: 0,
+  /**
+   * update interval time.ms
+   * @type {Number}
+   * @default
+   */
+  updateInterval: 200,
 
-    /**
-     * theme setting.
-     * @type {Object}
-     * @default
-     */
-    style: null,
+  /**
+   * render delay time. ms
+   * @type {Number}
+   * @default
+   */
+  renderDelay: 0,
 
-    /**
-     * Extend Panels setting
-     * @type {Array}
-     * @default
-     */
-    extends: [],
+  /**
+   * theme setting.
+   * @type {Object}
+   * @default
+   */
+  style: null,
 
-    /**
-     * onload function
-     * @type {Function}
-     * @default
-     */
-    onload: null,
+  /**
+   * Extend Panels setting
+   * @type {Array}
+   * @default
+   */
+  extends: [],
 
-    /**
-     * update function
-     * @type {Function}
-     * @default
-     */
-    update: null,
+  /**
+   * onload function
+   * @type {Function}
+   * @default
+   */
+  onload: null,
 
-    /**
-     * Alias
-     * @type {Object}
-     * @default
-     */
-    alias: null
+  /**
+   * update function
+   * @type {Function}
+   * @default
+   */
+  update: null,
+
+  /**
+   * Alias
+   * @type {Object}
+   * @default
+   */
+  alias: null,
+
+  env: 'js' // js, vue
 };
 
 var prefix = CT.NAME + '-';
@@ -2728,6 +2819,7 @@ var defaultStyle = {
     inner: prefix + CT.CONTAINER,
     zoomContainer: prefix + CT.ZOOMCONTAINER,
     zoomPane: prefix + CT.ZOOMPANE,
+    pane: prefix + CT.PANE,
     default: {
         panel: prefix + CT.PANEL,
         panelContainer: prefix + CT.PANEL_CONTAINER,
@@ -3500,6 +3592,7 @@ function createDebugInfo(vc, dev) {
             if (vc.children[i].realDom && background && isString(background)) {
                 css$1(vc.children[i].realDom, { background: background });
             }
+            if (vc.children[i].isWidget) continue;
             var span = createPanelInfo(vc.children[i], size, id, position, fontColor, fontSize);
 
             if (span) {
@@ -3665,8 +3758,10 @@ var defaultPanel = {
         responsive: true
     },
     id: '',
+    className: '',
     zIndex: CT.PANEL_DEFAULT_ZINDEX,
-    layout: null
+    layout: null,
+    isWidget: false
 };
 
 //    layout: {
@@ -3682,8 +3777,7 @@ function createPane(o) {
         str = pd.top + 'px ' + pd.right + 'px ' + pd.bottom + 'px ' + pd.left + 'px';
 
     return new VNode().setRole(CT.PANE).setHeight('auto').setStyle({
-        padding: str,
-        fontSize: o.fontScale + 'em'
+        padding: str
     }).createElement();
 }
 
@@ -3733,7 +3827,9 @@ function addExtend(vc, padding, options, scale, createPanel) {
             zIndex = panelOption.zIndex,
             layout = panelOption.layout,
             style = panelOption.style,
-            node = new VNode().setRole(CT.PANEL).setHeight(multiplyBy(size.height || 0, height)).setWidth(multiplyBy(size.width || 0, width)).setTop(multiplyBy(position.top || 0, height)).setLeft(multiplyBy(position.left || 0, width)).setStyle({
+            isWidget = panelOption.isWidget,
+            className = panelOption.className,
+            node = new VNode().setRole(CT.PANEL).setHeight(multiplyBy(size.height || 0, height)).setWidth(multiplyBy(size.width || 0, width)).setTop(multiplyBy(position.top || 0, height) - top).setLeft(multiplyBy(position.left || 0, width) - left).setStyle({
             position: 'absolute',
             zIndex: zIndex
         });
@@ -3745,6 +3841,10 @@ function addExtend(vc, padding, options, scale, createPanel) {
 
         node[CT.COMPONENT_ID_KEY] = vc.getNewId();
         node.isExtend = true;
+        node.isWidget = isWidget;
+        if (isWidget && className) {
+            node.addClassName(className);
+        }
         node.extendInfo = {
             position: {
                 left: node.left / (position.responsive ? width : 1),
@@ -3760,7 +3860,7 @@ function addExtend(vc, padding, options, scale, createPanel) {
         if (layout && isObject(layout) && createPanel) {
             addLayoutToPanel(node, layout, scale);
         }
-        if (style) {
+        if (style && !isWidget) {
             var _style = merge$1(defaultStyle.default, style);
 
             _setStyle(node, _style.panel, false, true);
@@ -3780,9 +3880,9 @@ function addExtend(vc, padding, options, scale, createPanel) {
     return null;
 }
 
-function loadExtends(vc, o, createPanel) {
-    if (!vc || !o || !o.extends) return;
-    var ext = o.extends;
+function loadExtends(vc, exts, o, createPanel) {
+    if (!vc || !o) return;
+    var ext = exts;
 
     if (ext && isObject(ext)) {
         ext = [ext];
@@ -4315,13 +4415,14 @@ function _setStyle(node, option, isUpdate, overwrite) {
     }
 }
 
-function _initStyle(c, vc, zoom, zoomParent, o, styleOption, update) {
+function _initStyle(c, vc, zoom, zoomParent, o, p, styleOption, update) {
     if (!vc || !o) return;
     var style = styleOption || {},
         custom = style.custom,
         inner = style.inner,
         zoomContainer = style.zoomContainer,
         zoomPane = style.zoomPane,
+        pane = style.pane,
         container = style.container,
         df = style.default;
 
@@ -4334,15 +4435,20 @@ function _initStyle(c, vc, zoom, zoomParent, o, styleOption, update) {
         _setStyle(vc, inner);
     }
     if (zoomContainer) {
-        _setStyle(zoom, zoomContainer);
+        _setStyle(zoom, zoomContainer, true);
     }
     if (zoomPane) {
-        _setStyle(zoomParent, zoomPane);
+        _setStyle(zoomParent, zoomPane, true);
+    }
+    if (pane) {
+        _setStyle(p, pane, true);
     }
     if (isObject(df)) {
         vc.children.forEach(function (panel) {
-            for (var key in df) {
-                _setStyle(getNodesByPanel(panel)[key], df[key], true);
+            if (!panel.isWidget) {
+                for (var key in df) {
+                    _setStyle(getNodesByPanel(panel)[key], df[key], true);
+                }
             }
         });
     }
@@ -4554,6 +4660,8 @@ function insertTplDomToVc(target, vnode, type) {
 
 function loadTemplate(c, vc, o) {
     if (!isDOM(c) || !vc || !isDOM(vc.realDom) || !o) return;
+    var env = o.env;
+
     eachChild(c, function (node) {
         if (isDOM(node) && node.hasAttribute(CT.POPO)) {
             var id = getRealIds(vc, node.getAttribute(CT.POPO), o.alias),
@@ -4565,13 +4673,15 @@ function loadTemplate(c, vc, o) {
                 var els = getNodesByPanel(panel);
 
                 addClass$1(panel.realDom, cls);
-                eachChild(node, function (target) {
-                    for (var key in els) {
-                        if (key !== 'panel' && els[key]) {
-                            insertTplDomToVc(target, els[key], key);
-                        }
+
+                var children = node.childNodes;
+                for (var i = 0, len = children.length; i < len; i++) {
+                    var target = children[env === 'vue' ? 0 : i];
+                    var __t = attr$1(target, CT.TARGET);
+                    if (__t && els[__t]) {
+                        insertTplDomToVc(target, els[__t], __t);
                     }
-                });
+                }
 
                 if (!query(node, '[' + CT.TARGET + '=head]') && title && els.head && els.head.realDom && !els.head.realDom.hasChildNodes()) {
                     els.head.realDom.innerHTML = title;
@@ -4717,7 +4827,8 @@ var dragHandle = {
                 left: scrollLeft,
                 top: scrollTop
             };
-            css$1(pane, { cursor: 'move' });
+            // css(pane, { cursor: 'move' });   
+            addClass$1(pane, CT.NAME + '-grabbing');
             on(pane, 'mousemove', this._onDragging, this);
             on(pane, 'mouseup', this._onDragend, this);
         }
@@ -4750,6 +4861,7 @@ var dragHandle = {
     _onDragend: function _onDragend(e) {
         // DomEvent.stop(e);
         off(this._scrollPane, 'mousemove', this._onDragging, this);
+        removeClass$1(this._scrollPane, CT.NAME + '-grabbing');
     },
 
     /*eslint-enable */
@@ -4765,6 +4877,7 @@ var dragHandle = {
             off(pane, 'mousemove', this._onDragging, this);
             off(pane, 'mouseup', this._onDragend, this);
             this._startDrag = null;
+            removeClass$1(pane, CT.NAME + '-grab');
         }
     },
 
@@ -4781,6 +4894,7 @@ var dragHandle = {
             if (isDOM(dragPane)) {
                 this._scrollPane = dragPane;
                 // this.disableDrag();
+                addClass$1(dragPane, CT.NAME + '-grab');
                 on(dragPane, 'mousedown', this._onDragStart, this);
             }
         }
@@ -4841,10 +4955,10 @@ var wheelzoom = {
      * wheel zoom handle
      * @ignore
      */
-    _performZoom: function _performZoom() {
+    _performZoom: function _performZoom(center) {
         var ratio = this.options.zoom.ratio;
 
-        this.zoom(this.scale + (this._wheelScroll.delta > 0 ? ratio : -ratio));
+        this.zoom(this.scale + (this._wheelScroll.delta > 0 ? ratio : -ratio), center);
     },
 
 
@@ -4871,7 +4985,7 @@ var wheelzoom = {
         clearTimeout(this._wheelScroll.timer);
 
         this._wheelScroll.timer = setTimeout(function () {
-            _this._performZoom();
+            _this._performZoom({ x: e.offsetX, y: e.offsetY });
         }, left);
     },
     enableScrollWheel: function enableScrollWheel() {
@@ -4927,6 +5041,10 @@ var PoPoInstance = function () {
 
         this._vc = createVc();
 
+        if (options.uuid) {
+            this.uuid = options.uuid;
+        }
+
         if (initLayoutSet(o)) {
             initLayout(o, this._vc);
             if (isDOM(c)) {
@@ -4962,6 +5080,25 @@ var PoPoInstance = function () {
                         gutter: 0,
                         zIndex: CT.PANEL_DEFAULT_ZINDEX
                     }, panel);
+                });
+            }
+
+            if (isObject(o.widgets)) {
+                o.widgets.isWidget = true;
+            }
+            if (isArray(o.widgets)) {
+                o.widgets.forEach(function (w) {
+                    w.isWidget = true;
+                });
+            }
+
+            var el = document.documentElement;
+
+            if (css$1(el, 'fontSize') === '16px' && o.rem > 1) {
+                var rem = formatNumber(o.rem);
+
+                css$1(el, {
+                    fontSize: isNumber(rem) ? translateNumberToPercentage(rem) : o.rem
                 });
             }
         }
@@ -5052,7 +5189,10 @@ var PoPoInstance = function () {
                 }
 
                 // Add extends panel
-                loadExtends(vc, o, true);
+                loadExtends(vc, o.extends, o, true);
+
+                // Add widget pannel
+                loadExtends(vc, o.widgets, o, true);
 
                 // Set Panel Overflow style.
                 setOverflows(vc, o);
@@ -5065,7 +5205,7 @@ var PoPoInstance = function () {
                 css$1(c, { display: 'none' });
 
                 // Update style
-                _initStyle(c, vc, zoomContainer, zoomContainer.parentNode, o, this.style);
+                _initStyle(c, vc, zoomContainer, zoomContainer.parentNode, o, p, this.style);
 
                 this._render();
             }
@@ -5138,7 +5278,7 @@ var PoPoInstance = function () {
                 this._updateSize();
 
                 if (o.zoom.enable) {
-                    var scale = legalNumber(o.zoom.scale, CT.MIN_ZOOM, CT.MAX_ZOOM);
+                    var scale = legalNumber(o.zoom.auto ? Math.min(c.clientHeight / this.height, c.clientWidth / this.width) : o.zoom.scale, CT.MIN_ZOOM, CT.MAX_ZOOM);
 
                     this._initZoomEvent();
                     this.zoom(scale);
@@ -6279,7 +6419,7 @@ var PoPoInstance = function () {
                     removeStyle(container, _vc, options, this.style, this);
                 }
                 this.style = isUpdate ? merge$1(this.style, style) : style;
-                _initStyle(container, _vc, _zoomContainer, _zoomContainer.parentNode, options, this.style, true);
+                _initStyle(container, _vc, _zoomContainer, _zoomContainer.parentNode, options, this._pane, this.style, true);
             }
 
             return this;
