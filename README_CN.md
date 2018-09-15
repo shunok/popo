@@ -10,6 +10,17 @@
 
 PoPo 是一个行列二维式栅格布局工具，栅格系统的行、列数均在运行时自定义，无CSS依赖，支持任意尺寸屏幕，尤其适用于大屏幕与超大屏幕。PoPo采用栅格 + 面板双重布局模式，封装了与内容无关的布局代码，无需编写任何HTML、CSS代码，即可快速构建任意复杂页面。
 
+<div align="center">
+    <h3>示例一:散点图</h3>  
+    <img src="./docs/_images/ex1.gif" style="max-height:250px;"/>
+    <h3>示例二:围棋</h3> 
+    <img src="./docs/_images/ex2.gif" style="max-height:250px;"  />
+    <h3>示例三:城市的昼与夜</h3>
+    <img src="./docs/_images/ex3.gif" style="max-height:250px;" />
+    <h3>示例四:可视化布局</h3>
+    <img src="./docs/_images/ex4.png" style="max-height:250px;" />
+</div>
+
 ## 特性
 
 - 自定义栅格系统，无CSS依赖，无第三方库依赖，无需编写HTML、CSS代码
