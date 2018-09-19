@@ -4,7 +4,7 @@ import SVG from '../../dom/vdom//vsvg';
 import { updateLayout, initLayout } from './layout';
 import { addLayoutToPanel } from './panel';
 import {
-    css, addClass, setClass, hasClass, query, eachChild,
+    css, addClass, setClass, hasClass, query, eachChild, create,
     removeClass, getPureStyle, getRect, attr, removeByClass,
 } from '../../dom/dom';
 import {

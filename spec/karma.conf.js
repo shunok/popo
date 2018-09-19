@@ -15,7 +15,7 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			"dist/popo.js",
+			"dist/popo.src.js",
 			"node_modules/expect.js/index.js",
 			"node_modules/sinon/pkg/sinon.js",
 			"spec/suites/**/*.js",

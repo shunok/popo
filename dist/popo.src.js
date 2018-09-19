@@ -1,5 +1,5 @@
 /*
- * PoPo 1.3.2, a JS UI library for data visualization and large screen.
+ * PoPo 1.3.3, a JS UI library for data visualization and large screen.
  * https://github.com/shunok/PoPo (c) 2017-2018 DaShun
  */
 (function (global, factory) {
@@ -8,7 +8,7 @@
 	(factory((global.P = global.P || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "1.3.2";
+var version = "1.3.3";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -885,7 +885,7 @@ function css$1(el, styles) {
     return undefined;
 }
 
-function create$2(tag, classnames, styles, container) {
+function create$1(tag, classnames, styles, container) {
     var el = document.createElement(tag || 'div');
 
     if (classnames) {
@@ -1060,7 +1060,7 @@ var dom = Object.freeze({
 	removeClass: removeClass$1,
 	setStyle: setStyle,
 	css: css$1,
-	create: create$2,
+	create: create$1,
 	html: html$1,
 	isHidden: isHidden$1,
 	removeByClass: removeByClass,
@@ -3814,7 +3814,7 @@ function _addGGL(panel, o) {
         color = o.color,
         lineSize = o.lineSize,
         lines = new SVG(),
-        svg = create('div', CT.PANEL_GUIDELINES, {
+        svg = create$1('div', CT.PANEL_GUIDELINES, {
         zIndex: zIndex,
         height: height + 'px',
         width: width + 'px',
@@ -3970,7 +3970,7 @@ function addGuidelines(c, vc, o) {
         unitRowHeight = (100 / rows).toFixed(5) * height / 100,
         unitColWidth = (100 / cols).toFixed(5) * width / 100,
         lines = new SVG(),
-        svg = create('div', CT.GUIDELINES, {
+        svg = create$1('div', CT.GUIDELINES, {
         zIndex: zIndex,
         height: height + 'px',
         width: width + 'px',
@@ -4026,7 +4026,7 @@ function addSplitLine(c, vc, o) {
         zIndex = sl.zIndex,
         rows = Math.ceil(height / unitRowHeight),
         cols = Math.ceil(width / unitColWidth),
-        svg = create('div', CT.SPLITLINES, {
+        svg = create$1('div', CT.SPLITLINES, {
         zIndex: zIndex,
         height: height + 'px',
         width: width + 'px',
@@ -4844,7 +4844,7 @@ function _addGGL$1(panel, o) {
         color = o.color,
         lineSize = o.lineSize,
         lines = new SVG(),
-        svg = create$2('div', CT.PANEL_GUIDELINES, {
+        svg = create$1('div', CT.PANEL_GUIDELINES, {
         zIndex: zIndex,
         height: height + 'px',
         width: width + 'px',
@@ -5000,7 +5000,7 @@ function addGuidelines$1(c, vc, o) {
         unitRowHeight = (100 / rows).toFixed(5) * height / 100,
         unitColWidth = (100 / cols).toFixed(5) * width / 100,
         lines = new SVG(),
-        svg = create$2('div', CT.GUIDELINES, {
+        svg = create$1('div', CT.GUIDELINES, {
         zIndex: zIndex,
         height: height + 'px',
         width: width + 'px',
@@ -5056,7 +5056,7 @@ function addSplitLine$1(c, vc, o) {
         zIndex = sl.zIndex,
         rows = Math.ceil(height / unitRowHeight),
         cols = Math.ceil(width / unitColWidth),
-        svg = create$2('div', CT.SPLITLINES, {
+        svg = create$1('div', CT.SPLITLINES, {
         zIndex: zIndex,
         height: height + 'px',
         width: width + 'px',
@@ -6886,7 +6886,7 @@ var removeClass$$1 = removeClass$1;
 var css$$1 = css$1;
 var attr$$1 = attr$1;
 var isHidden$$1 = isHidden$1;
-var create$1 = create$2;
+var create$$1 = create$1;
 var html$$1 = html$1;
 
 
@@ -6909,7 +6909,7 @@ exports.removeClass = removeClass$$1;
 exports.css = css$$1;
 exports.attr = attr$$1;
 exports.isHidden = isHidden$$1;
-exports.create = create$1;
+exports.create = create$$1;
 exports.html = html$$1;
 exports.bind = bind$$1;
 exports.merge = merge$$1;

@@ -1,8 +1,8 @@
 /*
- * PoPo 1.3.2, a JS UI library for data visualization and large screen.
+ * PoPo 1.3.3, a JS UI library for data visualization and large screen.
  * https://github.com/shunok/PoPo (c) 2017-2018 DaShun
  */
-var version = "1.3.2";
+var version = "1.3.3";
 
 let lastId = 0;
 
@@ -773,7 +773,7 @@ function css$1(el, styles) {
     return undefined;
 }
 
-function create$2(tag, classnames, styles, container) {
+function create$1(tag, classnames, styles, container) {
     const el = document.createElement(tag || 'div');
 
     if (classnames) {
@@ -967,7 +967,7 @@ var DomUtil = Object.freeze({
 	removeClass: removeClass$1,
 	setStyle: setStyle,
 	css: css$1,
-	create: create$2,
+	create: create$1,
 	html: html$1,
 	isHidden: isHidden$1,
 	removeByClass: removeByClass,
@@ -3508,7 +3508,7 @@ function _addGGL(panel, o) {
         color = o.color,
         lineSize = o.lineSize,
         lines = new SVG(),
-        svg = create('div', CT.PANEL_GUIDELINES, {
+        svg = create$1('div', CT.PANEL_GUIDELINES, {
             zIndex,
             height: `${height}px`,
             width: `${width}px`,
@@ -3671,7 +3671,7 @@ function addGuidelines(c, vc, o) {
         unitRowHeight = (100 / rows).toFixed(5) * height / 100,
         unitColWidth = (100 / cols).toFixed(5) * width / 100,
         lines = new SVG(),
-        svg = create('div', CT.GUIDELINES, {
+        svg = create$1('div', CT.GUIDELINES, {
             zIndex,
             height: `${height}px`,
             width: `${width}px`,
@@ -3727,7 +3727,7 @@ function addSplitLine(c, vc, o) {
         zIndex = sl.zIndex,
         rows = Math.ceil(height / unitRowHeight),
         cols = Math.ceil(width / unitColWidth),
-        svg = create('div', CT.SPLITLINES, {
+        svg = create$1('div', CT.SPLITLINES, {
             zIndex,
             height: `${height}px`,
             width: `${width}px`,
@@ -4543,7 +4543,7 @@ function _addGGL$1(panel, o) {
         color = o.color,
         lineSize = o.lineSize,
         lines = new SVG(),
-        svg = create$2('div', CT.PANEL_GUIDELINES, {
+        svg = create$1('div', CT.PANEL_GUIDELINES, {
             zIndex,
             height: `${height}px`,
             width: `${width}px`,
@@ -4706,7 +4706,7 @@ function addGuidelines$1(c, vc, o) {
         unitRowHeight = (100 / rows).toFixed(5) * height / 100,
         unitColWidth = (100 / cols).toFixed(5) * width / 100,
         lines = new SVG(),
-        svg = create$2('div', CT.GUIDELINES, {
+        svg = create$1('div', CT.GUIDELINES, {
             zIndex,
             height: `${height}px`,
             width: `${width}px`,
@@ -4762,7 +4762,7 @@ function addSplitLine$1(c, vc, o) {
         zIndex = sl.zIndex,
         rows = Math.ceil(height / unitRowHeight),
         cols = Math.ceil(width / unitColWidth),
-        svg = create$2('div', CT.SPLITLINES, {
+        svg = create$1('div', CT.SPLITLINES, {
             zIndex,
             height: `${height}px`,
             width: `${width}px`,
@@ -6323,7 +6323,7 @@ function dispose(target) {
 }
 
 const { bind: bind$$1, merge: merge$$1, extend: extend$$1 } = Util;
-const { addClass: addClass$$1, hasClass: hasClass$$1, removeClass: removeClass$$1, css: css$$1, attr: attr$$1, isHidden: isHidden$$1, create: create$1, html: html$$1 } = DomUtil;
+const { addClass: addClass$$1, hasClass: hasClass$$1, removeClass: removeClass$$1, css: css$$1, attr: attr$$1, isHidden: isHidden$$1, create: create$$1, html: html$$1 } = DomUtil;
 
 const oldP = window && window.P;
 
@@ -6334,4 +6334,4 @@ function noConflict() {
     return this;
 }
 
-export { DomUtil, dom_event as DomEvent, Util, Browser, addClass$$1 as addClass, hasClass$$1 as hasClass, removeClass$$1 as removeClass, css$$1 as css, attr$$1 as attr, isHidden$$1 as isHidden, create$1 as create, html$$1 as html, bind$$1 as bind, merge$$1 as merge, extend$$1 as extend, noConflict, version, validateAllLy as validateLayoutExp, init, dispose, getInstanceByDom };
+export { DomUtil, dom_event as DomEvent, Util, Browser, addClass$$1 as addClass, hasClass$$1 as hasClass, removeClass$$1 as removeClass, css$$1 as css, attr$$1 as attr, isHidden$$1 as isHidden, create$$1 as create, html$$1 as html, bind$$1 as bind, merge$$1 as merge, extend$$1 as extend, noConflict, version, validateAllLy as validateLayoutExp, init, dispose, getInstanceByDom };
