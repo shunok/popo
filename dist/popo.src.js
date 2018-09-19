@@ -1,5 +1,5 @@
 /*
- * PoPo 1.3.0, a JS UI library for data visualization and large screen.
+ * PoPo 1.3.1, a JS UI library for data visualization and large screen.
  * https://github.com/shunok/PoPo (c) 2017-2018 DaShun
  */
 (function (global, factory) {
@@ -8,7 +8,7 @@
 	(factory((global.P = global.P || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "1.3.0";
+var version = "1.3.1";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -944,7 +944,7 @@ function addHStyle(css) {
     }
 }
 
-function removeByClass$1(classname, container) {
+function removeByClass(classname, container) {
     Array.prototype.forEach.call((container || document).querySelectorAll('.' + classname), function (el) {
         if (isDOM(el)) el.parentNode.removeChild(el);
     });
@@ -1063,7 +1063,7 @@ var dom = Object.freeze({
 	create: create$2,
 	html: html$1,
 	isHidden: isHidden$1,
-	removeByClass: removeByClass$1,
+	removeByClass: removeByClass,
 	removeByRole: removeByRole,
 	query: query,
 	eachChild: eachChild,
@@ -4835,7 +4835,7 @@ function px2n$1(str) {
 
 function _addGGL$1(panel, o) {
     if (!panel || !isDOM(panel.realDom) || !o || !o.show) return;
-    removeByClass$1(CT.PANEL_GUIDELINES, panel.realDom);
+    removeByClass(CT.PANEL_GUIDELINES, panel.realDom);
     var ggl = query(panel.realDom, '.' + CT.GUIDELINES),
         width = panel.width,
         height = panel.height,
@@ -4986,7 +4986,7 @@ function createSVGText$1(svg, text, x, y, fontSize, fill) {
 
 function addGuidelines$1(c, vc, o) {
     if (!c || !vc || !o || !o.dev.guideline.show) return;
-    removeByClass$1(CT.GUIDELINES, c);
+    removeByClass(CT.GUIDELINES, c);
     var gl = o.dev.guideline,
         padding = o.padding,
         width = vc.width + padding.left + padding.right,
@@ -5043,7 +5043,7 @@ function addGuidelines$1(c, vc, o) {
 
 function addSplitLine$1(c, vc, o) {
     if (!c || !vc || !o || !o.dev.splitline.show) return;
-    removeByClass$1(CT.SPLITLINES, c);
+    removeByClass(CT.SPLITLINES, c);
     var sl = o.dev.splitline,
         fontSize = n2px$1(sl.fontSize),
         fontColor = sl.fontColor,
@@ -5104,7 +5104,7 @@ function addSplitLine$1(c, vc, o) {
 
 function loadDev$1(c, vc, o) {
     if (!vc || !c || !o || !o.dev || !o.dev.enable) return false;
-    removeByClass$1(CT.INFO, c);
+    removeByClass(CT.INFO, c);
     createDebugInfo$1(vc, o.dev);
     addGuidelines$1(c, vc, o);
     addSplitLine$1(c, vc, o);
