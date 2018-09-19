@@ -1,6 +1,6 @@
 ![logo](_media/popo.png)
 
-# PoPo <small>1.3.1</small>
+# PoPo <small>1.3.2</small>
 
 > JS layout library for large screen.
 

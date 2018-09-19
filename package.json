@@ -1,7 +1,7 @@
 {
   "name": "popojs",
   "title": "PoPo",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "JS layout library for large screen",
   "main": "dist/popo.src.js",
   "browser": "dist/popo.min.js",
