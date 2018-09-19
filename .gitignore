@@ -2,7 +2,6 @@
 .DS_Store
 node_modules
 npm-debug.log
-libs
 .vscode
 test/images/type
 test/images/*.gif
