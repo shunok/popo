@@ -31,7 +31,6 @@ npm install popojs --save
 
 var P = require('popojs');
 
-// es2015
-import P from 'popojs'
+import * as P from 'popojs'
 
 ```

@@ -1,6 +1,3 @@
-import babel from 'rollup-plugin-babel';
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
 import json from 'rollup-plugin-json';
 
 let version = require('../package.json').version,
@@ -14,19 +11,10 @@ const banner = `/*
 export default {
   entry: 'src/index.js',
   moduleName: 'P',
-  format: 'umd',
-  dest: 'dist/popo.src.js',
+  format: 'es',
+  dest: 'dist/popo.esm.js',
   banner: banner,
   plugins: [
     json(),
-    resolve({
-      jsnext: true,
-      main: true,
-      browser: true,
-    }),
-    commonjs(),
-    babel({
-      exclude: 'node_modules/**',
-    }),
   ],
 };

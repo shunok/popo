@@ -1,14 +1,14 @@
 /*
- * PoPo 1.0.1, a JS UI library for large screen.
+ * PoPo 1.3.0, a JS UI library for data visualization and large screen.
  * https://github.com/shunok/PoPo (c) 2017-2018 DaShun
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.PoPo = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.P = global.P || {})));
+}(this, (function (exports) { 'use strict';
 
-var version = "1.0.1";
+var version = "1.3.0";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -604,7 +604,7 @@ function insertToArr(arr, index, target) {
 
 
 
-var Util = Object.freeze({
+var util = Object.freeze({
 	stamp: stamp,
 	bind: bind$1,
 	extend: extend$1,
@@ -885,7 +885,7 @@ function css$1(el, styles) {
     return undefined;
 }
 
-function create$1(tag, classnames, styles, container) {
+function create$2(tag, classnames, styles, container) {
     var el = document.createElement(tag || 'div');
 
     if (classnames) {
@@ -944,7 +944,7 @@ function addHStyle(css) {
     }
 }
 
-function removeByClass(classname, container) {
+function removeByClass$1(classname, container) {
     Array.prototype.forEach.call((container || document).querySelectorAll('.' + classname), function (el) {
         if (isDOM(el)) el.parentNode.removeChild(el);
     });
@@ -1048,7 +1048,7 @@ function createPublicStyle() {
 
 createPublicStyle();
 
-var DomUtil = Object.freeze({
+var dom = Object.freeze({
 	testProp: testProp,
 	TRANSFORM: TRANSFORM,
 	TRANSITION: TRANSITION,
@@ -1060,10 +1060,10 @@ var DomUtil = Object.freeze({
 	removeClass: removeClass$1,
 	setStyle: setStyle,
 	css: css$1,
-	create: create$1,
+	create: create$2,
 	html: html$1,
 	isHidden: isHidden$1,
-	removeByClass: removeByClass,
+	removeByClass: removeByClass$1,
 	removeByRole: removeByRole,
 	query: query,
 	eachChild: eachChild,
@@ -1216,7 +1216,7 @@ function getWheelDelta(e) {
 }
 /*eslint-enable */
 
-var DomEvent = Object.freeze({
+var dom_event = Object.freeze({
 	stopPropagation: stopPropagation,
 	preventDefault: preventDefault,
 	stop: stop,
@@ -3428,315 +3428,6 @@ var SVG = function (_VSVG) {
     return SVG;
 }(SVG$2);
 
-function n2px(fz) {
-    if (isNumber(fz)) return fz + 'px';
-    if (isString(fz)) {
-        if (fz.indexOf('px') < 0 || fz.indexOf('em') > 0) {
-            return fz;
-        } else if (!isNaN(Number(fz))) {
-            return fz + 'px';
-        }
-    }
-
-    return fz;
-}
-
-function px2n(str) {
-    if (isString(str)) {
-        var i = str.indexOf('px');
-
-        if (i >= 0) {
-            return Number(str.substring(0, i));
-        }
-    }
-
-    if (isNumber(str)) {
-        return str;
-    }
-
-    return 0;
-}
-
-function _addGGL(panel, o) {
-    if (!panel || !isDOM(panel.realDom) || !o || !o.show) return;
-    removeByClass(CT.PANEL_GUIDELINES, panel.realDom);
-    var ggl = query(panel.realDom, '.' + CT.GUIDELINES),
-        width = panel.width,
-        height = panel.height,
-        zIndex = o.zIndex,
-        size = o.size || 15,
-        color = o.color,
-        lineSize = o.lineSize,
-        lines = new SVG(),
-        svg = create$1('div', CT.PANEL_GUIDELINES, {
-        zIndex: zIndex,
-        height: height + 'px',
-        width: width + 'px',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        overflow: 'hidden',
-        userSelect: 'none'
-    }, panel.realDom);
-
-    if (isDOM(ggl)) {
-        panel.realDom.removeChild(ggl);
-    }
-
-    var rows = Math.ceil(height / size),
-        cols = Math.ceil(width / size),
-        points = '',
-        points2 = '';
-
-    for (var i = 1; i <= rows; i++) {
-        var y = size * i;
-
-        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
-    }
-    for (var _i = 1; _i <= cols; _i++) {
-        var x = size * _i;
-
-        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
-    }
-
-    rows = Math.ceil(height / size / 4);
-    cols = Math.ceil(width / size / 4);
-    for (var _i2 = 1; _i2 <= rows; _i2++) {
-        var _y = size * _i2 * 4;
-
-        points2 += 'M0 ' + _y + ' L' + width + ' ' + _y + ' ';
-    }
-    for (var _i3 = 1; _i3 <= cols; _i3++) {
-        var _x = size * _i3 * 4;
-
-        points2 += 'M' + _x + ' 0 L' + _x + ' ' + height + ' ';
-    }
-
-    lines.create('path', { d: points, stroke: color, strokeWidth: lineSize });
-    lines.create('path', { d: points2, stroke: color, strokeWidth: lineSize * 1.5 });
-    svg.appendChild(lines.createElement());
-}
-
-function addPanelGuidelines(vc, o) {
-    if (!vc || !o || !o.dev || !o.dev.enable || !o.dev.panelGuideline.show) return;
-    var gg = o.dev.panelGuideline,
-        options = merge$1({
-        color: 'rgba(0,0,0,.25)',
-        width: 1,
-        size: 10,
-        zIndex: 0
-    }, gg || {});
-
-    var ids = gg.ids;
-
-    if (ids === 'all') {
-        ids = getAllIds(vc);
-    }
-    if (isNumber(ids)) {
-        ids = [ids];
-    }
-    if (isArray(ids)) {
-        ids.forEach(function (id) {
-            id = getRealIds(vc, id, o.alias);
-            if (id > 0) {
-                var node = vc.getChild(id);
-
-                if (node && node.realDom) {
-                    _addGGL(node, options);
-                }
-            }
-        });
-    }
-}
-
-function createPanelInfo(panel, size, id, position, color, fontSize) {
-    fontSize = n2px(fontSize);
-    if (panel && panel.realDom) {
-        var width = Math.round(panel.width),
-            height = Math.round(panel.height),
-            left = Math.round(panel.left),
-            top = Math.round(panel.top);
-
-        if (size || id || position) {
-            var info = '';
-
-            if (id) {
-                info += panel[CT.COMPONENT_ID_KEY];
-            }
-            if (size) {
-                info += (id ? ' - ' : '') + ' W' + width + ' H' + height;
-            }
-            if (position) {
-                info += (id || size ? ' - ' : '') + ' L' + left + ' T' + top;
-            }
-
-            return new VNode('span').addClassName(CT.INFO).setTop(panel.top + 5).setLeft(panel.left + 5).setWidth('auto').setHeight('auto').setStyle({ color: color, fontSize: fontSize }).setHtml(info);
-        }
-    }
-
-    return null;
-}
-
-function createDebugInfo(vc, dev) {
-    if (!vc || !dev || !dev.enable || !dev.panel.show) return;
-    var o = dev.panel,
-        id = o.id,
-        size = o.size,
-        position = o.position,
-        background = o.background,
-        fontSize = n2px(o.fontSize),
-        fontColor = o.fontColor;
-
-    if (vc.realDom && (id || size || position || background)) {
-        for (var i = 0, len = vc.children.length; i < len; i++) {
-            if (vc.children[i].realDom && background && isString(background)) {
-                css$1(vc.children[i].realDom, { background: background });
-            }
-            if (vc.children[i].isWidget) continue;
-            var span = createPanelInfo(vc.children[i], size, id, position, fontColor, fontSize);
-
-            if (span) {
-                vc.realDom.appendChild(span.createElement());
-            }
-        }
-    }
-}
-
-function createSVGText(svg, text, x, y, fontSize, fill) {
-    if (svg) {
-        svg.create('text', { x: x, y: y, fontSize: fontSize, fill: fill }).setHtml(text);
-    }
-}
-
-function addGuidelines(c, vc, o) {
-    if (!c || !vc || !o || !o.dev.guideline.show) return;
-    removeByClass(CT.GUIDELINES, c);
-    var gl = o.dev.guideline,
-        padding = o.padding,
-        width = vc.width + padding.left + padding.right,
-        height = vc.height + padding.top + padding.bottom,
-        identifier = gl.identifier,
-        fontSize = gl.fontSize,
-        fontColor = gl.fontColor,
-        zIndex = gl.zIndex,
-        rows = o.rows,
-        cols = o.cols,
-        unitRowHeight = (100 / rows).toFixed(5) * height / 100,
-        unitColWidth = (100 / cols).toFixed(5) * width / 100,
-        lines = new SVG(),
-        svg = create$1('div', CT.GUIDELINES, {
-        zIndex: zIndex,
-        height: height + 'px',
-        width: width + 'px',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        overflow: 'hidden',
-        userSelect: 'none'
-    }, c),
-        position = c.style.position;
-
-    if (position === '' || position === 'static') {
-        css$1(c, {
-            position: 'relative'
-        });
-    }
-
-    var points = '';
-
-    for (var i = 0; i <= rows; i++) {
-        var y = unitRowHeight * i;
-
-        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
-        if (identifier) {
-            createSVGText(lines, i, 5, y - unitRowHeight + px2n(fontSize) + 5, fontSize, fontColor);
-        }
-    }
-    for (var _i4 = 0; _i4 <= cols; _i4++) {
-        var x = unitColWidth * _i4;
-
-        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
-        if (identifier && _i4 !== 1) {
-            createSVGText(lines, _i4, x - unitColWidth + 5, px2n(fontSize) + 5, fontSize, fontColor);
-        }
-    }
-
-    lines.create('path', { d: points, stroke: gl.color, strokeWidth: gl.lineSize });
-    svg.appendChild(lines.createElement());
-}
-
-function addSplitLine(c, vc, o) {
-    if (!c || !vc || !o || !o.dev.splitline.show) return;
-    removeByClass(CT.SPLITLINES, c);
-    var sl = o.dev.splitline,
-        fontSize = n2px(sl.fontSize),
-        fontColor = sl.fontColor,
-        padding = o.padding,
-        identifier = sl.identifier,
-        width = vc.width + padding.left + padding.right,
-        height = vc.height + padding.top + padding.bottom,
-        unitRowHeight = sl.height,
-        unitColWidth = sl.width,
-        zIndex = sl.zIndex,
-        rows = Math.ceil(height / unitRowHeight),
-        cols = Math.ceil(width / unitColWidth),
-        svg = create$1('div', CT.SPLITLINES, {
-        zIndex: zIndex,
-        height: height + 'px',
-        width: width + 'px',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        overflow: 'hidden',
-        userSelect: 'none'
-    }, c),
-        lines = new SVG(),
-        position = c.style.position,
-        infoY = [],
-        infoX = [];
-
-    if (position === '' || position === 'static') {
-        css$1(c, { position: 'relative' });
-    }
-
-    var points = '';
-
-    for (var i = 0; i <= rows; i++) {
-        var y = unitRowHeight * i;
-
-        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
-        infoY.push(y);
-    }
-    for (var _i5 = 0; _i5 <= cols; _i5++) {
-        var x = unitColWidth * _i5;
-
-        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
-        infoX.push(x);
-    }
-
-    if (identifier) {
-        infoX.forEach(function (x) {
-            infoY.forEach(function (y) {
-                createSVGText(lines, x + ', ' + y, x + 10, y + 10 + px2n(fontSize), fontSize, fontColor);
-            });
-        });
-    }
-
-    lines.create('path', { d: points, stroke: sl.color, strokeWidth: sl.lineSize });
-    svg.appendChild(lines.createElement());
-}
-
-function loadDev(c, vc, o) {
-    if (!vc || !c || !o || !o.dev || !o.dev.enable) return false;
-    removeByClass(CT.INFO, c);
-    createDebugInfo(vc, o.dev);
-    addGuidelines(c, vc, o);
-    addSplitLine(c, vc, o);
-    addPanelGuidelines(vc, o);
-
-    return true;
-}
-
 /**
  * Screen extends panel option and addPanel option
  * @typedef {Object} panel
@@ -3772,6 +3463,7 @@ var defaultPanel = {
 //     gutter: 0,
 // },
 
+// import { loadDev } from './dev';
 function createPane(o) {
     var pd = o.padding,
         str = pd.top + 'px ' + pd.right + 'px ' + pd.bottom + 'px ' + pd.left + 'px';
@@ -4078,6 +3770,317 @@ function getNodeById(vc, id, type) {
     }
 
     return null;
+}
+
+// DEV
+
+function n2px(fz) {
+    if (isNumber(fz)) return fz + 'px';
+    if (isString(fz)) {
+        if (fz.indexOf('px') < 0 || fz.indexOf('em') > 0) {
+            return fz;
+        } else if (!isNaN(Number(fz))) {
+            return fz + 'px';
+        }
+    }
+
+    return fz;
+}
+
+function px2n(str) {
+    if (isString(str)) {
+        var i = str.indexOf('px');
+
+        if (i >= 0) {
+            return Number(str.substring(0, i));
+        }
+    }
+
+    if (isNumber(str)) {
+        return str;
+    }
+
+    return 0;
+}
+
+function _addGGL(panel, o) {
+    if (!panel || !isDOM(panel.realDom) || !o || !o.show) return;
+    removeByClass(CT.PANEL_GUIDELINES, panel.realDom);
+    var ggl = query(panel.realDom, '.' + CT.GUIDELINES),
+        width = panel.width,
+        height = panel.height,
+        zIndex = o.zIndex,
+        size = o.size || 15,
+        color = o.color,
+        lineSize = o.lineSize,
+        lines = new SVG(),
+        svg = create('div', CT.PANEL_GUIDELINES, {
+        zIndex: zIndex,
+        height: height + 'px',
+        width: width + 'px',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        overflow: 'hidden',
+        userSelect: 'none'
+    }, panel.realDom);
+
+    if (isDOM(ggl)) {
+        panel.realDom.removeChild(ggl);
+    }
+
+    var rows = Math.ceil(height / size),
+        cols = Math.ceil(width / size),
+        points = '',
+        points2 = '';
+
+    for (var i = 1; i <= rows; i++) {
+        var y = size * i;
+
+        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
+    }
+    for (var _i = 1; _i <= cols; _i++) {
+        var x = size * _i;
+
+        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
+    }
+
+    rows = Math.ceil(height / size / 4);
+    cols = Math.ceil(width / size / 4);
+    for (var _i2 = 1; _i2 <= rows; _i2++) {
+        var _y = size * _i2 * 4;
+
+        points2 += 'M0 ' + _y + ' L' + width + ' ' + _y + ' ';
+    }
+    for (var _i3 = 1; _i3 <= cols; _i3++) {
+        var _x = size * _i3 * 4;
+
+        points2 += 'M' + _x + ' 0 L' + _x + ' ' + height + ' ';
+    }
+
+    lines.create('path', { d: points, stroke: color, strokeWidth: lineSize });
+    lines.create('path', { d: points2, stroke: color, strokeWidth: lineSize * 1.5 });
+    svg.appendChild(lines.createElement());
+}
+
+function addPanelGuidelines(vc, o) {
+    if (!vc || !o || !o.dev || !o.dev.enable || !o.dev.panelGuideline.show) return;
+    var gg = o.dev.panelGuideline,
+        options = merge$1({
+        color: 'rgba(0,0,0,.25)',
+        width: 1,
+        size: 10,
+        zIndex: 0
+    }, gg || {});
+
+    var ids = gg.ids;
+
+    if (ids === 'all') {
+        ids = getAllIds(vc);
+    }
+    if (isNumber(ids)) {
+        ids = [ids];
+    }
+    if (isArray(ids)) {
+        ids.forEach(function (id) {
+            id = getRealIds(vc, id, o.alias);
+            if (id > 0) {
+                var node = vc.getChild(id);
+
+                if (node && node.realDom) {
+                    _addGGL(node, options);
+                }
+            }
+        });
+    }
+}
+
+function createPanelInfo(panel, size, id, position, color, fontSize) {
+    fontSize = n2px(fontSize);
+    if (panel && panel.realDom) {
+        var width = Math.round(panel.width),
+            height = Math.round(panel.height),
+            left = Math.round(panel.left),
+            top = Math.round(panel.top);
+
+        if (size || id || position) {
+            var info = '';
+
+            if (id) {
+                info += panel[CT.COMPONENT_ID_KEY];
+            }
+            if (size) {
+                info += (id ? ' - ' : '') + ' W' + width + ' H' + height;
+            }
+            if (position) {
+                info += (id || size ? ' - ' : '') + ' L' + left + ' T' + top;
+            }
+
+            return new VNode('span').addClassName(CT.INFO).setTop(panel.top + 5).setLeft(panel.left + 5).setWidth('auto').setHeight('auto').setStyle({ color: color, fontSize: fontSize }).setHtml(info);
+        }
+    }
+
+    return null;
+}
+
+function createDebugInfo(vc, dev) {
+    if (!vc || !dev || !dev.enable || !dev.panel.show) return;
+    var o = dev.panel,
+        id = o.id,
+        size = o.size,
+        position = o.position,
+        background = o.background,
+        fontSize = n2px(o.fontSize),
+        fontColor = o.fontColor;
+
+    if (vc.realDom && (id || size || position || background)) {
+        for (var i = 0, len = vc.children.length; i < len; i++) {
+            if (vc.children[i].realDom && background && isString(background)) {
+                css$1(vc.children[i].realDom, { background: background });
+            }
+            if (vc.children[i].isWidget) continue;
+            var span = createPanelInfo(vc.children[i], size, id, position, fontColor, fontSize);
+
+            if (span) {
+                vc.realDom.appendChild(span.createElement());
+            }
+        }
+    }
+}
+
+function createSVGText(svg, text, x, y, fontSize, fill) {
+    if (svg) {
+        svg.create('text', { x: x, y: y, fontSize: fontSize, fill: fill }).setHtml(text);
+    }
+}
+
+function addGuidelines(c, vc, o) {
+    if (!c || !vc || !o || !o.dev.guideline.show) return;
+    removeByClass(CT.GUIDELINES, c);
+    var gl = o.dev.guideline,
+        padding = o.padding,
+        width = vc.width + padding.left + padding.right,
+        height = vc.height + padding.top + padding.bottom,
+        identifier = gl.identifier,
+        fontSize = gl.fontSize,
+        fontColor = gl.fontColor,
+        zIndex = gl.zIndex,
+        rows = o.rows,
+        cols = o.cols,
+        unitRowHeight = (100 / rows).toFixed(5) * height / 100,
+        unitColWidth = (100 / cols).toFixed(5) * width / 100,
+        lines = new SVG(),
+        svg = create('div', CT.GUIDELINES, {
+        zIndex: zIndex,
+        height: height + 'px',
+        width: width + 'px',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        overflow: 'hidden',
+        userSelect: 'none'
+    }, c),
+        position = c.style.position;
+
+    if (position === '' || position === 'static') {
+        css$1(c, {
+            position: 'relative'
+        });
+    }
+
+    var points = '';
+
+    for (var i = 0; i <= rows; i++) {
+        var y = unitRowHeight * i;
+
+        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
+        if (identifier) {
+            createSVGText(lines, i, 5, y - unitRowHeight + px2n(fontSize) + 5, fontSize, fontColor);
+        }
+    }
+    for (var _i4 = 0; _i4 <= cols; _i4++) {
+        var x = unitColWidth * _i4;
+
+        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
+        if (identifier && _i4 !== 1) {
+            createSVGText(lines, _i4, x - unitColWidth + 5, px2n(fontSize) + 5, fontSize, fontColor);
+        }
+    }
+
+    lines.create('path', { d: points, stroke: gl.color, strokeWidth: gl.lineSize });
+    svg.appendChild(lines.createElement());
+}
+
+function addSplitLine(c, vc, o) {
+    if (!c || !vc || !o || !o.dev.splitline.show) return;
+    removeByClass(CT.SPLITLINES, c);
+    var sl = o.dev.splitline,
+        fontSize = n2px(sl.fontSize),
+        fontColor = sl.fontColor,
+        padding = o.padding,
+        identifier = sl.identifier,
+        width = vc.width + padding.left + padding.right,
+        height = vc.height + padding.top + padding.bottom,
+        unitRowHeight = sl.height,
+        unitColWidth = sl.width,
+        zIndex = sl.zIndex,
+        rows = Math.ceil(height / unitRowHeight),
+        cols = Math.ceil(width / unitColWidth),
+        svg = create('div', CT.SPLITLINES, {
+        zIndex: zIndex,
+        height: height + 'px',
+        width: width + 'px',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        overflow: 'hidden',
+        userSelect: 'none'
+    }, c),
+        lines = new SVG(),
+        position = c.style.position,
+        infoY = [],
+        infoX = [];
+
+    if (position === '' || position === 'static') {
+        css$1(c, { position: 'relative' });
+    }
+
+    var points = '';
+
+    for (var i = 0; i <= rows; i++) {
+        var y = unitRowHeight * i;
+
+        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
+        infoY.push(y);
+    }
+    for (var _i5 = 0; _i5 <= cols; _i5++) {
+        var x = unitColWidth * _i5;
+
+        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
+        infoX.push(x);
+    }
+
+    if (identifier) {
+        infoX.forEach(function (x) {
+            infoY.forEach(function (y) {
+                createSVGText(lines, x + ', ' + y, x + 10, y + 10 + px2n(fontSize), fontSize, fontColor);
+            });
+        });
+    }
+
+    lines.create('path', { d: points, stroke: sl.color, strokeWidth: sl.lineSize });
+    svg.appendChild(lines.createElement());
+}
+
+function loadDev(c, vc, o) {
+    if (!vc || !c || !o || !o.dev || !o.dev.enable) return false;
+    removeByClass(CT.INFO, c);
+    createDebugInfo(vc, o.dev);
+    addGuidelines(c, vc, o);
+    addSplitLine(c, vc, o);
+    addPanelGuidelines(vc, o);
+
+    return true;
 }
 
 
@@ -4801,6 +4804,315 @@ function togglePoPo(c, show) {
     });
 }
 
+function n2px$1(fz) {
+    if (isNumber(fz)) return fz + 'px';
+    if (isString(fz)) {
+        if (fz.indexOf('px') < 0 || fz.indexOf('em') > 0) {
+            return fz;
+        } else if (!isNaN(Number(fz))) {
+            return fz + 'px';
+        }
+    }
+
+    return fz;
+}
+
+function px2n$1(str) {
+    if (isString(str)) {
+        var i = str.indexOf('px');
+
+        if (i >= 0) {
+            return Number(str.substring(0, i));
+        }
+    }
+
+    if (isNumber(str)) {
+        return str;
+    }
+
+    return 0;
+}
+
+function _addGGL$1(panel, o) {
+    if (!panel || !isDOM(panel.realDom) || !o || !o.show) return;
+    removeByClass$1(CT.PANEL_GUIDELINES, panel.realDom);
+    var ggl = query(panel.realDom, '.' + CT.GUIDELINES),
+        width = panel.width,
+        height = panel.height,
+        zIndex = o.zIndex,
+        size = o.size || 15,
+        color = o.color,
+        lineSize = o.lineSize,
+        lines = new SVG(),
+        svg = create$2('div', CT.PANEL_GUIDELINES, {
+        zIndex: zIndex,
+        height: height + 'px',
+        width: width + 'px',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        overflow: 'hidden',
+        userSelect: 'none'
+    }, panel.realDom);
+
+    if (isDOM(ggl)) {
+        panel.realDom.removeChild(ggl);
+    }
+
+    var rows = Math.ceil(height / size),
+        cols = Math.ceil(width / size),
+        points = '',
+        points2 = '';
+
+    for (var i = 1; i <= rows; i++) {
+        var y = size * i;
+
+        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
+    }
+    for (var _i = 1; _i <= cols; _i++) {
+        var x = size * _i;
+
+        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
+    }
+
+    rows = Math.ceil(height / size / 4);
+    cols = Math.ceil(width / size / 4);
+    for (var _i2 = 1; _i2 <= rows; _i2++) {
+        var _y = size * _i2 * 4;
+
+        points2 += 'M0 ' + _y + ' L' + width + ' ' + _y + ' ';
+    }
+    for (var _i3 = 1; _i3 <= cols; _i3++) {
+        var _x = size * _i3 * 4;
+
+        points2 += 'M' + _x + ' 0 L' + _x + ' ' + height + ' ';
+    }
+
+    lines.create('path', { d: points, stroke: color, strokeWidth: lineSize });
+    lines.create('path', { d: points2, stroke: color, strokeWidth: lineSize * 1.5 });
+    svg.appendChild(lines.createElement());
+}
+
+function addPanelGuidelines$1(vc, o) {
+    if (!vc || !o || !o.dev || !o.dev.enable || !o.dev.panelGuideline.show) return;
+    var gg = o.dev.panelGuideline,
+        options = merge$1({
+        color: 'rgba(0,0,0,.25)',
+        width: 1,
+        size: 10,
+        zIndex: 0
+    }, gg || {});
+
+    var ids = gg.ids;
+
+    if (ids === 'all') {
+        ids = getAllIds(vc);
+    }
+    if (isNumber(ids)) {
+        ids = [ids];
+    }
+    if (isArray(ids)) {
+        ids.forEach(function (id) {
+            id = getRealIds(vc, id, o.alias);
+            if (id > 0) {
+                var node = vc.getChild(id);
+
+                if (node && node.realDom) {
+                    _addGGL$1(node, options);
+                }
+            }
+        });
+    }
+}
+
+function createPanelInfo$1(panel, size, id, position, color, fontSize) {
+    fontSize = n2px$1(fontSize);
+    if (panel && panel.realDom) {
+        var width = Math.round(panel.width),
+            height = Math.round(panel.height),
+            left = Math.round(panel.left),
+            top = Math.round(panel.top);
+
+        if (size || id || position) {
+            var info = '';
+
+            if (id) {
+                info += panel[CT.COMPONENT_ID_KEY];
+            }
+            if (size) {
+                info += (id ? ' - ' : '') + ' W' + width + ' H' + height;
+            }
+            if (position) {
+                info += (id || size ? ' - ' : '') + ' L' + left + ' T' + top;
+            }
+
+            return new VNode('span').addClassName(CT.INFO).setTop(panel.top + 5).setLeft(panel.left + 5).setWidth('auto').setHeight('auto').setStyle({ color: color, fontSize: fontSize }).setHtml(info);
+        }
+    }
+
+    return null;
+}
+
+function createDebugInfo$1(vc, dev) {
+    if (!vc || !dev || !dev.enable || !dev.panel.show) return;
+    var o = dev.panel,
+        id = o.id,
+        size = o.size,
+        position = o.position,
+        background = o.background,
+        fontSize = n2px$1(o.fontSize),
+        fontColor = o.fontColor;
+
+    if (vc.realDom && (id || size || position || background)) {
+        for (var i = 0, len = vc.children.length; i < len; i++) {
+            if (vc.children[i].realDom && background && isString(background)) {
+                css$1(vc.children[i].realDom, { background: background });
+            }
+            if (vc.children[i].isWidget) continue;
+            var span = createPanelInfo$1(vc.children[i], size, id, position, fontColor, fontSize);
+
+            if (span) {
+                vc.realDom.appendChild(span.createElement());
+            }
+        }
+    }
+}
+
+function createSVGText$1(svg, text, x, y, fontSize, fill) {
+    if (svg) {
+        svg.create('text', { x: x, y: y, fontSize: fontSize, fill: fill }).setHtml(text);
+    }
+}
+
+function addGuidelines$1(c, vc, o) {
+    if (!c || !vc || !o || !o.dev.guideline.show) return;
+    removeByClass$1(CT.GUIDELINES, c);
+    var gl = o.dev.guideline,
+        padding = o.padding,
+        width = vc.width + padding.left + padding.right,
+        height = vc.height + padding.top + padding.bottom,
+        identifier = gl.identifier,
+        fontSize = gl.fontSize,
+        fontColor = gl.fontColor,
+        zIndex = gl.zIndex,
+        rows = o.rows,
+        cols = o.cols,
+        unitRowHeight = (100 / rows).toFixed(5) * height / 100,
+        unitColWidth = (100 / cols).toFixed(5) * width / 100,
+        lines = new SVG(),
+        svg = create$2('div', CT.GUIDELINES, {
+        zIndex: zIndex,
+        height: height + 'px',
+        width: width + 'px',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        overflow: 'hidden',
+        userSelect: 'none'
+    }, c),
+        position = c.style.position;
+
+    if (position === '' || position === 'static') {
+        css$1(c, {
+            position: 'relative'
+        });
+    }
+
+    var points = '';
+
+    for (var i = 0; i <= rows; i++) {
+        var y = unitRowHeight * i;
+
+        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
+        if (identifier) {
+            createSVGText$1(lines, i, 5, y - unitRowHeight + px2n$1(fontSize) + 5, fontSize, fontColor);
+        }
+    }
+    for (var _i4 = 0; _i4 <= cols; _i4++) {
+        var x = unitColWidth * _i4;
+
+        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
+        if (identifier && _i4 !== 1) {
+            createSVGText$1(lines, _i4, x - unitColWidth + 5, px2n$1(fontSize) + 5, fontSize, fontColor);
+        }
+    }
+
+    lines.create('path', { d: points, stroke: gl.color, strokeWidth: gl.lineSize });
+    svg.appendChild(lines.createElement());
+}
+
+function addSplitLine$1(c, vc, o) {
+    if (!c || !vc || !o || !o.dev.splitline.show) return;
+    removeByClass$1(CT.SPLITLINES, c);
+    var sl = o.dev.splitline,
+        fontSize = n2px$1(sl.fontSize),
+        fontColor = sl.fontColor,
+        padding = o.padding,
+        identifier = sl.identifier,
+        width = vc.width + padding.left + padding.right,
+        height = vc.height + padding.top + padding.bottom,
+        unitRowHeight = sl.height,
+        unitColWidth = sl.width,
+        zIndex = sl.zIndex,
+        rows = Math.ceil(height / unitRowHeight),
+        cols = Math.ceil(width / unitColWidth),
+        svg = create$2('div', CT.SPLITLINES, {
+        zIndex: zIndex,
+        height: height + 'px',
+        width: width + 'px',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        overflow: 'hidden',
+        userSelect: 'none'
+    }, c),
+        lines = new SVG(),
+        position = c.style.position,
+        infoY = [],
+        infoX = [];
+
+    if (position === '' || position === 'static') {
+        css$1(c, { position: 'relative' });
+    }
+
+    var points = '';
+
+    for (var i = 0; i <= rows; i++) {
+        var y = unitRowHeight * i;
+
+        points += 'M0 ' + y + ' L' + width + ' ' + y + ' ';
+        infoY.push(y);
+    }
+    for (var _i5 = 0; _i5 <= cols; _i5++) {
+        var x = unitColWidth * _i5;
+
+        points += 'M' + x + ' 0 L' + x + ' ' + height + ' ';
+        infoX.push(x);
+    }
+
+    if (identifier) {
+        infoX.forEach(function (x) {
+            infoY.forEach(function (y) {
+                createSVGText$1(lines, x + ', ' + y, x + 10, y + 10 + px2n$1(fontSize), fontSize, fontColor);
+            });
+        });
+    }
+
+    lines.create('path', { d: points, stroke: sl.color, strokeWidth: sl.lineSize });
+    svg.appendChild(lines.createElement());
+}
+
+function loadDev$1(c, vc, o) {
+    if (!vc || !c || !o || !o.dev || !o.dev.enable) return false;
+    removeByClass$1(CT.INFO, c);
+    createDebugInfo$1(vc, o.dev);
+    addGuidelines$1(c, vc, o);
+    addSplitLine$1(c, vc, o);
+    addPanelGuidelines$1(vc, o);
+
+    return true;
+}
+
 var dragHandle = {
 
     /**
@@ -5264,7 +5576,7 @@ var PoPoInstance = function () {
                 pane.appendChild(vcToDom(vc));
 
                 if (o.dev.enable) {
-                    loadDev(pane, vc, o);
+                    loadDev$1(pane, vc, o);
                 }
 
                 loadTemplate(c, vc, o);
@@ -6509,103 +6821,61 @@ var PoPoInstance = function () {
 
 mixins(PoPoInstance.prototype, [dragHandle, resize, wheelzoom]);
 
-var P = {
+var _instances = [];
 
-    version: version,
+function init(options) {
+    var oc = options.container;
+    var popo = null;
 
-    instances: [],
+    if (oc) {
+        var c = get$$1(oc);
 
-    init: function init(options) {
-        var oc = options.container;
-        var popo = null;
+        if (isDOM(c)) {
+            var instance = getObjectFromArray(_instances, 'container', c);
 
-        if (oc) {
-            var c = get$$1(oc);
+            if (instance) {
+                throw new Error(ERROR_MSG.POPO_EXSIT);
+            }
+        } else {
+            throw new Error(ERROR_MSG.CONTAINER_ERR);
+        }
+    }
 
-            if (isDOM(c)) {
-                var instance = getObjectFromArray(P.instances, 'container', c);
+    popo = new PoPoInstance(options);
 
-                if (instance) {
-                    throw new Error(ERROR_MSG.POPO_EXSIT);
-                }
-            } else {
-                throw new Error(ERROR_MSG.CONTAINER_ERR);
+    _instances.push(popo);
+
+    return popo;
+}
+
+function getInstanceByDom(container) {
+    var c = get$$1(container);
+
+    return isDOM(c) ? getObjectFromArray(_instances, 'container', c) : null;
+}
+
+function dispose(target) {
+    if (!target) return;
+    if (target instanceof PoPoInstance) {
+        var index = contain(_instances, target);
+
+        if (index >= 0) {
+            _instances.splice(index, 1);
+            target.remove();
+        }
+    }
+    if (target && (isString(target) || isDOM(target))) {
+        var c = get$$1(target);
+
+        if (isDOM(c)) {
+            var instance = removeObjectFromArray(_instances, 'container', c);
+
+            if (instance && instance[0] && instance[0].remove) {
+                instance[0].remove();
             }
         }
-
-        popo = new PoPoInstance(options);
-
-        P.instances.push(popo);
-
-        return popo;
-    },
-
-
-    extend: function extend$$1(obj) {
-        if (isObject(obj)) {
-            var keys = Object.keys(P);
-
-            var _loop = function _loop(key) {
-                if (contain(keys, key) < 0) {
-                    if (isFunction(obj[key])) {
-                        P[key] = function () {
-                            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                                args[_key] = arguments[_key];
-                            }
-
-                            var result = obj[key].apply(null, args);
-
-                            return result !== undefined ? result : P;
-                        };
-                    } else {
-                        P[key] = obj[key];
-                    }
-                }
-            };
-
-            for (var key in obj) {
-                _loop(key);
-            }
-        }
-    },
-
-    getInstanceByDom: function getInstanceByDom(container) {
-        var c = get$$1(container);
-
-        return isDOM(c) ? getObjectFromArray(P.instances, 'container', c) : null;
-    },
-
-    dispose: function dispose(target) {
-        if (!target) return;
-        if (target instanceof PoPoInstance) {
-            var index = contain(P.instances, target);
-
-            if (index >= 0) {
-                P.instances.splice(index, 1);
-                target.remove();
-            }
-        }
-        if (target && (isString(target) || isDOM(target))) {
-            var c = get$$1(target);
-
-            if (isDOM(c)) {
-                var instance = removeObjectFromArray(P.instances, 'container', c);
-
-                if (instance) {
-                    instance[0].remove();
-                }
-            }
-        }
-    },
-
-    DomUtil: DomUtil,
-
-    DomEvent: DomEvent,
-
-    Browser: Browser,
-
-    Util: Util
-};
+    }
+}
 
 var bind$$1 = bind$1;
 var merge$$1 = merge$1;
@@ -6616,25 +6886,41 @@ var removeClass$$1 = removeClass$1;
 var css$$1 = css$1;
 var attr$$1 = attr$1;
 var isHidden$$1 = isHidden$1;
-var create$$1 = create$1;
+var create$1 = create$2;
 var html$$1 = html$1;
 
 
-P.extend({ addClass: addClass$$1, hasClass: hasClass$$1, removeClass: removeClass$$1, css: css$$1, attr: attr$$1, isHidden: isHidden$$1, create: create$$1, html: html$$1, bind: bind$$1, merge: merge$$1, extend: extend$$1, validateLayoutExp: validateAllLy });
+var oldP = window && window.P;
 
-if (typeof window !== 'undefined') {
-    var oldP = window.P;
-
-    P.noConflict = function noConflict() {
+function noConflict() {
+    if (window && oldP) {
         window.P = oldP;
-
-        return this;
-    };
-
-    window.P = P;
+    }
+    return this;
 }
 
-return P;
+exports.DomUtil = dom;
+exports.DomEvent = dom_event;
+exports.Util = util;
+exports.Browser = Browser;
+exports.addClass = addClass$$1;
+exports.hasClass = hasClass$$1;
+exports.removeClass = removeClass$$1;
+exports.css = css$$1;
+exports.attr = attr$$1;
+exports.isHidden = isHidden$$1;
+exports.create = create$1;
+exports.html = html$$1;
+exports.bind = bind$$1;
+exports.merge = merge$$1;
+exports.extend = extend$$1;
+exports.noConflict = noConflict;
+exports.version = version;
+exports.validateLayoutExp = validateAllLy;
+exports.init = init;
+exports.dispose = dispose;
+exports.getInstanceByDom = getInstanceByDom;
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=popo.js.map

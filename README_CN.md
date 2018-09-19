@@ -71,13 +71,15 @@ yarn add popojs
 
 ```js
 
-var PoPo = require('popojs');
+var P = require('popojs');
+
+// 或
 
 // es6
-// import PoPo from 'popojs';
+import * as PoPo from 'popojs';
 
 // 初始化实例
-var popoInstance = PoPo.init({
+var popoInstance = P.init({
     rows: 12,
     cols: 24
 });
@@ -97,7 +99,7 @@ popoInstance.addTo('container');
 <div id="container"></div>
 ...
 <script>
-PoPo.init({
+P.init({
     container: 'container',
     rows: 12,
     cols: 24
