@@ -5,7 +5,7 @@ import { updateLayout, initLayout } from './layout';
 import { addLayoutToPanel } from './panel';
 import {
     css, addClass, setClass, hasClass, query, eachChild,
-    removeClass, getPureStyle, getRect, attr,
+    removeClass, getPureStyle, getRect, attr, removeByClass,
 } from '../../dom/dom';
 import {
     isNumber, isArray, isString, isDOM, isObject, contain, isEmptyObject, merge,
