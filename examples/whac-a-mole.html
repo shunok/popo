@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout AVG</title>
+    <link rel="stylesheet" href="./css/animate.css">
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {background-color:#4F5E34; cursor: url('./images/hammer.png') ,auto;}
+
+        .popo-mole {
+            background: url('./images/mole.png') center center no-repeat;
+            background-size: auto 65% ;
+        }
+
+        #score {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            background:#ffff00;
+            color:#333;
+            height:30px;
+            min-width: 100px;
+            top: 999;
+            text-align: center;
+            line-height: 30px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="score">Score: 0</div>
+    <script src="../dist/popo.min.js"></script>
+    <script>
+        var moles, layout, score = 0, scoreLabel;
+        
+        // score label
+        scoreLabel = document.getElementById("score");
+
+        layout = P.init({
+            container: 'container',
+            rows: 12, // define grid rows number default
+            cols: 24, // define grid rows number default
+            layout: {
+                cols: 6,
+                rows: 4
+            },
+            dev: {
+                enable: true,
+                panel: {
+                    fontColor: "#ffff00",
+                }
+            },
+            gutter: 0, // px
+        });
+
+
+        function generateRandomMoles() {
+            var panelCount = layout.getPanelCount();
+            var count = Math.round(Math.random() * 4 + 2);
+            var hammerRandom = [], index, i;
+            for(i = 0; i < count; i++ ) {
+                index = Math.floor(Math.random() * panelCount);
+                if(index > panelCount - 1) index = panelCount - 1;
+                hammerRandom.push(index);
+            }
+            return hammerRandom;
+        }
+
+        function isHammerInGrid(e, position, size) {
+            var x = e.clientX, y= e.clientY;
+            return x >= position.left && x <= (position.left + size.width) && y >= position.top && y <= (position.top + size.height);
+        }
+
+        function holdMole(e) {
+            layout.each(function(element) {
+                if(isHammerInGrid(e, element.position, element.size)) {
+                    score++;
+                    P.DomUtil.html(scoreLabel, 'Score: ' + score);
+                    P.DomUtil.addClass(element.panel, 'bounceOut animated');
+                }
+            }, moles);
+        }
+    
+        setInterval(function() {
+            moles = generateRandomMoles();
+            layout.setStyle({
+                custom: [
+                   {panels: moles, panel: 'popo-mole'} 
+                ]
+            })
+        }, 2000);
+        
+
+        // set hammer
+        document.body.addEventListener('mousedown', function(e) {
+            document.body.style.cursor = "url('./images/hammer_down.png') ,auto";
+            holdMole(e);
+        });
+
+        document.body.addEventListener('mouseup', function(e) {
+            document.body.style.cursor = "url('./images/hammer.png') ,auto";
+        });
+    
+    </script>
+</body>
+
+</html>
