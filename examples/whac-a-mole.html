@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Layout AVG</title>
+    <title>Game Of Whack-a-mole</title>
     <link rel="stylesheet" href="./css/animate.css">
     <style>
         html,
@@ -19,19 +19,46 @@
 
         body {background-color:#4F5E34; cursor: url('./images/hammer.png') ,auto;}
 
+        .popo-panel {
+            /* box-shadow: 0 0 10px 1px #ff0000 inset; */
+            overflow: hidden;
+        }
+
+        .popo-success{
+            background:url('./images/success.png') center 20px no-repeat;
+            background-size: auto 60%;
+        }
+
+        .popo-panel::after {
+            position: absolute;
+            display: block;
+            content: '';
+            height: 20px;
+            width: 70%;
+            left: 15%;
+            bottom: 0px;
+            border-radius: 80%;
+            background-color:#39480F;
+            z-index: -1;
+            box-shadow: 0 3px 8px 3px rgba(0,0,0,.5) inset, 0 -8px 8px 3px rgba(0,0,0,.1) inset;
+        }
+
         .popo-mole {
             background: url('./images/mole.png') center center no-repeat;
-            background-size: auto 65% ;
+            background-size: auto 80% ;
+            background-position-y: calc(100% + 10px);
         }
 
         #score {
             position: absolute;
             right: 0px;
             top: 0px;
-            background:#ffff00;
-            color:#333;
+            background:rgba(0,0,0,.6);
+            color:#fff;
             height:30px;
             min-width: 100px;
+            width:100%;
+            padding: 0 10px;
             top: 999;
             text-align: center;
             line-height: 30px;
@@ -42,24 +69,37 @@
 
 <body>
     <div id="container"></div>
-    <div id="score">Score: 0</div>
+    <div id="score">Game Of Whack-a-mole. Score: 0</div>
+    <audio src="./waves/hit.mp3" id="audio_hit">
+        Your browser does not support the audio element.
+    </audio>
     <script src="../dist/popo.min.js"></script>
     <script>
-        var moles, layout, score = 0, scoreLabel;
+        var moles = [], 
+            layout, 
+            score = 0, 
+            molesCount = 0,
+            scoreLabel,
+            audioPlayer = document.getElementById('audio_hit');
         
         // score label
         scoreLabel = document.getElementById("score");
-
+        
+        // create grid layout
         layout = P.init({
             container: 'container',
             rows: 12, // define grid rows number default
             cols: 24, // define grid rows number default
+            padding: 30,
             layout: {
                 cols: 6,
                 rows: 4
             },
-            dev: {
+            panel: {
                 enable: true,
+            },
+            dev: {
+                enable: false,
                 panel: {
                     fontColor: "#ffff00",
                 }
@@ -85,31 +125,83 @@
             return x >= position.left && x <= (position.left + size.width) && y >= position.top && y <= (position.top + size.height);
         }
 
+        function addSuccessEffect(target) {
+            if(!target) return;
+            P.DomUtil.addClass(target, 'popo-success');
+            setTimeout(function() {
+                P.DomUtil.removeClass(target, 'popo-success');
+            }, 300);
+        }
+
+        function playAudio(hited) {
+            audioPlayer.src = hited ? './waves/hited.mp3' : './waves/hit.mp3';
+            audioPlayer.play();
+        }
+
+
         function holdMole(e) {
+            var index = -1;
             layout.each(function(element) {
                 if(isHammerInGrid(e, element.position, element.size)) {
                     score++;
-                    P.DomUtil.html(scoreLabel, 'Score: ' + score);
-                    P.DomUtil.addClass(element.panel, 'bounceOut animated');
+                    P.DomUtil.html(scoreLabel, 'Game Of Whack-a-mole. Score: ' + score + ' / ' + molesCount);
+                    P.DomUtil.setClass(element.center, 'popo-mole slideOutDown animated');
+                    index = element.id;
+                    addSuccessEffect(element.panel);
                 }
             }, moles);
+            // delete mole
+            if(index > 0) {
+                for(var i = 0; i < moles.length;i++) {
+                    if(moles[i] === index) {
+                        delete moles[i];
+                        break;
+                    }
+                }
+                moles = moles.filter(function(m) {
+                    return m;
+                });
+                playAudio(true);
+            } else {
+                playAudio(false);
+            }
         }
+
     
         setInterval(function() {
-            moles = generateRandomMoles();
             layout.setStyle({
+                default: {
+                    panel: 'popo-panel',
+                    center: 'popo-center'
+                },
                 custom: [
-                   {panels: moles, panel: 'popo-mole'} 
+                   {panels: moles, panel: 'popo-panel', center: 'popo-mole slideOutDown animated'} 
                 ]
-            })
+            });
+
+            moles = generateRandomMoles();
+
+            molesCount += moles.length;
+            
+            layout.setStyle({
+                default: {
+                    panel: 'popo-panel',
+                    center: 'popo-center'
+                },
+                custom: [
+                   {panels: moles, panel: 'popo-panel', center: 'popo-mole slideInUp animated'} 
+                ]
+            });
         }, 2000);
+        
+        var hammerEvent = P.Util.throttle(function(e) {
+            document.body.style.cursor = "url('./images/hammer_down.png') ,auto";
+            holdMole(e);
+        }, 200);
         
 
         // set hammer
-        document.body.addEventListener('mousedown', function(e) {
-            document.body.style.cursor = "url('./images/hammer_down.png') ,auto";
-            holdMole(e);
-        });
+        document.body.addEventListener('mousedown', hammerEvent);
 
         document.body.addEventListener('mouseup', function(e) {
             document.body.style.cursor = "url('./images/hammer.png') ,auto";
