@@ -17,4 +17,4 @@ PoPo 是一个行列二维式栅格布局工具，[栅格系统](/zh-cn/grid)的
 - 兼容 IE9+
 
 
-> [查看示例](https://github.com/shunok/popo-example/blob/master/README_CN.md)
+> [查看示例](https://shunok.github.io/popo/examples/index.html)

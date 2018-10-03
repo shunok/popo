@@ -34,7 +34,7 @@ PoPo的布局结构非常适合组件化开发，并为[面板布局](/zh-cn/pan
 
 面板内容渲染示例
 
-- [Handlebars](https://shunok.github.io/popo-example/examples/bootstrap.html ":ignore")
+- [Handlebars](https://shunok.github.io/popo/examples/bootstrap.html ":ignore")
 
 ```html
 <script id="entry-template" type="text/x-handlebars-template">

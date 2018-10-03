@@ -1,6 +1,6 @@
 # PoPo
 
-> JS Layout library,  but not just layout Library
+> JS Grid library,  but not just grid library
 
 <div align=center>
 <img src="https://shunok.github.io/popo/_media/popo.png" width=180 height=180>
@@ -11,10 +11,10 @@
 PoPo is a two dimensional grid layout library, The rows and columns of the grid system are custom defined at runtime, no CSS dependence, supports any size screen, It is especially suitable for large screen and super large screen.PoPo adopts the double layout pattern of grid and panel, it encapsulates content independent layout code, You can quickly build any complex pages without writing any HTML or CSS code.
 
 <div align="center">
-    <img src="./docs/_images/ex1.gif" style="max-height:250px;"/>
-    <img src="./docs/_images/ex2.gif" style="max-height:250px;"  />
-    <img src="./docs/_images/ex3.gif" style="max-height:250px;" />
-    <img src="./docs/_images/ex4.png" style="max-height:250px;" />
+    <img src="./docs/_images/ex1.gif" style="max-height:150px;"/>
+    <img src="./docs/_images/ex2.gif" style="max-height:150px;"  />
+    <img src="./docs/_images/ex3.gif" style="max-height:150px;" />
+    <img src="./docs/_images/ex4.png" style="max-height:150px;" />
 </div>
 
 ## Features
@@ -31,17 +31,17 @@ PoPo is a two dimensional grid layout library, The rows and columns of the grid 
 
 ## Examples
 
-- [24 rows * 24 cols](https://shunok.github.io/popo-example/examples/grid_24_24.html)
-- [24 rows * 48 cols](https://shunok.github.io/popo-example/examples/grid_24_48.html)
-- [Free layout](https://shunok.github.io/popo-example/examples/layout_complex_2.html)
-- [Uniform layout](https://shunok.github.io/popo-example/examples/layout_avg_1.html)
-- [Grids In Circle](https://shunok.github.io/popo-example/examples/circle.html)
-- [Scatter Diagram](https://shunok.github.io/popo-example/examples/scatter_diagram.html)
-- [City, Click the sun into night mode and click the moon into day mode](https://shunok.github.io/popo-example/examples/city.html)
-- [Progress Data Visualization For Big Screen And Mobile](https://shunok.github.io/popo-example/examples/dv_average.html)
-- [Data Visualization For Multi Screen](https://shunok.github.io/popo-example/examples/bigscreen.html)
+- [24 rows * 24 cols](https://shunok.github.io/popo/examples/grid_24_24.html)
+- [24 rows * 48 cols](https://shunok.github.io/popo/examples/grid_24_48.html)
+- [Free layout](https://shunok.github.io/popo/examples/layout_complex_2.html)
+- [Uniform layout](https://shunok.github.io/popo/examples/layout_avg_1.html)
+- [Grids In Circle](https://shunok.github.io/popo/examples/circle.html)
+- [Scatter Diagram](https://shunok.github.io/popo/examples/scatter_diagram.html)
+- [City, Click the sun into night mode and click the moon into day mode](https://shunok.github.io/popo/examples/city.html)
+- [Progress Data Visualization For Big Screen And Mobile](https://shunok.github.io/popo/examples/dv_average.html)
+- [Data Visualization For Multi Screen](https://shunok.github.io/popo/examples/bigscreen.html)
 
-[More Examples...](https://github.com/shunok/popo-example/blob/master/README.md)
+[More Examples...](https://shunok.github.io/popo/examples/index.html)
 
 ## Install
 

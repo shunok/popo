@@ -54,7 +54,7 @@ Then you can initialize a PoPo instance with the [P.init](/en/global#init)  meth
 
 So we created a total of 12 uniform panel layout:
 
-<iframe width="100%" height="400" src="https://shunok.github.io/popo-example/examples/layout_avg_5.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="https://shunok.github.io/popo/examples/layout_avg_5.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ## Create a free layout
 
@@ -95,7 +95,7 @@ So we created a total of 12 uniform panel layout:
 
 So we created a total of five different width of the panel layout of the grid：
 
-<iframe width="100%" height="400" src="https://shunok.github.io/popo-example/examples/layout_free_4.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="https://shunok.github.io/popo/examples/layout_free_4.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ## Add panel layout
 
@@ -148,4 +148,4 @@ We are in the above free layout based on the middle of the three panels to add [
 </html>
 ```
 
-<iframe width="100%" height="400" src="https://shunok.github.io/popo-example/examples/layout_free_4_panel.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="https://shunok.github.io/popo/examples/layout_free_4_panel.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
