@@ -186,8 +186,12 @@
             var link = $(this).attr("data-link");
             if(link) {
                 $("#demo").attr("src", './' +  link);
+                $("#nav li").css({fontWeight: 'normal', color:'#eee', textDecoration: 'none'});
+                $(this).css({fontWeight: '600', color:'yellow', textDecoration: 'underline'});
             }
         });
+
+        $("#nav li:first").click();
 
 
         
