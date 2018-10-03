@@ -8,7 +8,7 @@
   "module": "dist/popo.esm.js",
   "jsnext:main": "dist/popo.esm.js",
   "scripts": {
-    "build": "rimraf dist/**/* && npm run es && rollup -c ./build/rollup.dev.config.js && rollup -c ./build/rollup.prod.config.js",
+    "build": "rimraf dist/**/* && npm run es && rollup -c ./build/rollup.dev.config.js && rollup -c ./build/rollup.prod.config.js && gulp copy2ex",
     "es": "rollup -c ./build/rollup.prod.es.js",
     "test": "gulp test",
     "release": "npm run build && npm run test",

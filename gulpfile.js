@@ -37,3 +37,8 @@ gulp.task('test', function () {
         }
     }).start();
 });
+
+gulp.task('copy2ex', function() {
+    return gulp.src(['dist/popo.min.js'])
+        .pipe(gulp.dest('docs/examples/libs'));
+});
