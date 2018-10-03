@@ -1,8 +1,8 @@
 /*
- * PoPo 1.3.3, a JS UI library for data visualization and large screen.
+ * PoPo 1.4.0, a JS UI library for data visualization and large screen.
  * https://github.com/shunok/PoPo (c) 2017-2018 DaShun
  */
-var version = "1.3.3";
+var version = "1.4.0";
 
 let lastId = 0;
 
