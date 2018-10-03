@@ -12,13 +12,13 @@ PoPo 是一个行列二维式栅格布局工具，栅格系统的行、列数均
 
 <div align="center">
     <h3>示例一:散点图</h3>  
-    <img src="./docs/_images/ex1.gif" style="max-height:150px;"/>
+    <img src="./docs/_images/ex1.gif" style="height:150px;"/>
     <h3>示例二:围棋</h3> 
-    <img src="./docs/_images/ex2.gif" style="max-height:150px;"  />
+    <img src="./docs/_images/ex2.gif" style="height:150px;"  />
     <h3>示例三:城市的昼与夜</h3>
-    <img src="./docs/_images/ex3.gif" style="max-height:150px;" />
+    <img src="./docs/_images/ex3.gif" style="height:150px;" />
     <h3>示例四:可视化布局</h3>
-    <img src="./docs/_images/ex4.png" style="max-height:150px;" />
+    <img src="./docs/_images/ex4.png" style="height:150px;" />
 </div>
 
 ## 特性
