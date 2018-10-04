@@ -1,6 +1,6 @@
 # PoPo
 
-> Javascript 栅格布局工具，可视化最佳拍挡
+> Javascript 栅格布局工具
 
 ## PoPo是什么
 

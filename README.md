@@ -1,6 +1,6 @@
 # PoPo
 
-> JS Grid library,  but not just grid library
+> PoPo is the grid layout tool, the best choice for runtime layout.
 
 [中文介绍](./README_CN.md)
 
