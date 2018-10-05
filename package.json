@@ -1,8 +1,8 @@
 {
   "name": "popojs",
   "title": "PoPo",
-  "version": "1.4.0",
-  "description": "JS layout library for large screen",
+  "version": "1.4.1",
+  "description": "PoPo is the grid layout tool, the best choice for runtime layout.",
   "main": "dist/popo.src.js",
   "browser": "dist/popo.min.js",
   "module": "dist/popo.esm.js",
@@ -42,20 +42,12 @@
   },
   "keywords": [
     "popo",
-    "javascript",
-    "ui",
+    "grid",
     "layout",
-    "screen",
-    "large screen",
-    "big screen",
-    "grid",
     "data visualization",
-    "grid",
-    "fixed",
-    "library",
-    "布局工具",
-    "自由布局",
-    "可视化大屏"
+    "栅格",
+    "布局",
+    "可视化"
   ],
   "author": {
     "email": "dashunok@qq.com",
