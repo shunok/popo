@@ -1531,6 +1531,18 @@ popo.each(function(elements) {
 }
 ```
 
+### isInPanel
+
+- `isInPanel(panel, x, y)`
+- 参数:
+  - `{Object | Number | String} panel` 面板HTMLElement 、面板ID或别名值
+  - `{Number}` X值
+  - `{Number}` Y值
+- 返回值: `{ Boolean }`
+
+判断坐标值是否在面板内
+
+
 ### setPanelLayout
 
 - `setPanelLayout(options)`

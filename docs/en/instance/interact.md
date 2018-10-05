@@ -305,6 +305,17 @@ Add a panel to the container, and the parameter structure is as follows.
 }
 ```
 
+### isInPanel
+
+- `isInPanel(panel, x, y)`
+- Parameter:
+  - `{Object | Number | String} panel` Panel HTMLElement,Panel ID or alias
+  - `{Number}` X
+  - `{Number}` Y
+- Return: `{ Boolean }`
+
+Determine whether coordinates are in the panel.
+
 ## setPanelLayout
 
 - `setPanelLayout(options)`
