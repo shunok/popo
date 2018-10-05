@@ -120,11 +120,6 @@
             return hammerRandom;
         }
 
-        function isHammerInGrid(e, position, size) {
-            var x = e.clientX, y= e.clientY;
-            return x >= position.left && x <= (position.left + size.width) && y >= position.top && y <= (position.top + size.height);
-        }
-
         function addSuccessEffect(target) {
             if(!target) return;
             P.DomUtil.addClass(target, 'popo-success');
@@ -142,7 +137,7 @@
         function holdMole(e) {
             var index = -1;
             layout.each(function(element) {
-                if(isHammerInGrid(e, element.position, element.size)) {
+                if(layout.isInPanel(element, e.clientX, e.clientY)) {
                     score++;
                     P.DomUtil.html(scoreLabel, 'Game Of Whack-a-mole. Score: ' + score + ' / ' + molesCount);
                     P.DomUtil.setClass(element.center, 'popo-mole slideOutDown animated');
@@ -167,8 +162,7 @@
             }
         }
 
-    
-        setInterval(function() {
+        function start() {
             layout.setStyle({
                 default: {
                     panel: 'popo-panel',
@@ -192,7 +186,10 @@
                    {panels: moles, panel: 'popo-panel', center: 'popo-mole slideInUp animated'} 
                 ]
             });
-        }, 2000);
+        }
+
+        start();
+        setInterval(start, 2000);
         
         var hammerEvent = P.Util.throttle(function(e) {
             document.body.style.cursor = "url('./images/hammer_down.png') ,auto";
