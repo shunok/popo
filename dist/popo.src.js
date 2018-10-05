@@ -6815,6 +6815,19 @@ var PoPoInstance = function () {
 
             return this;
         }
+    }, {
+        key: 'isInPanel',
+        value: function isInPanel(target, x, y) {
+            var element = this.get(target);
+            if (element) {
+                var position = element.position,
+                    size = element.size;
+
+                return x >= position.left && x <= position.left + size.width && y >= position.top && y <= position.top + size.height;
+            }
+
+            return false;
+        }
     }]);
     return PoPoInstance;
 }();

@@ -6262,6 +6262,16 @@ class PoPoInstance {
         return this;
     }
 
+    isInPanel(target, x, y) {
+        const element = this.get(target);
+        if(element) {
+            const { position, size } = element;
+            return x >= position.left && x <= (position.left + size.width) && y >= position.top && y <= (position.top + size.height);
+        }
+
+        return false;
+    }
+
 }
 
 mixins(PoPoInstance.prototype, [dragHandle, resize, wheelzoom]);
